@@ -14,24 +14,7 @@
     <title>COTIZADOR VEHICULAR</title>
     <style>
       /* Estilos para la sección de planes */
-      .planes-section {
-        padding: 40px 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
       
-      .planes-titulo {
-        color: white;
-        font-size: 2.5rem;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 50px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-      }
       
       .planes-container {
         display: flex;
@@ -46,12 +29,24 @@
       .plan {
         position: relative;
         width: 300px;
-        height: 400px;
+        height: 300px;
         border-radius: 15px;
         overflow: hidden;
         box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         cursor: pointer;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background:  #072386;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .plan:nth-child(2) {
+         background:  #072386;
+      }
+      
+      .plan:nth-child(3) {
+         background:  #072386;
       }
       
       .plan:hover {
@@ -59,11 +54,28 @@
         box-shadow: 0 20px 40px rgba(0,0,0,0.4);
       }
       
-      .plan-imagen {
+      .plan-titulo-principal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         height: 100%;
-        object-fit: cover;
         transition: opacity 0.3s ease;
+      }
+      
+      .plan-titulo-principal h2 {
+        color: white;
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        margin: 0;
+        padding: 20px;
+        line-height: 1.2;
+      }
+      
+      .plan:hover .plan-titulo-principal {
+        opacity: 0.3;
       }
       
       .plan-overlay {
@@ -85,10 +97,6 @@
       
       .plan:hover .plan-overlay {
         opacity: 1;
-      }
-      
-      .plan:hover .plan-imagen {
-        opacity: 0.3;
       }
       
       .plan-texto {
@@ -191,32 +199,38 @@
     <div class="contianer" id="container">
       <!-- Nueva sección de planes -->
       <section class="planes-section">
-        <h2 class="planes-titulo">Elige el Plan que Mejor se Adapte a Ti</h2>
+     
         <div class="planes-container">
-          <div class="plan" data-plan="Plan 1">
-            <img src="https://finanmotors.com/wp-content/uploads/2024/11/plan1.png" alt="Plan 1" class="plan-imagen" />
+          <div class="plan" data-plan="PLAN PUNTUAL">
+            <div class="plan-titulo-principal">
+              <h2>PLAN PUNTUAL</h2>
+            </div>
             <div class="plan-overlay">
               <div class="plan-texto">
-                <h3>Plan 1</h3>
-                <p>Financiamiento básico con entrada mínima del 15%. Ideal para aquellos que buscan comenzar su camino hacia la propiedad de un vehículo con pagos accesibles.</p>
+                <h3>Plan Puntual</h3>
+                <p>El cliente paga los primero diasd son x cantidad de puntos, a mitad de el mes otros puntos y al fina lde el mes una x cantidad de puntos.</p>
               </div>
             </div>
           </div>
-          <div class="plan" data-plan="Plan 2">
-            <img src="https://finanmotors.com/wp-content/uploads/2024/11/plan2.png" alt="Plan 2" class="plan-imagen" />
+          <div class="plan" data-plan="PLAN ADELANTADO">
+            <div class="plan-titulo-principal">
+              <h2>PLAN ADELANTADO</h2>
+            </div>
             <div class="plan-overlay">
               <div class="plan-texto">
-                <h3>Plan 2</h3>
-                <p>Financiamiento estándar con entrada del 30%. Perfecto para quienes buscan un balance entre pagos mensuales cómodos y un plazo razonable.</p>
+                <h3>Plan Adelantado</h3>
+                <p>Financiamiento y el cliente hace esto y aquello con lo cual bla bla bla y el tiemp ode bla bla bla..</p>
               </div>
             </div>
           </div>
-          <div class="plan" data-plan="Plan 3">
-            <img src="https://finanmotors.com/wp-content/uploads/2024/11/plan3.png" alt="Plan 3" class="plan-imagen" />
+          <div class="plan" data-plan="PLAN JUSTO A TIEMPO">
+            <div class="plan-titulo-principal">
+              <h2>PLAN JUSTO A TIEMPO</h2>
+            </div>
             <div class="plan-overlay">
               <div class="plan-texto">
-                <h3>Plan 3</h3>
-                <p>Financiamiento premium con entrada del 50%. Diseñado para quienes desean menores pagos mensuales y mayor flexibilidad en sus términos.</p>
+                <h3>Plan Justo a Tiempo</h3>
+                <p>En este plan el cliente recibe sufifnanciamiento y selecciona a un mes en especifo para su compra vehicular con bla bla bla...</p>
               </div>
             </div>
           </div>
@@ -1680,9 +1694,14 @@
               // Mostrar la sección del cotizador con animación suave
               setTimeout(() => {
                 cotizadorSection.style.display = 'block';
-                cotizadorSection.scrollIntoView({ 
-                  behavior: 'smooth', 
-                  block: 'start' 
+                
+                // Scroll más suave - solo un poco hacia abajo
+                const currentScrollY = window.scrollY;
+                const targetScrollY = currentScrollY + (window.innerHeight * 0.4);
+                
+                window.scrollTo({
+                  top: targetScrollY,
+                  behavior: 'smooth'
                 });
               }, 300);
             });
@@ -2815,6 +2834,11 @@
 
                 // Mostrar el contenido de PDF
                 document.getElementById("pdf").style.display = "block";
+                
+                // Obtener el nombre del cliente y actualizar el mensaje de agradecimiento
+                const nombre = document.getElementById("nombre").value || "Usuario";
+                const thankYouMessage = document.getElementById("thankYouMessage");
+                thankYouMessage.textContent = `Gracias por Cotizar, ${nombre}!`;
 
                 /*
             const nombreInput = document.getElementById("nombre");

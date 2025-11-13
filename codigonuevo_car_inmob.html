@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>COTIZADOR VEHICULAR E INMOBILIARIO</title>
+    <style>
+      /* Estilos generales */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #333;
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Estilos para la sección inicial de selección */
+      .seccion-inicial {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        margin-bottom: 40px;
+      }
+      
+      .seccion-inicial h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      
+      .seccion-inicial p {
+        font-size: 1.2rem;
+        margin-bottom: 40px;
+        opacity: 0.9;
+      }
+      
+      .botones-principales {
+        display: grid;
+        grid-template-columns: 300px 300px;
+        grid-template-rows: 300px;
+        gap: 40px;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .boton-principal {
+        background: #072386;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        width: 300px;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .boton-principal:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        background: #0a2d99;
+      }
+
+      /* Estilos para los vehículos */
+      .vehicle-types {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 40px 0;
+      }
+      
+      .vehicle {
+        text-align: center;
+        padding: 20px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+        min-width: 150px;
+      }
+      
+      .vehicle:hover {
+        border-color: #667eea;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      
+      .vehicle img {
+        width: 100px;
+        height: 80px;
+        object-fit: contain;
+      }
+      
+      .vehicle p {
+        margin: 10px 0 0 0;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .vehicle.selected {
+        border-color: #667eea;
+        background: #f0f4ff;
+      }
+
+      /* Estilos para la sección de detalle del vehículo */
+      .detalle-vehiculo {
+        margin: 40px 0;
+        padding: 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+      
+      .vehiculo-container {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      
+      .vehiculo-imagen {
+        flex: 1;
+        text-align: center;
+        min-width: 300px;
+      }
+      
+      .vehiculo-imagen img {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 10px;
+      }
+      
+      .vehiculo-selectores-container {
+        flex: 1;
+        min-width: 300px;
+      }
+      
+      .vehiculo-selectores {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      
+      .vehiculo-selectores label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .vehiculo-selectores select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+      
+      .vehiculo-selectores button {
+        background: #667eea;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      
+      .vehiculo-selectores button:hover {
+        background: #5a6fd8;
+      }
+
+      /* Estilos para las opciones de financiación */
+      .opciones-financiacion {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+      
+      .opcion-financiacion {
+        position: relative;
+        background: #072386;
+        color: white;
+        padding: 20px 30px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 150px;
+        text-align: center;
+      }
+      
+      .opcion-financiacion:hover {
+        background: #0a2d99;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      }
+      
+      .tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 5px;
+      }
+      
+      .tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0,0,0,0.9);
+      }
+      
+      .opcion-financiacion:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* Estilos responsive */
+      @media (max-width: 768px) {
+        .seccion-inicial h1 {
+          font-size: 2rem;
+        }
+        
+        .botones-principales {
+          grid-template-columns: 250px;
+          grid-template-rows: 250px 250px;
+          gap: 20px;
+        }
+        
+        .boton-principal {
+          width: 250px;
+          height: 250px;
+          font-size: 1.2rem;
+        }
+        
+        .vehiculo-container {
+          flex-direction: column;
+        }
+        
+        .opciones-financiacion {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+
+      /* Estilos para ocultar secciones */
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container" id="container">
+      
+      <!-- Sección inicial de selección -->
+      <section class="seccion-inicial" id="seccion-inicial">
+        <h1>Bienvenido al Cotizador</h1>
+        <p>Selecciona el tipo de cotización que necesitas</p>
+        <div class="botones-principales">
+          <button class="boton-principal" id="btn-vehicular">VEHICULAR</button>
+          <button class="boton-principal" id="btn-inmobiliario">INMOBILIARIO</button>
+        </div>
+      </section>
+
+      <!-- Sección Vehicular -->
+      <section class="seccion-vehicular hidden" id="seccion-vehicular">
+        <!-- Tipos de vehículos -->
+        <div class="vehicle-types">
+          <div class="vehicle" id="selector_autos">
+            <img src="https://finanmotors.com/wp-content/uploads/2024/11/auto_base.png" alt="Autos" />
+            <p>Autos</p>
+          </div>
+          <div class="vehicle" id="selector_suvs">
+            <img src="https://finanmotors.com/wp-content/uploads/2024/11/suv_base.png" alt="SUVs" />
+            <p>SUVs</p>
+          </div>
+          <div class="vehicle" id="selector_camionetas">
+            <img src="https://finanmotors.com/wp-content/uploads/2024/11/camioneta_base.png" alt="Camionetas" />
+            <p>Camionetas</p>
+          </div>
+          <div class="vehicle" id="selector_camiones">
+            <img src="https://finanmotors.com/wp-content/uploads/2024/11/camion_base.png" alt="Camiones" />
+            <p>Camiones</p>
+          </div>
+        </div>
+
+        <!-- Detalle de vehículo (inicialmente oculto) -->
+        <div class="detalle-vehiculo hidden" id="detalle-vehiculo">
+          <div class="vehiculo-container">
+            <!-- Imagen del vehículo -->
+            <div class="vehiculo-imagen">
+              <img id="vehiculo-imagen" src="https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png" alt="Vehículo seleccionado" />
+              <p id="vehiculo-nombre" style="font-weight: bold; font-size: 1.2em; margin-top: 10px;"></p>
+            </div>
+            
+            <!-- Selectores y opciones -->
+            <div class="vehiculo-selectores-container">
+              <!-- Selectores de marca y modelo -->
+              <div class="vehiculo-selectores" id="selectores-vehiculo">
+                <label for="marca-vehiculo">Marca:</label>
+                <select id="marca-vehiculo">
+                  <option value="">Selecciona una marca</option>
+                </select>
+                
+                <label for="modelo-vehiculo">Modelo:</label>
+                <select id="modelo-vehiculo" disabled>
+                  <option value="">Primero selecciona una marca</option>
+                </select>
+                
+                <button id="continuar-vehiculo" disabled>Continuar</button>
+              </div>
+
+              <!-- Opciones de financiación (inicialmente ocultas) -->
+              <div class="opciones-financiacion-container hidden" id="opciones-financiacion-container">
+                <h3 style="text-align: center; margin-bottom: 20px;">Selecciona tu opción de financiación</h3>
+                <div class="opciones-financiacion">
+                  <button class="opcion-financiacion" id="con-entrada">
+                    CON ENTRADA
+                    <div class="tooltip">Ideal para reducir tu cuota mensual con un pago inicial</div>
+                  </button>
+                  <button class="opcion-financiacion" id="sin-entrada">
+                    SIN ENTRADA
+                    <div class="tooltip">Sin pago inicial, comenzar inmediatamente tu plan</div>
+                  </button>
+                  <button class="opcion-financiacion" id="justo-tiempo">
+                    JUSTO A TIEMPO
+                    <div class="tooltip">Planifica tu compra para el momento exacto que necesitas</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección Inmobiliaria -->
+      <section class="seccion-inmobiliaria hidden" id="seccion-inmobiliaria">
+        <!-- Tipos de propiedades -->
+        <div class="vehicle-types">
+          <div class="vehicle" id="selector_casas">
+            <img src="https://via.placeholder.com/100x80/667eea/ffffff?text=Casa" alt="Casas" />
+            <p>Casas</p>
+          </div>
+          <div class="vehicle" id="selector_terrenos">
+            <img src="https://via.placeholder.com/100x80/667eea/ffffff?text=Terreno" alt="Terrenos" />
+            <p>Terrenos</p>
+          </div>
+          <div class="vehicle" id="selector_departamentos">
+            <img src="https://via.placeholder.com/100x80/667eea/ffffff?text=Depto" alt="Departamentos" />
+            <p>Departamentos</p>
+          </div>
+        </div>
+
+        <!-- Detalle de propiedad (inicialmente oculto) -->
+        <div class="detalle-vehiculo hidden" id="detalle-propiedad">
+          <div class="vehiculo-container">
+            <!-- Imagen de la propiedad -->
+            <div class="vehiculo-imagen">
+              <img id="propiedad-imagen" src="" alt="Propiedad seleccionada" />
+              <p id="propiedad-nombre" style="font-weight: bold; font-size: 1.2em; margin-top: 10px;"></p>
+            </div>
+            
+            <!-- Selectores y opciones -->
+            <div class="vehiculo-selectores-container">
+              <!-- Selectores de zona y tipo -->
+              <div class="vehiculo-selectores" id="selectores-propiedad">
+                <label for="zona-propiedad">Zona:</label>
+                <select id="zona-propiedad">
+                  <option value="">Selecciona una zona</option>
+                  <option value="norte">Norte</option>
+                  <option value="sur">Sur</option>
+                  <option value="centro">Centro</option>
+                  <option value="valle">Valle</option>
+                </select>
+                
+                <label for="tipo-propiedad">Tipo:</label>
+                <select id="tipo-propiedad" disabled>
+                  <option value="">Primero selecciona una zona</option>
+                </select>
+                
+                <button id="continuar-propiedad" disabled>Continuar</button>
+              </div>
+
+              <!-- Opciones de financiación -->
+              <div class="opciones-financiacion-container hidden" id="opciones-financiacion-inmob">
+                <h3 style="text-align: center; margin-bottom: 20px;">Selecciona tu opción de financiación</h3>
+                <div class="opciones-financiacion">
+                  <button class="opcion-financiacion" id="con-entrada-inmob">
+                    CON ENTRADA
+                    <div class="tooltip">Reduce tu financiamiento con un pago inicial</div>
+                  </button>
+                  <button class="opcion-financiacion" id="sin-entrada-inmob">
+                    SIN ENTRADA
+                    <div class="tooltip">Financiamiento completo de la propiedad</div>
+                  </button>
+                  <button class="opcion-financiacion" id="justo-tiempo-inmob">
+                    JUSTO A TIEMPO
+                    <div class="tooltip">Planifica tu inversión inmobiliaria</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Variables globales
+        let tipoSeleccionado = ''; // 'vehicular' o 'inmobiliario'
+        let categoriaSeleccionada = ''; // tipo específico seleccionado
+        let avaluoActual = 0;
+        let imagenSeleccionada = "";
+
+        // Referencias a elementos del DOM
+        const seccionInicial = document.getElementById("seccion-inicial");
+        const seccionVehicular = document.getElementById("seccion-vehicular");
+        const seccionInmobiliaria = document.getElementById("seccion-inmobiliaria");
+        const detalleVehiculo = document.getElementById("detalle-vehiculo");
+        const detallePropiedad = document.getElementById("detalle-propiedad");
+
+        // Botones principales
+        document.getElementById("btn-vehicular").addEventListener("click", () => {
+          mostrarSeccion("vehicular");
+        });
+
+        document.getElementById("btn-inmobiliario").addEventListener("click", () => {
+          mostrarSeccion("inmobiliario");
+        });
+
+        // Función para mostrar secciones
+        function mostrarSeccion(tipo) {
+          tipoSeleccionado = tipo;
+          
+          // Ocultar sección inicial
+          seccionInicial.classList.add("hidden");
+          
+          // Mostrar sección correspondiente
+          if (tipo === "vehicular") {
+            seccionVehicular.classList.remove("hidden");
+            seccionInmobiliaria.classList.add("hidden");
+            inicializarVehicular();
+          } else if (tipo === "inmobiliario") {
+            seccionInmobiliaria.classList.remove("hidden");
+            seccionVehicular.classList.add("hidden");
+            inicializarInmobiliario();
+          }
+        }
+
+        // Función para volver al inicio
+        function volverInicio() {
+          seccionInicial.classList.remove("hidden");
+          seccionVehicular.classList.add("hidden");
+          seccionInmobiliaria.classList.add("hidden");
+          detalleVehiculo.classList.add("hidden");
+          detallePropiedad.classList.add("hidden");
+          
+          // Reset variables
+          tipoSeleccionado = '';
+          categoriaSeleccionada = '';
+          avaluoActual = 0;
+          imagenSeleccionada = "";
+        }
+
+        // Inicializar sección vehicular
+        function inicializarVehicular() {
+          // Solo configurar listeners si no existen ya
+          if (!document.getElementById("selector_autos").hasAttribute('data-initialized')) {
+            // Selectores de vehículos con imágenes reales
+            document.getElementById("selector_autos").addEventListener("click", () => {
+              seleccionarVehiculo("autos", "Auto", "https://via.placeholder.com/400x300/4CAF50/ffffff?text=Auto");
+            });
+            document.getElementById("selector_autos").setAttribute('data-initialized', 'true');
+
+            document.getElementById("selector_suvs").addEventListener("click", () => {
+              seleccionarVehiculo("suvs", "SUV", "https://via.placeholder.com/400x300/2196F3/ffffff?text=SUV");
+            });
+            document.getElementById("selector_suvs").setAttribute('data-initialized', 'true');
+
+            document.getElementById("selector_camionetas").addEventListener("click", () => {
+              seleccionarVehiculo("camionetas", "Camioneta", "https://via.placeholder.com/400x300/FF9800/ffffff?text=Camioneta");
+            });
+            document.getElementById("selector_camionetas").setAttribute('data-initialized', 'true');
+
+            document.getElementById("selector_camiones").addEventListener("click", () => {
+              seleccionarVehiculo("camiones", "Camión", "https://via.placeholder.com/400x300/F44336/ffffff?text=Camión");
+            });
+            document.getElementById("selector_camiones").setAttribute('data-initialized', 'true');
+
+            // Botón continuar vehículo
+            document.getElementById("continuar-vehiculo").addEventListener("click", () => {
+              if (avaluoActual > 0) {
+                document.getElementById("selectores-vehiculo").classList.add("hidden");
+                document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+              }
+            });
+          }
+        }
+
+        // Inicializar sección inmobiliaria
+        function inicializarInmobiliario() {
+          // Selectores de propiedades
+          document.getElementById("selector_casas").addEventListener("click", () => {
+            seleccionarPropiedad("casas", "Casa", "https://via.placeholder.com/400x300/667eea/ffffff?text=Casa");
+          });
+
+          document.getElementById("selector_terrenos").addEventListener("click", () => {
+            seleccionarPropiedad("terrenos", "Terreno", "https://via.placeholder.com/400x300/667eea/ffffff?text=Terreno");
+          });
+
+          document.getElementById("selector_departamentos").addEventListener("click", () => {
+            seleccionarPropiedad("departamentos", "Departamento", "https://via.placeholder.com/400x300/667eea/ffffff?text=Departamento");
+          });
+
+          // Botón continuar propiedad
+          document.getElementById("continuar-propiedad").addEventListener("click", () => {
+            document.getElementById("selectores-propiedad").classList.add("hidden");
+            document.getElementById("opciones-financiacion-inmob").classList.remove("hidden");
+          });
+
+          // Cargar datos inmobiliarios
+          cargarDatosInmobiliarios();
+        }
+
+        // Función para seleccionar vehículo
+        function seleccionarVehiculo(tipo, nombre, imagen) {
+          categoriaSeleccionada = tipo;
+          
+          // Reiniciar variables
+          avaluoActual = 0;
+          imagenSeleccionada = "";
+          
+          // Actualizar selección visual
+          document.querySelectorAll(".vehicle").forEach(v => v.classList.remove("selected"));
+          document.getElementById(`selector_${tipo}`).classList.add("selected");
+          
+          // Mostrar detalle con imagen placeholder
+          document.getElementById("vehiculo-imagen").src = imagen;
+          document.getElementById("vehiculo-nombre").textContent = nombre;
+          detalleVehiculo.classList.remove("hidden");
+          
+          // Reset selectores y opciones
+          const selectoresVehiculo = document.getElementById("selectores-vehiculo");
+          const opcionesContainer = document.getElementById("opciones-financiacion-container");
+          
+          selectoresVehiculo.classList.remove("hidden");
+          opcionesContainer.classList.add("hidden");
+          
+          // Resetear selectores
+          const marcaSelect = document.getElementById("marca-vehiculo");
+          const modeloSelect = document.getElementById("modelo-vehiculo");
+          const continuarBtn = document.getElementById("continuar-vehiculo");
+          
+          marcaSelect.value = "";
+          modeloSelect.innerHTML = '<option value="">Primero selecciona una marca</option>';
+          modeloSelect.disabled = true;
+          continuarBtn.disabled = true;
+          
+          // Cargar datos de vehículos para esta categoría
+          cargarDatosVehiculos();
+        }
+
+        // Función para seleccionar propiedad
+        function seleccionarPropiedad(tipo, nombre, imagen) {
+          categoriaSeleccionada = tipo;
+          
+          // Actualizar selección visual
+          document.querySelectorAll("#seccion-inmobiliaria .vehicle").forEach(v => v.classList.remove("selected"));
+          document.getElementById(`selector_${tipo}`).classList.add("selected");
+          
+          // Mostrar detalle
+          document.getElementById("propiedad-imagen").src = imagen;
+          document.getElementById("propiedad-nombre").textContent = nombre;
+          detallePropiedad.classList.remove("hidden");
+          
+          // Reset selectores
+          document.getElementById("selectores-propiedad").classList.remove("hidden");
+          document.getElementById("opciones-financiacion-inmob").classList.add("hidden");
+          
+          imagenSeleccionada = imagen;
+        }
+
+        // Cargar datos de vehículos desde la API real
+        function cargarDatosVehiculos() {
+          fetch("https://finanmotors.com/wp-content/themes/hello-elementor/modelo.json")
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok " + response.statusText);
+              }
+              return response.json();
+            })
+            .then((modelos) => {
+              const marcaSelect = document.getElementById("marca-vehiculo");
+              const modeloSelect = document.getElementById("modelo-vehiculo");
+              const continuarBtn = document.getElementById("continuar-vehiculo");
+              
+              // Llenar marcas desde el JSON
+              Object.keys(modelos).forEach(marca => {
+                const option = document.createElement("option");
+                option.value = marca;
+                option.textContent = marca.charAt(0).toUpperCase() + marca.slice(1);
+                marcaSelect.appendChild(option);
+              });
+
+              // Manejar cambio de marca
+              marcaSelect.addEventListener("change", () => {
+                const marcaSeleccionada = marcaSelect.value;
+                modeloSelect.innerHTML = '<option value="">Selecciona un modelo</option>';
+                modeloSelect.disabled = !marcaSeleccionada;
+                continuarBtn.disabled = true;
+
+                if (marcaSeleccionada) {
+                  let modelosFiltrados = [];
+                  
+                  // Filtrar modelos según el tipo de vehículo seleccionado
+                  if (categoriaSeleccionada === "autos") {
+                    modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
+                      ["autos", "SEDAN", "HATCHBACK"].includes(modelo.tipo)
+                    );
+                  } else if (categoriaSeleccionada === "suvs") {
+                    modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
+                      ["suv", "CROSSOVER"].includes(modelo.tipo)
+                    );
+                  } else if (categoriaSeleccionada === "camionetas") {
+                    modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
+                      modelo.tipo === "camioneta"
+                    );
+                  } else if (categoriaSeleccionada === "camiones") {
+                    modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
+                      ["camion", "furgoneta", "van"].includes(modelo.tipo)
+                    );
+                  }
+                  
+                  modelosFiltrados.forEach((modelo) => {
+                    const option = document.createElement("option");
+                    option.value = modelo.nombre;
+                    option.textContent = modelo.nombre;
+                    modeloSelect.appendChild(option);
+                  });
+
+                  if (modelosFiltrados.length === 0) {
+                    modeloSelect.disabled = true;
+                    continuarBtn.disabled = true;
+                  }
+                }
+              });
+
+              // Manejar cambio de modelo
+              modeloSelect.addEventListener("change", () => {
+                const marcaSeleccionada = marcaSelect.value;
+                const modeloSeleccionado = modeloSelect.value;
+                continuarBtn.disabled = !modeloSeleccionado;
+                
+                if (modeloSeleccionado) {
+                  // Buscar el modelo seleccionado en los datos
+                  const modelo = modelos[marcaSeleccionada].find(
+                    (m) => m.nombre === modeloSeleccionado
+                  );
+                  
+                  if (modelo) {
+                    // Actualizar imagen del vehículo
+                    document.getElementById("vehiculo-imagen").src = modelo.imagen;
+                    // Actualizar nombre con marca y modelo
+                    document.getElementById("vehiculo-nombre").textContent = `${marcaSeleccionada} ${modeloSeleccionado}`;
+                    
+                    // Actualizar variables globales
+                    avaluoActual = parseInt(modelo.precio);
+                    imagenSeleccionada = modelo.imagen;
+                    
+                    console.log("Vehículo seleccionado:", {
+                      marca: marcaSeleccionada,
+                      modelo: modeloSeleccionado,
+                      precio: avaluoActual,
+                      imagen: imagenSeleccionada
+                    });
+                  }
+                }
+              });
+            })
+            .catch((error) => {
+              console.error("Error fetching modelos:", error);
+              // Fallback a datos simulados en caso de error
+              const marcaSelect = document.getElementById("marca-vehiculo");
+              const marcas = ["Toyota", "Honda", "Nissan", "Chevrolet"];
+              marcas.forEach(marca => {
+                const option = document.createElement("option");
+                option.value = marca.toLowerCase();
+                option.textContent = marca;
+                marcaSelect.appendChild(option);
+              });
+            });
+        }
+
+        // Cargar datos inmobiliarios
+        function cargarDatosInmobiliarios() {
+          const zonaSelect = document.getElementById("zona-propiedad");
+          const tipoSelect = document.getElementById("tipo-propiedad");
+          const continuarBtn = document.getElementById("continuar-propiedad");
+
+          const tipos = {
+            "norte": ["Casa Moderna", "Villa", "Casa de Campo"],
+            "sur": ["Casa Tradicional", "Casa Colonial", "Casa Minimalista"],
+            "centro": ["Apartamento", "Loft", "Estudio"],
+            "valle": ["Casa Campestre", "Hacienda", "Casa Rural"]
+          };
+
+          // Manejar cambio de zona
+          zonaSelect.addEventListener("change", () => {
+            const zonaSeleccionada = zonaSelect.value;
+            tipoSelect.innerHTML = "<option value=''>Selecciona un tipo</option>";
+            tipoSelect.disabled = !zonaSeleccionada;
+            continuarBtn.disabled = true;
+
+            if (zonaSeleccionada && tipos[zonaSeleccionada]) {
+              tipos[zonaSeleccionada].forEach(tipo => {
+                const option = document.createElement("option");
+                option.value = tipo.toLowerCase();
+                option.textContent = tipo;
+                tipoSelect.appendChild(option);
+              });
+            }
+          });
+
+          // Manejar cambio de tipo
+          tipoSelect.addEventListener("change", () => {
+            continuarBtn.disabled = !tipoSelect.value;
+            if (tipoSelect.value) {
+              avaluoActual = Math.floor(Math.random() * 200000) + 50000; // Precio simulado
+            }
+          });
+        }
+
+        // Agregar navegación con tecla Escape para volver
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            volverInicio();
+          }
+        });
+
+      });
+    </script>
+  </body>
+</html>
