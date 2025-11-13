@@ -1,0 +1,3416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 
+    <link rel="stylesheet" href="estilos.css">
+    -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>COTIZADOR VEHICULAR</title>
+    <style>
+      /* Estilos para la sección de planes */
+      .planes-section {
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .planes-titulo {
+        color: white;
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 50px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      }
+      
+      .planes-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        max-width: 1200px;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+      
+      .plan {
+        position: relative;
+        width: 300px;
+        height: 400px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .plan:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      }
+      
+      .plan-imagen {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.3s ease;
+      }
+      
+      .plan-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      
+      .plan:hover .plan-overlay {
+        opacity: 1;
+      }
+      
+      .plan:hover .plan-imagen {
+        opacity: 0.3;
+      }
+      
+      .plan-texto {
+        text-align: center;
+      }
+      
+      .plan-texto h3 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #fff;
+        font-weight: bold;
+      }
+      
+      .plan-texto p {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        margin: 0;
+        color: #f0f0f0;
+      }
+      
+      .plan.selected {
+        border: 4px solid #ffd700;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+      }
+      
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .planes-container {
+          flex-direction: column;
+          gap: 20px;
+        }
+        
+        .plan {
+          width: 280px;
+          height: 350px;
+        }
+        
+        .planes-titulo {
+          font-size: 2rem;
+          margin-bottom: 30px;
+        }
+        
+        .plan-texto h3 {
+          font-size: 1.5rem;
+        }
+        
+        .plan-texto p {
+          font-size: 1rem;
+        }
+      }
+      
+      /* Estilos existentes del cotizador */
+      .cotizador {
+        padding: 20px;
+      }
+      
+      .vehicle-types {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      
+      .vehicle {
+        text-align: center;
+        padding: 20px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+      }
+      
+      .vehicle:hover {
+        border-color: #667eea;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      
+      .vehicle img {
+        width: 100px;
+        height: 80px;
+        object-fit: contain;
+      }
+      
+      .vehicle p {
+        margin: 10px 0 0 0;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .vehicle.selected {
+        border-color: #667eea;
+        background: #f0f4ff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="contianer" id="container">
+      <!-- Nueva sección de planes -->
+      <section class="planes-section">
+        <h2 class="planes-titulo">Elige el Plan que Mejor se Adapte a Ti</h2>
+        <div class="planes-container">
+          <div class="plan" data-plan="Plan 1">
+            <img src="https://finanmotors.com/wp-content/uploads/2024/11/plan1.png" alt="Plan 1" class="plan-imagen" />
+            <div class="plan-overlay">
+              <div class="plan-texto">
+                <h3>Plan 1</h3>
+                <p>Financiamiento básico con entrada mínima del 15%. Ideal para aquellos que buscan comenzar su camino hacia la propiedad de un vehículo con pagos accesibles.</p>
+              </div>
+            </div>
+          </div>
+          <div class="plan" data-plan="Plan 2">
+            <img src="https://finanmotors.com/wp-content/uploads/2024/11/plan2.png" alt="Plan 2" class="plan-imagen" />
+            <div class="plan-overlay">
+              <div class="plan-texto">
+                <h3>Plan 2</h3>
+                <p>Financiamiento estándar con entrada del 30%. Perfecto para quienes buscan un balance entre pagos mensuales cómodos y un plazo razonable.</p>
+              </div>
+            </div>
+          </div>
+          <div class="plan" data-plan="Plan 3">
+            <img src="https://finanmotors.com/wp-content/uploads/2024/11/plan3.png" alt="Plan 3" class="plan-imagen" />
+            <div class="plan-overlay">
+              <div class="plan-texto">
+                <h3>Plan 3</h3>
+                <p>Financiamiento premium con entrada del 50%. Diseñado para quienes desean menores pagos mensuales y mayor flexibilidad en sus términos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--seccion de AUTOS, SUVS, CAMIONETAS, CAMIONES-->
+      <section class="cotizador" style="display: none;">
+        <div class="vehicle-types">
+          <div class="vehicle" id="selector_autos">
+            <img
+              src="https://finanmotors.com/wp-content/uploads/2024/11/auto_base.png"
+              alt="Autos"
+            />
+            <p>Autos</p>
+          </div>
+
+          <div class="vehicle" id="selector_suvs">
+            <img
+              src="https://finanmotors.com/wp-content/uploads/2024/11/suv_base.png"
+              alt="SUVs"
+            />
+            <p>SUVs</p>
+          </div>
+
+          <div class="vehicle" id="selector_camionetas">
+            <img
+              src="https://finanmotors.com/wp-content/uploads/2024/11/camioneta_base.png"
+              alt="Camionetas"
+            />
+            <p>Camionetas</p>
+          </div>
+
+          <div class="vehicle" id="selector_camiones">
+            <img
+              src="https://finanmotors.com/wp-content/uploads/2024/11/camion_base.png"
+              alt="Camiones"
+            />
+            <p>Camiones</p>
+          </div>
+        </div>
+      </section>
+      <!--AUTOS-->
+      <section
+        class="detalle-vehiculo"
+        id="detalle-vehiculo-autos"
+        style="display: none"
+      >
+        <div class="vehiculo-container">
+          <!-- Columna izquierda: Imagen del vehículo -->
+          <div class="vehiculo-imagen">
+            <img
+              id="auto-imagen"
+              src="https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png"
+              alt="Imagen del auto seleccionado"
+            />
+            <p
+              id="auto-precio"
+              style="font-weight: bold; font-size: 1.2em; margin-top: 10px"
+            ></p>
+          </div>
+          <!-- Columna derecha: Selectores de marca y modelo -->
+          <div
+            class="vehiculo-selectores-container"
+            id="vehiculo-selectores-container"
+          >
+            <!-- Selectores de marca y modelo -->
+            <div class="vehiculo-selectores" id="selectores">
+              <p class="titulo_marca_modelo">
+                Elige la <strong>marca y modelo</strong> que deseas cotizar
+              </p>
+              <label class="marca" for="marca" style="display: none"
+                >Marca:</label
+              >
+              <select id="marca">
+                <option value="">Selecciona una marca</option>
+                <option value="BYD">Byd</option>
+                <option value="Changan">Changan</option>
+                <option value="Chery">Chery</option>
+                <option value="chevrolet">Chevrolet</option>
+                <option value="CITROEN">Citröen</option>
+                <option value="FIAT">Fiat</option>
+                <option value="ford">Ford</option>
+                <option value="Great Wall">Great Wall</option>
+                <option value="honda">Honda</option>
+                <option value="hyundai">Hyundai</option>
+                <option value="JAC MOTORS">Jac Motors</option>
+                <option value="KIA">Kia Motors</option>
+                <option value="Mazda">Mazda</option>
+                <option value="NISSAN">Nissan</option>
+                <option value="peugeot">Peugeot</option>
+                <option value="Renault">Renault</option>
+                <option value="skoda">Skoda</option>
+                <option value="soueast">Soueast</option>
+                <option value="toyota">Toyota</option>
+                <option value="Volkswagen">Volkswagen</option>
+              </select>
+
+              <label class="modelo" for="modelo" style="display: none"
+                >Modelo:
+              </label>
+              <select id="modelo" disabled>
+                <option value="">Selecciona un modelo</option>
+              </select>
+
+              <!-- Botón de Continuar -->
+              <button class="continuar" id="continuar" style="display: none">
+                CONTINUAR
+              </button>
+            </div>
+
+            <!-- Nueva Sección con los botones "Con Entrada" y "Sin Entrada"  -->
+            <div
+              class="opciones-botones"
+              id="opciones-vehiculo"
+              style="display: none"
+            >
+              <p class="titulo_marca_modelo">¿Cómo deseas pagar tu vehículo?</p>
+              <button id="con-entrada">CON ENTRADA</button>
+              <button id="sin-entrada">SIN ENTRADA</button>
+
+              <input
+                class="precio-vehiculo"
+                type="text"
+                id="precio"
+                disabled
+                value=""
+                style="display: none"
+              />
+            </div>
+
+            <!-- SECCION DE CON ENTRADA PORCENTAJE Y MESES PLAZO-->
+
+            <div
+              class="opciones-con-entrada"
+              id="opciones-con-entrada"
+              style="display: none"
+            >
+              <p class="titulo_marca_modelo">
+                Estas a un paso de planificar tu auto
+                <span id="marca_modelo"></span>
+              </p>
+              <input
+                type="text"
+                id="precio-vehiculo-con-entrada"
+                style="display: none"
+              />
+              <!-- 
+              <label
+                class="entrada_opciones"
+                for="montoSelect"
+                style="display: none"
+                >Selecciona el monto que deseas:</label
+              >
+              -->
+              <select id="montoSelect">
+                <option value="">Selecciona el monto que deseas:</option>
+                <option value="8000">$ 8.000</option>
+                <option value="8500">$ 8.500</option>
+                <option value="9000">$ 9.000</option>
+                <option value="9500">$ 9.500</option>
+                <option value="10000">$ 10.000</option>
+                <option value="10500">$ 10.500</option>
+                <option value="11000">$ 11.000</option>
+                <option value="11500">$ 11.500</option>
+                <option value="12000">$ 12.000</option>
+                <option value="12500">$ 12.500</option>
+                <option value="13000">$ 13.000</option>
+                <option value="13500">$ 13.500</option>
+                <option value="14000">$ 14.000</option>
+                <option value="14500">$ 14.500</option>
+                <option value="15000">$ 15.000</option>
+                <option value="15500">$ 15.500</option>
+                <option value="16000">$ 16.000</option>
+                <option value="16500">$ 16.500</option>
+                <option value="17000">$ 17.000</option>
+                <option value="17500">$ 17.500</option>
+                <option value="18000">$ 18.000</option>
+                <option value="18500">$ 18.500</option>
+                <option value="19000">$ 19.000</option>
+                <option value="19500">$ 19.500</option>
+                <option value="20000">$ 20.000</option>
+                <option value="20500">$ 20.500</option>
+                <option value="21000">$ 21.000</option>
+                <option value="21500">$ 21.500</option>
+                <option value="22000">$ 22.000</option>
+                <option value="22500">$ 22.500</option>
+                <option value="23000">$ 23.000</option>
+                <option value="23500">$ 23.500</option>
+                <option value="24000">$ 24.000</option>
+                <option value="24500">$ 24.500</option>
+                <option value="25000">$ 25.000</option>
+                <option value="25500">$ 25.500</option>
+                <option value="26000">$ 26.000</option>
+                <option value="26500">$ 26.500</option>
+                <option value="27000">$ 27.000</option>
+                <option value="27500">$ 27.500</option>
+                <option value="28000">$ 28.000</option>
+                <option value="28500">$ 28.500</option>
+                <option value="29000">$ 29.000</option>
+                <option value="29500">$ 29.500</option>
+                <option value="30000">$ 30.000</option>
+                <option value="30500">$ 30.500</option>
+                <option value="31000">$ 31.000</option>
+                <option value="31500">$ 31.500</option>
+                <option value="32000">$ 32.000</option>
+                <option value="32500">$ 32.500</option>
+                <option value="33000">$ 33.000</option>
+                <option value="33500">$ 33.500</option>
+                <option value="34000">$ 34.000</option>
+                <option value="34500">$ 34.500</option>
+                <option value="35000">$ 35.000</option>
+                <option value="35500">$ 35.500</option>
+                <option value="36000">$ 36.000</option>
+                <option value="36500">$ 36.500</option>
+                <option value="37000">$ 37.000</option>
+                <option value="37500">$ 37.500</option>
+                <option value="38000">$ 38.000</option>
+                <option value="38500">$ 38.500</option>
+                <option value="39000">$ 39.000</option>
+                <option value="39500">$ 39.500</option>
+                <option value="40000">$ 40000</option>
+                <option value="40500">$ 40.500</option>
+                <option value="41000">$ 41.000</option>
+                <option value="41500">$ 41.500</option>
+                <option value="42000">$ 42.000</option>
+                <option value="42500">$ 42.500</option>
+                <option value="43000">$ 43.000</option>
+                <option value="43500">$ 43.500</option>
+                <option value="44000">$ 44.000</option>
+                <option value="44500">$ 44.500</option>
+                <option value="45000">$ 45.000</option>
+                <option value="45500">$ 45.500</option>
+                <option value="46000">$ 46.000</option>
+                <option value="46500">$ 46.500</option>
+                <option value="47000">$ 47.000</option>
+                <option value="47500">$ 47.500</option>
+                <option value="48000">$ 48.000</option>
+                <option value="48500">$ 48.500</option>
+                <option value="49000">$ 49.000</option>
+                <option value="49500">$ 49.500</option>
+                <option value="50000">$ 50.000</option>
+              </select>
+              <!-- 
+              <label
+                class="entrada_opciones"
+                for="porcentaje"
+                style="display: none"
+                >¿Qué porcentaje de entrada abonas?:</label
+              >
+              -->
+              <select
+                class="entrada_opciones"
+                id="porcentaje_auto"
+                name="porcentaje"
+                placeholder="porcentaje"
+              >
+                <option value="">¿Qué porcentaje de entrada abonas?:</option>
+                <option value="15">15%</option>
+                <option value="20">20%</option>
+                <option value="30">30%</option>
+                <option value="40">40%</option>
+                <option value="50">50%</option>
+                <option value="60">60%</option>
+              </select>
+
+              <!-- 
+              <label
+                class="entrada_opciones"
+                for="mesesSelect"
+                style="display: none"
+                >¿Por cuántos meses deseas pagar?:</label
+              >
+              -->
+              <select id="mesesSelect">
+                <option value="">¿Por cuántos meses deseas pagar?:</option>
+                <option value="24_MESES">24 Meses</option>
+                <option value="36_MESES">36 Meses</option>
+                <option value="48_MESES">48 Meses</option>
+                <option value="60_MESES">60 Meses</option>
+                <option value="72_MESES">72 Meses</option>
+                <option value="84_MESES">84 Meses</option>
+              </select>
+
+              <div>
+                <p class="precio_mensual" style="font-size: 15px">
+                  Precio mensual: $ <span id="resultadoPrecio"></span>
+                </p>
+                <p class="inscripcion" style="font-size: 15px">
+                  Inscripción: $ <span id="resultadoInscripcion"></span>
+                </p>
+              </div>
+
+              <!-- Botón de Continuar -->
+              <button id="continuar-con-entrada">CONTINUAR</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- POPUP-->
+      <!-- Popup -->
+      <div id="popup" class="popup" style="display: none">
+        <div class="popup-contenido">
+          <span class="cerrar" id="cerrarPop">&times;</span>
+          <p class="gracias_cotizar" id="gracias_cotizar">
+            Gracias por cotizar con nosotros <span id="usuario"></span>
+          </p>
+
+          <div class="imagen-precio" id="imagen-precio">
+            <img
+              id="imagen-carro"
+              src=" "
+              alt="Imagen del carro"
+              class="imagen-carro"
+            />
+            <input
+              class="precio-vehiculo-pop"
+              type="text"
+              id="precio-vehiculo-pop"
+              disabled
+              value=""
+            />
+          </div>
+
+          <div class="popup-formulario">
+            <div class="columna izquierda">
+              <label class="nombres-y-apellidos" style="display: none"
+                >Nombres y Apellidos</label
+              >
+              <input
+                class="pop-input"
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="Nombres y Apellidos"
+              />
+
+              <label class="correo-electronico" style="display: none"
+                >Correo Electronico</label
+              >
+              <input
+                class="pop-input"
+                type="email"
+                id="correo"
+                name="correo"
+                placeholder="Correo Electronico"
+              />
+
+              <label class="provincia" style="display: none">Provincia</label>
+              <select
+                class="pop-input"
+                id="provincia"
+                name="provincia"
+                placeholder="provincia"
+              >
+                <option value="">Seleccione una Provincia</option>
+                <option value="Azuay">Azuay</option>
+                <option value="Bolívar">Bolívar</option>
+                <option value="Cañar">Cañar</option>
+                <option value="Carchi">Carchi</option>
+                <option value="Chimborazo">Chimborazo</option>
+                <option value="Cotopaxi">Cotopaxi</option>
+                <option value="El_Oro">El Oro</option>
+                <option value="Esmeraldas">Esmeraldas</option>
+                <option value="Guayas">Guayas</option>
+                <option value="Imbabura">Imbabura</option>
+                <option value="Loja">Loja</option>
+                <option value="Los_Ríos">Los Ríos</option>
+                <option value="Manabí">Manabí</option>
+                <option value="Morona_Santiago">Morona Santiago</option>
+                <option value="Napo">Napo</option>
+                <option value="Orellana">Orellana</option>
+                <option value="Pastaza">Pastaza</option>
+                <option value="Pichincha">Pichincha</option>
+                <option value="Santa_Elena">Santa Elena</option>
+                <option value="Santo_Domingo">Santo Domingo</option>
+                <option value="Sucumbíos">Sucumbíos</option>
+                <option value="Tungurahua">Tungurahua</option>
+                <option value="Zamora_Chinchipe">Zamora Chinchipe</option>
+              </select>
+
+              <label for="agencia"></label>
+              <select class="pop-input" id="agencia" disabled>
+                <option value="">Selecciona la agencia mas cercana</option>
+              </select>
+
+              <label
+                class="selecciona"
+                for="primero-renovacion"
+                style="display: none"
+                >Selecciona</label
+              >
+              <select class="pop-input" id="primero-renovacion">
+                <option value="primero">Mi Primer vehículo</option>
+                <option value="renovacion">Renovar mi vehículo</option>
+              </select>
+            </div>
+            <div class="columna derecha">
+              <label for="cedula" style="display: none">Cédula:</label>
+              <input
+                class="pop-input"
+                type="text"
+                id="cedula"
+                name="cedula"
+                placeholder="Cedula de Identidad"
+              />
+
+              <label for="telefono" style="display: none">Teléfono:</label>
+              <input
+                class="pop-input"
+                type="text"
+                id="telefono"
+                name="telefono"
+                placeholder="Telefono"
+              />
+
+              <label for="ciudad" style="display: none">Ciudad:</label>
+              <input
+                class="pop-input"
+                type="text"
+                id="ciudad"
+                name="ciudad"
+                placeholder="Ciudad de Residencia"
+              />
+            </div>
+          </div>
+          <div
+            class="check-terminos"
+            id="check-terminos"
+            style="display: flex; margin-top: 10px"
+          >
+            <input type="checkbox" id="terminos" />
+            <label for="terminos">
+              <a
+                style="font-size: 14px"
+                href="https://finanmotors.com/terminos-y-condiciones/"
+                target="_blank"
+                >Acepto los términos y condiciones</a
+              >
+            </label>
+          </div>
+          <div style="text-align: center; margin-top: 20px">
+            <p id="mensaje-error-global"></p>
+            <button class="boton-cotizar" id="boton-cotizar">COTIZAR</button>
+          </div>
+          <!-- PARTE FINAL PDF PARA LA DESCARGA-->
+          <div class="pdf" id="pdf" style="display: none">
+            <div class="form-container-pdf" id="form-container-pdf">
+              <!-- Mensaje de agradecimiento con el nombre dinámico -->
+              <h2 id="thankYouMessage" class="thankYouMessage">TY--TY---TY</h2>
+
+              <!-- Imagen del auto seleccionado -->
+              <div class="car-image">
+                <img id="auto-sin-entrada-pdf" src="" alt="Auto Seleccionado" />
+              </div>
+
+              <div class="form-row" id="formfinal">
+                <p class="title">Monto Planificado($):</p>
+                <input
+                  class="precio-vehiculo-pdf"
+                  type="text"
+                  id="precio-vehiculo-pdf"
+                  disabled
+                  value=""
+                />
+                <p class="title">Tiempo de Planificación (Meses):</p>
+                <input class="meses-F" id="meses-F" disabled value="" />
+                <p class="title">Porcentaje de Entrada (%):</p>
+                <input
+                  class="porcentaje-F"
+                  id="porcentaje-F"
+                  disabled
+                  value=""
+                />
+                <p class="title">Tasa Administrativa (%):</p>
+                <input class="tasa-F" id="tasa-F" disabled value="" />
+                <p class="title">Cuota Fija ($):</p>
+                <input class="cuota-F" id="cuota-F" disabled value="" />
+                <p class="title">Monto Estimado ($):</p>
+                <input type="text" id="monto-estimado-F" disabled value="" />
+              </div>
+              <div>
+                <button class="btn-quote" id="btn-quote">
+                  DESCARGAR COTIZACIÓN
+                </button>
+
+                <button class="cotizar-otro" id="cotizar-otro">
+                  COTIZAR OTRO VEHICULO
+                </button>
+              </div>
+              <div>
+                <p class="frase_adjudicacion">
+                  <em
+                    >* La adjudicación de tu vehículo dependerá del plan que
+                    elijas.</em
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POP UP SIN ENTRADA-->
+      <div id="popupSN" class="popup" style="display: none">
+        <div class="popup-contenido">
+          <span class="cerrar" id="cerrarPopSN">&times;</span>
+          <p class="gracias_cotizar" id="gracias_cotizarSN">
+            Gracias por cotizar con nosotros
+          </p>
+
+          <div class="imagen-precio" id="imagen-precioSN">
+            <img
+              id="imagen-carroSN"
+              src=""
+              alt="Imagen del carro"
+              class="imagen-carro"
+            />
+            <input
+              class="precio-vehiculo-pop"
+              type="text"
+              id="precio-vehiculo-popSN"
+              disabled
+              value=""
+            />
+          </div>
+
+          <div class="popup-formulario">
+            <div class="columna izquierda">
+              <label class="nombres-y-apellidos" style="display: none"
+                >Nombres y Apellidos</label
+              >
+              <input
+                class="pop-input"
+                type="text"
+                id="nombreSN"
+                name="nombre"
+                placeholder="Nombres y Apellidos"
+              />
+
+              <label class="correo-electronico" style="display: none"
+                >Correo Electronico</label
+              >
+              <input
+                class="pop-input"
+                type="email"
+                id="correoSN"
+                name="correo"
+                placeholder="Correo Electronico"
+              />
+
+              <label class="provincia" style="display: none">Provincia</label>
+              <select
+                class="pop-input"
+                id="provinciaSN"
+                name="provincia"
+                placeholder="provincia"
+              >
+                <option value="">Seleccione una Provincia</option>
+                <option value="Azuay">Azuay</option>
+                <option value="Bolívar">Bolívar</option>
+                <option value="Cañar">Cañar</option>
+                <option value="Carchi">Carchi</option>
+                <option value="Chimborazo">Chimborazo</option>
+                <option value="Cotopaxi">Cotopaxi</option>
+                <option value="El_Oro">El Oro</option>
+                <option value="Esmeraldas">Esmeraldas</option>
+                <option value="Guayas">Guayas</option>
+                <option value="Imbabura">Imbabura</option>
+                <option value="Loja">Loja</option>
+                <option value="Los_Ríos">Los Ríos</option>
+                <option value="Manabí">Manabí</option>
+                <option value="Morona_Santiago">Morona Santiago</option>
+                <option value="Napo">Napo</option>
+                <option value="Orellana">Orellana</option>
+                <option value="Pastaza">Pastaza</option>
+                <option value="Pichincha">Pichincha</option>
+                <option value="Santa_Elena">Santa Elena</option>
+                <option value="Santo_Domingo">Santo Domingo</option>
+                <option value="Sucumbíos">Sucumbíos</option>
+                <option value="Tungurahua">Tungurahua</option>
+                <option value="Zamora_Chinchipe">Zamora Chinchipe</option>
+              </select>
+
+              <label for="agenciaSN"></label>
+              <select class="pop-input" id="agenciaSN" disabled>
+                <option value="">Selecciona la agencia mas cercana</option>
+              </select>
+
+              <label
+                class="selecciona"
+                for="primero-renovacion"
+                style="display: none"
+                >Selecciona</label
+              >
+              <select class="pop-input" id="primero-renovacionSN">
+                <option value="primero">Mi Primer vehículo</option>
+                <option value="renovacion">Renovar mi vehículo</option>
+              </select>
+            </div>
+            <div class="columna derecha">
+              <label for="cedula" style="display: none">Cédula:</label>
+              <input
+                class="pop-input"
+                type="text"
+                id="cedulaSN"
+                name="cedula"
+                placeholder="Cedula de Identidad"
+              />
+
+              <label for="telefono" style="display: none">Teléfono:</label>
+              <input
+                class="pop-input"
+                type="text"
+                id="telefonoSN"
+                name="telefono"
+                placeholder="Telefono"
+              />
+
+              <label for="ciudad" style="display: none">Ciudad:</label>
+              <input
+                class="pop-input"
+                type="text"
+                id="ciudadSN"
+                name="ciudad"
+                placeholder="Ciudad de Residencia"
+              />
+            </div>
+          </div>
+          <!-- Botón Cotizar al centro -->
+          <div
+            class="check-terminos"
+            id="check-terminosSN"
+            style="display: flex; margin-top: 10px"
+          >
+            <input type="checkbox" id="terminos" />
+            <label for="terminos">
+              <a
+                style="font-size: 14px"
+                href="https://finanmotors.com/terminos-y-condiciones/"
+                target="_blank"
+                >Acepto los términos y condiciones</a
+              >
+            </label>
+          </div>
+
+          <div style="text-align: center; margin-top: 20px">
+            <button class="boton-cotizar" id="boton-cotizarSN">COTIZAR</button>
+            <button class="boton-cotizar" id="boton-cotizar-otroSN">
+              COTIZAR OTRO
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!--SUVS  ....................
+        .............................
+        ..............................-->
+      <section
+        class="detalle-vehiculo"
+        id="detalle-vehiculo-suvs"
+        style="display: none"
+      >
+        <div class="vehiculo-container">
+          <!-- Columna izquierda: Imagen del vehículo -->
+          <div class="vehiculo-imagen">
+            <img
+              id="suv-imagen"
+              src="https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png"
+              alt="Imagen del auto seleccionado"
+            />
+            <p
+              id="suv-precio"
+              style="font-weight: bold; font-size: 1.2em; margin-top: 10px"
+            ></p>
+          </div>
+
+          <!-- Columna derecha: Selectores de marca y modelo -->
+          <div
+            class="vehiculo-selectores-container"
+            id="vehiculo-selectores-container-suvs"
+          >
+            <!-- Selectores de marca y modelo -->
+            <div class="vehiculo-selectores" id="selectores-suvs">
+              <p class="titulo_marca_modelo">
+                Elige la <strong>marca y modelo</strong> que deseas cotizar
+              </p>
+              <label class="marca" for="marca-suvs" style="display: none"
+                >Marca:</label
+              >
+              <select id="marca-suvs">
+                <option value="">Selecciona una marca</option>
+                <option value="BYD">Byd</option>
+                <option value="Changan">Changan</option>
+                <option value="Chery">Chery</option>
+                <option value="chevrolet">Chevrolet</option>
+                <option value="CITROEN">Citröen</option>
+                <option value="DFSK">Dfsk</option>
+                <option value="dongfeng">DongFeng</option>
+                <option value="FIAT">Fiat</option>
+                <option value="ford">Ford</option>
+                <option value="Great Wall">Great Wall</option>
+                <option value="honda">Honda</option>
+                <option value="hyundai">Hyundai</option>
+                <option value="JAC MOTORS">Jac Motors</option>
+                <option value="KIA">Kia Motors</option>
+                <option value="Mazda">Mazda</option>
+                <option value="MITSUBISHI">Mitsubishi</option>
+                <option value="NISSAN">Nissan</option>
+                <option value="peugeot">Peugeot</option>
+                <option value="Renault">Renault</option>
+                <option value="SINOTRUK">Sinotruk</option>
+                <option value="skoda">Skoda</option>
+                <option value="soueast">Soueast</option>
+                <option value="SWM">Swm</option>
+                <option value="toyota">Toyota</option>
+                <option value="Volkswagen">Volkswagen</option>
+              </select>
+
+              <label class="modelo" for="modelo-suvs" style="display: none"
+                >Modelo:</label
+              >
+              <select id="modelo-suvs" disabled>
+                <option value="">Selecciona un modelo</option>
+              </select>
+
+              <!-- Botón de Continuar -->
+              <button
+                class="continuar"
+                id="continuar-suvs"
+                style="display: none"
+              >
+                CONTINUAR
+              </button>
+            </div>
+
+            <!-- Nueva Sección con los botones "Con Entrada" y "Sin Entrada" (inicialmente oculta) -->
+            <div
+              class="opciones-botones"
+              id="opciones-vehiculo-suvs"
+              style="display: none"
+            >
+              <p class="titulo_marca_modelo">¿Cómo deseas pagar tu vehículo?</p>
+
+              <button id="con-entrada-suvs">CON ENTRADA</button>
+              <button id="sin-entrada-suvs">SIN ENTRADA</button>
+
+              <input
+                class="precio-vehiculo"
+                type="text"
+                id="precio-suvs"
+                disabled
+                value=""
+                style="display: none"
+              />
+            </div>
+
+            <!-- SECCION DE CON ENTRADA PORCENTAJE Y MESES PLAZO-->
+
+            <div
+              class="opciones-con-entrada"
+              id="opciones-con-entrada-suvs"
+              style="display: none"
+            >
+              <p class="titulo_marca_modelo">
+                Estas a un paso de planificar tu auto
+                <span id="marca_modelo_Suv"></span>
+              </p>
+              <input
+                type="text"
+                id="precio-vehiculo-con-entrada-suvs"
+                style="display: none"
+              />
+
+              <label
+                class="entrada_opciones"
+                for="montoSelect-suvs"
+                style="display: none"
+                >Selecciona el monto que deseas:</label
+              >
+              <select id="montoSelect-suvs">
+                <option value="">Selecciona el monto que deseas:</option>
+                <option value="8000">$ 8.000</option>
+                <option value="8500">$ 8.500</option>
+                <option value="9000">$ 9.000</option>
+                <option value="9500">$ 9.500</option>
+                <option value="10000">$ 10.000</option>
+                <option value="10500">$ 10.500</option>
+                <option value="11000">$ 11.000</option>
+                <option value="11500">$ 11.500</option>
+                <option value="12000">$ 12.000</option>
+                <option value="12500">$ 12.500</option>
+                <option value="13000">$ 13.000</option>
+                <option value="13500">$ 13.500</option>
+                <option value="14000">$ 14.000</option>
+                <option value="14500">$ 14.500</option>
+                <option value="15000">$ 15.000</option>
+                <option value="15500">$ 15.500</option>
+                <option value="16000">$ 16.000</option>
+                <option value="16500">$ 16.500</option>
+                <option value="17000">$ 17.000</option>
+                <option value="17500">$ 17.500</option>
+                <option value="18000">$ 18.000</option>
+                <option value="18500">$ 18.500</option>
+                <option value="19000">$ 19.000</option>
+                <option value="19500">$ 19.500</option>
+                <option value="20000">$ 20.000</option>
+                <option value="20500">$ 20.500</option>
+                <option value="21000">$ 21.000</option>
+                <option value="21500">$ 21.500</option>
+                <option value="22000">$ 22.000</option>
+                <option value="22500">$ 22.500</option>
+                <option value="23000">$ 23.000</option>
+                <option value="23500">$ 23.500</option>
+                <option value="24000">$ 24.000</option>
+                <option value="24500">$ 24.500</option>
+                <option value="25000">$ 25.000</option>
+                <option value="25500">$ 25.500</option>
+                <option value="26000">$ 26.000</option>
+                <option value="26500">$ 26.500</option>
+                <option value="27000">$ 27.000</option>
+                <option value="27500">$ 27.500</option>
+                <option value="28000">$ 28.000</option>
+                <option value="28500">$ 28.500</option>
+                <option value="29000">$ 29.000</option>
+                <option value="29500">$ 29.500</option>
+                <option value="30000">$ 30.000</option>
+                <option value="30500">$ 30.500</option>
+                <option value="31000">$ 31.000</option>
+                <option value="31500">$ 31.500</option>
+                <option value="32000">$ 32.000</option>
+                <option value="32500">$ 32.500</option>
+                <option value="33000">$ 33.000</option>
+                <option value="33500">$ 33.500</option>
+                <option value="34000">$ 34.000</option>
+                <option value="34500">$ 34.500</option>
+                <option value="35000">$ 35.000</option>
+                <option value="35500">$ 35.500</option>
+                <option value="36000">$ 36.000</option>
+                <option value="36500">$ 36.500</option>
+                <option value="37000">$ 37.000</option>
+                <option value="37500">$ 37.500</option>
+                <option value="38000">$ 38.000</option>
+                <option value="38500">$ 38.500</option>
+                <option value="39000">$ 39.000</option>
+                <option value="39500">$ 39.500</option>
+                <option value="40000">$ 40.000</option>
+                <option value="40500">$ 40.500</option>
+                <option value="41000">$ 41.000</option>
+                <option value="41500">$ 41.500</option>
+                <option value="42000">$ 42.000</option>
+                <option value="42500">$ 42.500</option>
+                <option value="43000">$ 43.000</option>
+                <option value="43500">$ 43.500</option>
+                <option value="44000">$ 44.000</option>
+                <option value="44500">$ 44.500</option>
+                <option value="45000">$ 45.000</option>
+                <option value="45500">$ 45.500</option>
+                <option value="46000">$ 46.000</option>
+                <option value="46500">$ 46.500</option>
+                <option value="47000">$ 47.000</option>
+                <option value="47500">$ 47.500</option>
+                <option value="48000">$ 48.000</option>
+                <option value="48500">$ 48.500</option>
+                <option value="49000">$ 49.000</option>
+                <option value="49500">$ 49.500</option>
+                <option value="50000">$ 50.000</option>
+              </select>
+
+              <label
+                class="entrada_opciones"
+                for="porcentaje-suvs"
+                style="display: none"
+                >¿Qué porcentaje de entrada abonaras?:</label
+              >
+              <select
+                class="entrada_opciones"
+                id="porcentaje-suvs"
+                name="porcentaje"
+                placeholder="porcentaje"
+              >
+                <option value="">¿Qué porcentaje de entrada abonaras?:</option>
+                <option value="15">15%</option>
+                <option value="20">20%</option>
+                <option value="30">30%</option>
+                <option value="40">40%</option>
+                <option value="50">50%</option>
+                <option value="60">60%</option>
+              </select>
+
+              <label
+                class="entrada_opciones"
+                for="mesesSelect-suvs"
+                style="display: none"
+                >¿Por cuántos meses deseas pagar?:</label
+              >
+              <select id="mesesSelect-suvs">
+                <option value="">¿Por cuántos meses deseas pagar?:</option>
+                <option value="24_MESES">24 Meses</option>
+                <option value="36_MESES">36 Meses</option>
+                <option value="48_MESES">48 Meses</option>
+                <option value="60_MESES">60 Meses</option>
+                <option value="72_MESES">72 Meses</option>
+                <option value="84_MESES">84 Meses</option>
+              </select>
+
+              <div>
+                <p class="precio_mensual" style="font-size: 15px">
+                  Precio mensual: $ <span id="resultadoPrecio-suvs"></span>
+                </p>
+                <p class="inscripcion" style="font-size: 15px">
+                  Inscripción: $ <span id="resultadoInscripcion-suvs"></span>
+                </p>
+              </div>
+
+              <!-- Botón de Continuar -->
+              <button id="continuar-con-entrada-suvs">CONTINUAR</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--CAMIONETAS
+         ...........................
+         ...........................-->
+      <section
+        class="detalle-vehiculo"
+        id="detalle-vehiculo-camionetas"
+        style="display: none"
+      >
+        <div class="vehiculo-container">
+          <!-- Columna izquierda: Imagen del vehículo -->
+          <div class="vehiculo-imagen">
+            <img
+              id="camioneta-imagen"
+              src="https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png"
+              alt="Imagen del auto seleccionado"
+            />
+            <p
+              id="camioneta-precio"
+              style="font-weight: bold; font-size: 1.2em; margin-top: 10px"
+            ></p>
+          </div>
+
+          <!-- Columna derecha: Selectores de marca y modelo -->
+          <div
+            class="vehiculo-selectores-container"
+            id="vehiculo-selectores-container-camionetas"
+          >
+            <!-- Selectores de marca y modelo -->
+            <div class="vehiculo-selectores" id="selectores-camionetas">
+              <p class="titulo_marca_modelo">
+                Elige la <strong>marca y modelo</strong> que deseas cotizar
+              </p>
+              <label class="marca" for="marca-camionetas" style="display: none"
+                >Marca:</label
+              >
+              <select id="marca-camionetas">
+                <option value="">Selecciona una marca</option>
+                <option value="Changan">Changan</option>
+                <option value="chevrolet">Chevrolet</option>
+                <option value="dongfeng">DongFeng</option>
+                <option value="ford">Ford</option>
+                <option value="foton">Foton</option>
+                <option value="Great Wall">Great Wall</option>
+                <option value="JAC MOTORS">Jac Motors</option>
+                <option value="Mazda">Mazda</option>
+                <option value="MITSUBISHI">Mitsubishi</option>
+                <option value="NISSAN">Nissan</option>
+                <option value="peugeot">Peugeot</option>
+                <option value="toyota">Toyota</option>
+                <option value="Volkswagen">Volkswagen</option>
+              </select>
+
+              <label
+                class="modelo"
+                for="modelo-camionetas"
+                style="display: none"
+                >Modelo:</label
+              >
+              <select id="modelo-camionetas" disabled>
+                <option value="">Selecciona un modelo</option>
+              </select>
+
+              <!-- Botón de Continuar -->
+              <button
+                class="continuar"
+                id="continuar-camionetas"
+                style="display: none"
+              >
+                CONTINUAR
+              </button>
+            </div>
+
+            <!-- Nueva Sección con los botones "Con Entrada" y "Sin Entrada" (inicialmente oculta) -->
+            <div
+              class="opciones-botones"
+              id="opciones-vehiculo-camionetas"
+              style="display: none"
+            >
+              <p class="titulo_marca_modelo">¿Cómo deseas pagar tu vehículo?</p>
+
+              <button id="con-entrada-camionetas">CON ENTRADA</button>
+              <button id="sin-entrada-camionetas">SIN ENTRADA</button>
+
+              <input
+                class="precio-vehiculo"
+                type="text"
+                id="precio-camionetas"
+                disabled
+                value=""
+                style="display: none"
+              />
+            </div>
+
+            <!-- SECCION DE CON ENTRADA PORCENTAJE Y MESES PLAZO-->
+
+            <div
+              class="opciones-con-entrada"
+              id="opciones-con-entrada-camionetas"
+              style="display: none"
+            >
+              <p class="titulo_marca_modelo">
+                Estas a un paso de planificar tu auto
+                <span id="marca_modelo_Camioneta"></span>
+              </p>
+              <input
+                type="text"
+                id="precio-vehiculo-con-entrada-camionetas"
+                style="display: none"
+              />
+
+              <label
+                class="entrada_opciones"
+                for="montoSelect-camionetas"
+                style="display: none"
+                >Selecciona el monto que deseas:</label
+              >
+              <select id="montoSelect-camionetas">
+                <option value="">Selecciona el monto que deseas:</option>
+                <option value="8000">$ 8.000</option>
+                <option value="8500">$ 8.500</option>
+                <option value="9000">$ 9.000</option>
+                <option value="9500">$ 9.500</option>
+                <option value="10000">$ 10.000</option>
+                <option value="10500">$ 10.500</option>
+                <option value="11000">$ 11.000</option>
+                <option value="11500">$ 11.500</option>
+                <option value="12000">$ 12.000</option>
+                <option value="12500">$ 12.500</option>
+                <option value="13000">$ 13.000</option>
+                <option value="13500">$ 13.500</option>
+                <option value="14000">$ 14.000</option>
+                <option value="14500">$ 14.500</option>
+                <option value="15000">$ 15.000</option>
+                <option value="15500">$ 15.500</option>
+                <option value="16000">$ 16.000</option>
+                <option value="16500">$ 16.500</option>
+                <option value="17000">$ 17.000</option>
+                <option value="17500">$ 17.500</option>
+                <option value="18000">$ 18.000</option>
+                <option value="18500">$ 18.500</option>
+                <option value="19000">$ 19.000</option>
+                <option value="19500">$ 19.500</option>
+                <option value="20000">$ 20.000</option>
+                <option value="20500">$ 20.500</option>
+                <option value="21000">$ 21.000</option>
+                <option value="21500">$ 21.500</option>
+                <option value="22000">$ 22.000</option>
+                <option value="22500">$ 22.500</option>
+                <option value="23000">$ 23.000</option>
+                <option value="23500">$ 23.500</option>
+                <option value="24000">$ 24.000</option>
+                <option value="24500">$ 24.500</option>
+                <option value="25000">$ 25.000</option>
+                <option value="25500">$ 25.500</option>
+                <option value="26000">$ 26.000</option>
+                <option value="26500">$ 26.500</option>
+                <option value="27000">$ 27.000</option>
+                <option value="27500">$ 27.500</option>
+                <option value="28000">$ 28.000</option>
+                <option value="28500">$ 28.500</option>
+                <option value="29000">$ 29.000</option>
+                <option value="29500">$ 29.500</option>
+                <option value="30000">$ 30.000</option>
+                <option value="30500">$ 30.500</option>
+                <option value="31000">$ 31.000</option>
+                <option value="31500">$ 31.500</option>
+                <option value="32000">$ 32.000</option>
+                <option value="32500">$ 32.500</option>
+                <option value="33000">$ 33.000</option>
+                <option value="33500">$ 33.500</option>
+                <option value="34000">$ 34.000</option>
+                <option value="34500">$ 34.500</option>
+                <option value="35000">$ 35.000</option>
+                <option value="35500">$ 35.500</option>
+                <option value="36000">$ 36.000</option>
+                <option value="36500">$ 36.500</option>
+                <option value="37000">$ 37.000</option>
+                <option value="37500">$ 37.500</option>
+                <option value="38000">$ 38.000</option>
+                <option value="38500">$ 38.500</option>
+                <option value="39000">$ 39.000</option>
+                <option value="39500">$ 39.500</option>
+                <option value="40000">$ 40.000</option>
+                <option value="40500">$ 40.500</option>
+                <option value="41000">$ 41.000</option>
+                <option value="41500">$ 41.500</option>
+                <option value="42000">$ 42.000</option>
+                <option value="42500">$ 42.500</option>
+                <option value="43000">$ 43.000</option>
+                <option value="43500">$ 43.500</option>
+                <option value="44000">$ 44.000</option>
+                <option value="44500">$ 44.500</option>
+                <option value="45000">$ 45.000</option>
+                <option value="45500">$ 45.500</option>
+                <option value="46000">$ 46.000</option>
+                <option value="46500">$ 46.500</option>
+                <option value="47000">$ 47.000</option>
+                <option value="47500">$ 47.500</option>
+                <option value="48000">$ 48.000</option>
+                <option value="48500">$ 48.500</option>
+                <option value="49000">$ 49.000</option>
+                <option value="49500">$ 49.500</option>
+                <option value="50000">$ 50.000</option>
+              </select>
+
+              <label
+                class="entrada_opciones"
+                for="porcentaje-camionetas"
+                style="display: none"
+                >¿Qué porcentaje de entrada abonaras?:</label
+              >
+              <select
+                class="entrada_opciones"
+                id="porcentaje-camionetas"
+                name="porcentaje"
+                placeholder="porcentaje"
+              >
+                <option value="">¿Qué porcentaje de entrada abonaras?:</option>
+                <option value="15">15%</option>
+                <option value="20">20%</option>
+                <option value="30">30%</option>
+                <option value="40">40%</option>
+                <option value="50">50%</option>
+                <option value="60">60%</option>
+              </select>
+
+              <label
+                class="entrada_opciones"
+                for="mesesSelect-camionetas"
+                style="display: none"
+                >¿Por cuántos meses deseas pagar?:</label
+              >
+              <select id="mesesSelect-camionetas">
+                <option value="">¿Por cuántos meses deseas pagar?:</option>
+                <option value="24_MESES">24 Meses</option>
+                <option value="36_MESES">36 Meses</option>
+                <option value="48_MESES">48 Meses</option>
+                <option value="60_MESES">60 Meses</option>
+                <option value="72_MESES">72 Meses</option>
+                <option value="84_MESES">84 Meses</option>
+              </select>
+
+              <div>
+                <p class="precio_mensual" style="font-size: 15px">
+                  Precio mensual: $
+                  <span id="resultadoPrecio-camionetas"></span>
+                </p>
+                <p class="inscripcion" style="font-size: 15px">
+                  Inscripción: $
+                  <span id="resultadoInscripcion-camionetas"></span>
+                </p>
+              </div>
+
+              <!-- Botón de Continuar -->
+              <button id="continuar-con-entrada-camionetas">CONTINUAR</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--CAMIONES .........................................
+        ............................................................
+        ...............................
+        -->
+      <section
+        class="detalle-vehiculo"
+        id="detalle-vehiculo-camiones"
+        style="display: none"
+      >
+        <div class="vehiculo-container">
+          <!-- Columna izquierda: Imagen del vehículo -->
+          <div class="vehiculo-imagen">
+            <img
+              id="camion-imagen"
+              src="https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png"
+              alt="Imagen del auto seleccionado"
+            />
+            <p
+              id="camion-precio"
+              style="font-weight: bold; font-size: 1.2em; margin-top: 10px"
+            ></p>
+          </div>
+
+          <!-- Columna derecha: Selectores de marca y modelo -->
+          <div
+            class="vehiculo-selectores-container"
+            id="vehiculo-selectores-container-camiones"
+          >
+            <!-- Selectores de marca y modelo -->
+            <div class="vehiculo-selectores" id="selectores-camiones">
+              <p class="titulo_marca_modelo">
+                Elige la <strong>marca y modelo</strong> que deseas cotizar
+              </p>
+              <label class="marca" for="marca-camiones" style="display: none"
+                >Marca:</label
+              >
+              <select id="marca-camiones">
+                <option value="">Selecciona una marca</option>
+                <option value="BYD">Byd</option>
+                <option value="Changan">Changan</option>
+                <option value="chevrolet">Chevrolet</option>
+                <option value="CITROEN">Citröen</option>
+                <option value="DFSK">Dfsk</option>
+                <option value="foton">Foton</option>
+                <option value="hyundai">Hyundai</option>
+                <option value="JAC MOTORS">Jac Motors</option>
+                <option value="SINOTRUK">Sinotruk</option>
+                <option value="toyota">Toyota</option>
+              </select>
+
+              <label class="modelo" for="modelo-camiones" style="display: none"
+                >Modelo:</label
+              >
+              <select id="modelo-camiones" disabled>
+                <option value="">Selecciona un modelo</option>
+              </select>
+
+              <!-- Botón de Continuar -->
+              <button
+                class="continuar"
+                id="continuar-camiones"
+                style="display: none"
+              >
+                CONTINUAR
+              </button>
+            </div>
+
+            <!-- Nueva Sección con los botones "Con Entrada" y "Sin Entrada" (inicialmente oculta) -->
+            <div
+              class="opciones-botones"
+              id="opciones-vehiculo-camiones"
+              style="display: none"
+            >
+              <p class="titulo_marca_modelo">¿Cómo deseas pagar tu vehículo?</p>
+
+              <button id="con-entrada-camiones">CON ENTRADA</button>
+              <button id="sin-entrada-camiones">SIN ENTRADA</button>
+
+              <input
+                class="precio-vehiculo"
+                type="text"
+                id="precio-camiones"
+                disabled
+                value=""
+                style="display: none"
+              />
+            </div>
+
+            <!-- SECCION DE CON ENTRADA PORCENTAJE Y MESES PLAZO-->
+
+            <div
+              class="opciones-con-entrada"
+              id="opciones-con-entrada-camiones"
+              style="display: none"
+            >
+              <input
+                type="text"
+                id="precio-vehiculo-con-entrada-camiones"
+                style="display: none"
+              />
+              <p class="titulo_marca_modelo">
+                Estas a un paso de planificar tu auto
+                <span id="marca_modelo_Camion"></span>
+              </p>
+
+              <label
+                class="entrada_opciones"
+                for="montoSelect-camiones"
+                style="display: none"
+                >Selecciona el monto que deseas:</label
+              >
+              <select id="montoSelect-camiones">
+                <option value="">Selecciona el monto que deseas:</option>
+                <option value="8000">$ 8.000</option>
+                <option value="8500">$ 8.500</option>
+                <option value="9000">$ 9.000</option>
+                <option value="9500">$ 9.500</option>
+                <option value="10000">$ 10.000</option>
+                <option value="10500">$ 10.500</option>
+                <option value="11000">$ 11.000</option>
+                <option value="11500">$ 11.500</option>
+                <option value="12000">$ 12.000</option>
+                <option value="12500">$ 12.500</option>
+                <option value="13000">$ 13.000</option>
+                <option value="13500">$ 13.500</option>
+                <option value="14000">$ 14.000</option>
+                <option value="14500">$ 14.500</option>
+                <option value="15000">$ 15.000</option>
+                <option value="15500">$ 15.500</option>
+                <option value="16000">$ 16.000</option>
+                <option value="16500">$ 16.500</option>
+                <option value="17000">$ 17.000</option>
+                <option value="17500">$ 17.500</option>
+                <option value="18000">$ 18.000</option>
+                <option value="18500">$ 18.500</option>
+                <option value="19000">$ 19.000</option>
+                <option value="19500">$ 19.500</option>
+                <option value="20000">$ 20.000</option>
+                <option value="20500">$ 20.500</option>
+                <option value="21000">$ 21.000</option>
+                <option value="21500">$ 21.500</option>
+                <option value="22000">$ 22.000</option>
+                <option value="22500">$ 22.500</option>
+                <option value="23000">$ 23.000</option>
+                <option value="23500">$ 23.500</option>
+                <option value="24000">$ 24.000</option>
+                <option value="24500">$ 24.500</option>
+                <option value="25000">$ 25.000</option>
+                <option value="25500">$ 25.500</option>
+                <option value="26000">$ 26.000</option>
+                <option value="26500">$ 26.500</option>
+                <option value="27000">$ 27.000</option>
+                <option value="27500">$ 27.500</option>
+                <option value="28000">$ 28.000</option>
+                <option value="28500">$ 28.500</option>
+                <option value="29000">$ 29.000</option>
+                <option value="29500">$ 29.500</option>
+                <option value="30000">$ 30.000</option>
+                <option value="30500">$ 30.500</option>
+                <option value="31000">$ 31.000</option>
+                <option value="31500">$ 31.500</option>
+                <option value="32000">$ 32.000</option>
+                <option value="32500">$ 32.500</option>
+                <option value="33000">$ 33.000</option>
+                <option value="33500">$ 33.500</option>
+                <option value="34000">$ 34.000</option>
+                <option value="34500">$ 34.500</option>
+                <option value="35000">$ 35.000</option>
+                <option value="35500">$ 35.500</option>
+                <option value="36000">$ 36.000</option>
+                <option value="36500">$ 36.500</option>
+                <option value="37000">$ 37.000</option>
+                <option value="37500">$ 37.500</option>
+                <option value="38000">$ 38.000</option>
+                <option value="38500">$ 38.500</option>
+                <option value="39000">$ 39.000</option>
+                <option value="39500">$ 39.500</option>
+                <option value="40000">$ 40.000</option>
+                <option value="40500">$ 40.500</option>
+                <option value="41000">$ 41.000</option>
+                <option value="41500">$ 41.500</option>
+                <option value="42000">$ 42.000</option>
+                <option value="42500">$ 42.500</option>
+                <option value="43000">$ 43.000</option>
+                <option value="43500">$ 43.500</option>
+                <option value="44000">$ 44.000</option>
+                <option value="44500">$ 44.500</option>
+                <option value="45000">$ 45.000</option>
+                <option value="45500">$ 45.500</option>
+                <option value="46000">$ 46.000</option>
+                <option value="46500">$ 46.500</option>
+                <option value="47000">$ 47.000</option>
+                <option value="47500">$ 47.500</option>
+                <option value="48000">$ 48.000</option>
+                <option value="48500">$ 48.500</option>
+                <option value="49000">$ 49.000</option>
+                <option value="49500">$ 49.500</option>
+                <option value="50000">$ 50.000</option>
+              </select>
+
+              <label
+                class="entrada_opciones"
+                for="porcentaje-camiones"
+                style="display: none"
+                >¿Qué porcentaje de entrada abonaras?:</label
+              >
+              <select
+                class="entrada_opciones"
+                id="porcentaje-camiones"
+                name="porcentaje"
+                placeholder="porcentaje"
+              >
+                <option value="">¿Qué porcentaje de entrada abonaras?:</option>
+                <option value="15">15%</option>
+                <option value="20">20%</option>
+                <option value="30">30%</option>
+                <option value="40">40%</option>
+                <option value="50">50%</option>
+                <option value="60">60%</option>
+              </select>
+
+              <label
+                class="entrada_opciones"
+                for="mesesSelect-camiones"
+                style="display: none"
+                >¿Por cuántos meses deseas pagar?:</label
+              >
+              <select id="mesesSelect-camiones">
+                <option value="">¿Por cuántos meses deseas pagar?:</option>
+                <option value="24_MESES">24 Meses</option>
+                <option value="36_MESES">36 Meses</option>
+                <option value="48_MESES">48 Meses</option>
+                <option value="60_MESES">60 Meses</option>
+                <option value="72_MESES">72 Meses</option>
+                <option value="84_MESES">84 Meses</option>
+              </select>
+
+              <div>
+                <p class="precio_mensual" style="font-size: 15px">
+                  Precio mensual: $ <span id="resultadoPrecio-camiones"></span>
+                </p>
+                <p class="inscripcion" style="font-size: 15px">
+                  Inscripción: $
+                  <span id="resultadoInscripcion-camiones"></span>
+                </p>
+              </div>
+
+              <!-- Botón de Continuar -->
+              <button id="continuar-con-entrada-camiones">CONTINUAR</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- BORRADOR  -->
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Variable global para almacenar el plan seleccionado
+        let planSeleccionado = '';
+        
+        // Función para manejar la selección de planes
+        function initializePlanSelection() {
+          const planes = document.querySelectorAll('.plan');
+          const cotizadorSection = document.querySelector('.cotizador');
+          
+          planes.forEach(plan => {
+            plan.addEventListener('click', () => {
+              // Remover selección previa
+              planes.forEach(p => p.classList.remove('selected'));
+              
+              // Agregar selección al plan actual
+              plan.classList.add('selected');
+              
+              // Guardar el plan seleccionado
+              planSeleccionado = plan.getAttribute('data-plan');
+              console.log('Plan seleccionado:', planSeleccionado);
+              
+              // Mostrar la sección del cotizador con animación suave
+              setTimeout(() => {
+                cotizadorSection.style.display = 'block';
+                cotizadorSection.scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'start' 
+                });
+              }, 300);
+            });
+          });
+        }
+        
+        // Inicializar la selección de planes
+        initializePlanSelection();
+        
+        fetch(
+          "https://finanmotors.com/wp-content/themes/hello-elementor/modelo.json"
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                "Network response was not ok " + response.statusText
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const modelos = data;
+            //---------------------------
+
+            function scrollDown() {
+              let scrollAmount;
+
+              if (window.innerWidth <= 768) {
+                // Para teléfonos (pantallas pequeñas)
+                scrollAmount = window.innerHeight * 0.7; // 60% de la altura de la ventana
+              } else {
+                // Para computadoras (pantallas grandes)
+                scrollAmount = window.innerHeight * 0.35; // 35% de la altura de la ventana
+              }
+
+              window.scrollBy({
+                top: scrollAmount,
+                behavior: "smooth",
+              });
+            }
+
+            //-----------------------VARIABLES PARA VER EL PRECIO DE EL AUTO EN MARCA Y MODELO
+            const autoPrecio = document.getElementById("auto-precio");
+            const suvPrecio = document.getElementById("suv-precio");
+            const camionetaPrecio = document.getElementById("camioneta-precio");
+            const camionPrecio = document.getElementById("camion-precio");
+
+            //VARIABLES A USAR EN LA LOGICA
+            let avaluoActual = 0;
+            let imagenSeleccionada = "";
+
+            let porcentajeGlobal = 0;
+            let mesesGlobal = null;
+
+            let estimadoGlobal = 0;
+            let montoEstimado = 0;
+
+            //variables a usar de lo obtenido en meses y cuota final de JSON
+            let selectedMonths = "";
+            let monthlyPrice = 0;
+
+            function reiniciarVariables() {
+              avaluoActual = 0;
+              imagenSeleccionada = "";
+              porcentajeGlobal = null;
+              mesesGlobal = null;
+              estimadoGlobal = 0;
+              montoEstimado = 0;
+              console.log("Variables reiniciadas");
+            }
+
+            const vehicles = document.querySelectorAll(".vehicle");
+
+            //DETALLE DE VEHICULOS
+            const autoSection = document.getElementById(
+              "detalle-vehiculo-autos"
+            );
+            const suvSection = document.getElementById("detalle-vehiculo-suvs");
+            const camionetaSection = document.getElementById(
+              "detalle-vehiculo-camionetas"
+            );
+            const camionesSection = document.getElementById(
+              "detalle-vehiculo-camiones"
+            );
+
+            //variables de cada SECCION
+            //AUTOS
+            const opcionesSection =
+              document.getElementById("opciones-vehiculo");
+            const marcaSelect = document.getElementById("marca");
+            const modeloSelect = document.getElementById("modelo");
+            const autoImagen = document.getElementById("auto-imagen");
+            const continuarBtn = document.getElementById("continuar");
+            const precioInput = document.getElementById("precio");
+
+            //SUVS
+            const opcionesSUVSSection = document.getElementById(
+              "opciones-vehiculo-suvs"
+            );
+            const marcaSuvsSelect = document.getElementById("marca-suvs");
+            const modeloSuvsSelect = document.getElementById("modelo-suvs");
+            const suvImagen = document.getElementById("suv-imagen");
+            const continuarSUVSBtn = document.getElementById("continuar-suvs");
+            const precioSuvsInput = document.getElementById("precio-suvs");
+
+            //CAMIONETAS
+            const opcionesCAMIONETASection = document.getElementById(
+              "opciones-vehiculo-camionetas"
+            );
+            const marcaCamionetasSelect =
+              document.getElementById("marca-camionetas");
+            const modeloCamionetasSelect =
+              document.getElementById("modelo-camionetas");
+            const camionetaImagen = document.getElementById("camioneta-imagen");
+            const continuarCAMIONETASBtn = document.getElementById(
+              "continuar-camionetas"
+            );
+            const precioCamionetasInput =
+              document.getElementById("precio-camionetas");
+
+            //-------------------------
+            //CAMIONES
+            const opcionesCAMIONSection = document.getElementById(
+              "opciones-vehiculo-camiones"
+            );
+            const marcaCamionesSelect =
+              document.getElementById("marca-camiones");
+            const modeloCamionesSelect =
+              document.getElementById("modelo-camiones");
+            const camionImagen = document.getElementById("camion-imagen");
+            const continuarCAMIONESBtn =
+              document.getElementById("continuar-camiones");
+            const precioCamionesInput =
+              document.getElementById("precio-camiones");
+
+            //----OTROS DATOS DEL POP UP
+            const provinciaSelect = document.getElementById("provincia");
+            const provinciaSelectSN = document.getElementById("provinciaSN");
+
+            const agenciaSelect = document.getElementById("agencia");
+            const agenciaSelectSN = document.getElementById("agenciaSN");
+
+            //ARREGLO DE MODELOS VEHICULARES
+
+            //..............
+
+            //ARREGLO DE LAS AGENCIAS EN LAS PROVINCIAS.
+            const agencias = {
+              Pichincha: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Imbabura: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Esmeraldas: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Carchi: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Santo_Domingo: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Cotopaxi: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Tungurahua: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Napo: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Sucumbíos: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Orellana: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+              Pastaza: [
+                {
+                  nombre:
+                    "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta )",
+                },
+              ],
+
+              Manabí: [
+                {
+                  nombre:
+                    "Manta 1, Calle 12 y Av. 14 a una cuadra más abajo del Mercado",
+                },
+                {
+                  nombre:
+                    "Manta 2, Av. 4 de Noviembre, frente al Paseo Shopping",
+                },
+                { nombre: "Portoviejo, Av. del Ejército y Av. América" },
+              ],
+              Azuay: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Guayas: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Santa_Elena: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Los_Ríos: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Bolívar: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Chimborazo: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Cañar: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Morona_Santiago: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              El_Oro: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Loja: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+              Zamora_Chinchipe: [
+                {
+                  nombre:
+                    "Guayaquil Norte (Av. Guillermo Pareja Rolando en la Cdla. Vernaza Norte, Mz 20  Solar 11)",
+                },
+              ],
+            };
+
+            //---------------------------
+            document.querySelectorAll(".vehicle").forEach((vehicle) => {
+              vehicle.addEventListener("click", function () {
+                // Elimina la clase 'selected' de todos los vehículos
+                document.querySelectorAll(".vehicle").forEach((v) => {
+                  v.classList.remove("selected");
+                  //v.style.opacity = "0.25"; // Aplica opacidad a todos los vehículos
+                });
+
+                // Agrega la clase 'selected' al vehículo seleccionado
+                this.classList.add("selected");
+                this.style.opacity = "1"; // Restablece la opacidad solo para el seleccionado
+              });
+            });
+
+            // Mostrar la sección de vehículos seleccionados (autos, SUVs, camionetas, camiones)
+            vehicles.forEach((vehicle) => {
+              vehicle.addEventListener("click", () => {
+                const selectedVehicle = vehicle.querySelector("p").textContent;
+
+                if (selectedVehicle === "Autos") {
+                  reiniciarVariables();
+                  autoSection.style.display = "flex";
+                  suvSection.style.display = "none";
+                  camionetaSection.style.display = "none";
+                  camionesSection.style.display = "none";
+                  opcionesSection.style.display = "none";
+
+                  marcaSelect.onchange = () => {
+                    const marcaSeleccionada = marcaSelect.value;
+                    modeloSelect.innerHTML =
+                      '<option value="">Selecciona un modelo</option>';
+                    modeloSelect.disabled = false;
+
+                    if (marcaSeleccionada) {
+                      const modelosFiltrados = modelos[
+                        marcaSeleccionada
+                      ].filter((modelo) =>
+                        ["autos", "SEDAN", "HATCHBACK"].includes(modelo.tipo)
+                      );
+                      modelosFiltrados.forEach((modelo) => {
+                        const option = document.createElement("option");
+                        option.value = modelo.nombre;
+                        option.textContent = modelo.nombre;
+                        modeloSelect.appendChild(option);
+                      });
+
+                      if (modelosFiltrados.length === 0) {
+                        modeloSelect.disabled = true;
+                        continuarBtn.style.display = "none";
+                      }
+                    } else {
+                      modeloSelect.disabled = true;
+                      continuarBtn.style.display = "none";
+                    }
+                  };
+                  scrollDown(); // Desplazar hacia abajo al seleccionar "Autos"
+                } else if (selectedVehicle === "SUVs") {
+                  reiniciarVariables();
+                  suvSection.style.display = "flex";
+                  autoSection.style.display = "none";
+                  camionetaSection.style.display = "none";
+                  camionesSection.style.display = "none";
+                  opcionesSection.style.display = "none";
+
+                  marcaSuvsSelect.onchange = () => {
+                    const marcaSeleccionada = marcaSuvsSelect.value;
+                    modeloSuvsSelect.innerHTML =
+                      '<option value="">Selecciona un modelo</option>';
+                    modeloSuvsSelect.disabled = false;
+
+                    if (marcaSeleccionada) {
+                      const modelosFiltrados = modelos[
+                        marcaSeleccionada
+                      ].filter((modelo) =>
+                        ["suv", "CROSSOVER"].includes(modelo.tipo)
+                      );
+                      modelosFiltrados.forEach((modelo) => {
+                        const option = document.createElement("option");
+                        option.value = modelo.nombre;
+                        option.textContent = modelo.nombre;
+                        modeloSuvsSelect.appendChild(option);
+                      });
+
+                      if (modelosFiltrados.length === 0) {
+                        modeloSuvsSelect.disabled = true;
+                        continuarSUVSBtn.style.display = "none";
+                      }
+                    } else {
+                      modeloSuvsSelect.disabled = true;
+                      continuarSUVSBtn.style.display = "none";
+                    }
+                  };
+                  scrollDown(); // Desplazar hacia abajo al seleccionar "SUVs"
+                } else if (selectedVehicle === "Camionetas") {
+                  reiniciarVariables();
+                  suvSection.style.display = "none";
+                  autoSection.style.display = "none";
+                  camionetaSection.style.display = "flex";
+                  camionesSection.style.display = "none";
+                  opcionesCAMIONETASection.style.display = "none";
+
+                  marcaCamionetasSelect.onchange = () => {
+                    const marcaSeleccionada = marcaCamionetasSelect.value;
+                    modeloCamionetasSelect.innerHTML =
+                      '<option value="">Selecciona un modelo</option>';
+                    modeloCamionetasSelect.disabled = false;
+                    if (marcaSeleccionada) {
+                      const modelosFiltrados = modelos[
+                        marcaSeleccionada
+                      ].filter((modelo) => modelo.tipo === "camioneta");
+                      modelosFiltrados.forEach((modelo) => {
+                        const option = document.createElement("option");
+                        option.value = modelo.nombre;
+                        option.textContent = modelo.nombre;
+                        modeloCamionetasSelect.appendChild(option);
+                      });
+
+                      if (modelosFiltrados.length === 0) {
+                        modeloCamionetasSelect.disabled = true;
+                        continuarCAMIONETASBtn.style.display = "none";
+                      }
+                    } else {
+                      modeloCamionetasSelect.disabled = true;
+                      continuarCAMIONETASBtn.style.display = "none";
+                    }
+                  };
+                  scrollDown(); // Desplazar hacia abajo al seleccionar "CAMIONES"
+                } else if (selectedVehicle === "Camiones") {
+                  reiniciarVariables();
+                  suvSection.style.display = "none";
+                  autoSection.style.display = "none";
+                  camionetaSection.style.display = "none";
+                  camionesSection.style.display = "flex";
+                  opcionesSection.style.display = "none";
+
+                  marcaCamionesSelect.onchange = () => {
+                    const marcaSeleccionada = marcaCamionesSelect.value;
+                    modeloCamionesSelect.innerHTML =
+                      '<option value="">Selecciona un modelo</option>';
+                    modeloCamionesSelect.disabled = false;
+
+                    if (marcaSeleccionada) {
+                      const modelosFiltrados = modelos[
+                        marcaSeleccionada
+                      ].filter((modelo) =>
+                        ["camion", "furgoneta", "van"].includes(modelo.tipo)
+                      );
+                      modelosFiltrados.forEach((modelo) => {
+                        const option = document.createElement("option");
+                        option.value = modelo.nombre;
+                        option.textContent = modelo.nombre;
+                        modeloCamionesSelect.appendChild(option);
+                      });
+
+                      if (modelosFiltrados.length === 0) {
+                        modeloCamionesSelect.disabled = true;
+                        continuarCAMIONESBtn.style.display = "none";
+                      }
+                    } else {
+                      modeloCamionesSelect.disabled = true;
+                      continuarCAMIONESBtn.style.display = "none";
+                    }
+                  };
+                  scrollDown(); // Desplazar hacia abajo al seleccionar "CAMIONETAS"
+                }
+              });
+            });
+
+            //  POP-UP Selección de agencias
+            provinciaSelect.addEventListener("change", () => {
+              const provinciaSeleccionada = provinciaSelect.value;
+              agenciaSelect.innerHTML =
+                '<option value="">Selecciona una agencia</option>';
+              agenciaSelect.disabled = false;
+
+              if (provinciaSeleccionada) {
+                agencias[provinciaSeleccionada].forEach((agencia) => {
+                  const option = document.createElement("option");
+                  option.value = agencia.nombre;
+                  option.textContent = agencia.nombre;
+                  agenciaSelect.appendChild(option);
+                });
+              } else {
+                modeloSelect.disabled = true;
+                continuarBtn.style.display = "none";
+              }
+            });
+
+            provinciaSelectSN.addEventListener("change", () => {
+              const provinciaSeleccionada = provinciaSelectSN.value;
+              agenciaSelectSN.innerHTML =
+                '<option value="">Selecciona una agencia</option>';
+              agenciaSelectSN.disabled = false;
+
+              if (provinciaSeleccionada) {
+                agencias[provinciaSeleccionada].forEach((agencia) => {
+                  const option = document.createElement("option");
+                  option.value = agencia.nombre;
+                  option.textContent = agencia.nombre;
+                  agenciaSelectSN.appendChild(option);
+                });
+              } else {
+                modeloSelect.disabled = true;
+                continuarBtn.style.display = "none";
+              }
+            });
+            //++++++++++++
+
+            // Mostrar el botón de continuar, actualizar la imagen y el precio cuando se selecciona un modelo
+            //AUTOS
+            modeloSelect.addEventListener("change", () => {
+              const marcaSeleccionada = marcaSelect.value;
+              const modeloSeleccionado = modeloSelect.value;
+
+              if (modeloSeleccionado) {
+                continuarBtn.style.display = "flex"; // Mostrar el botón de continuar
+
+                // Buscar la imagen y el precio correspondientes al modelo seleccionado
+                const modelo = modelos[marcaSeleccionada].find(
+                  (m) => m.nombre === modeloSeleccionado
+                );
+                if (modelo) {
+                  autoImagen.src = modelo.imagen; // Actualizar la imagen
+                  precioInput.value = modelo.precio; // Actualizar el precio
+
+                  autoPrecio.textContent = `Precio Referencial: $ ${modelo.precio}`;
+                  document.getElementById(
+                    "marca_modelo"
+                  ).textContent = ` ${marcaSeleccionada} ${modeloSeleccionado}`;
+
+                  console.log("precioInput.value", precioInput.value);
+
+                  // Actualizar variables globales
+                  avaluoActual = precioInput.value;
+                  // Asignar el precio a la variable global
+                  imagenSeleccionada = modelo.imagen; // Asignar la imagen a la variable global
+                }
+              } else {
+                continuarBtn.style.display = "none"; // Ocultar el botón de continuar si no se selecciona un modelo
+              }
+            });
+
+            //SUVS
+            modeloSuvsSelect.addEventListener("change", () => {
+              const marcaSeleccionada = marcaSuvsSelect.value;
+              const modeloSeleccionado = modeloSuvsSelect.value;
+
+              if (modeloSeleccionado) {
+                continuarSUVSBtn.style.display = "block"; // Mostrar el botón de continuar
+
+                // Buscar la imagen y el precio correspondientes al modelo seleccionado
+                const modelo = modelos[marcaSeleccionada].find(
+                  (m) => m.nombre === modeloSeleccionado
+                );
+                if (modelo) {
+                  suvImagen.src = modelo.imagen; // Actualizar la imagen
+                  precioSuvsInput.value = modelo.precio; // Actualizar el precio
+
+                  suvPrecio.textContent = `Precio Referencial: $ ${modelo.precio}`;
+                  document.getElementById(
+                    "marca_modelo_Suv"
+                  ).textContent = ` ${marcaSeleccionada} ${modeloSeleccionado}`;
+
+                  console.log("precioInput.value", precioInput.value);
+
+                  // Actualizar variables globales
+                  avaluoActual = precioSuvsInput.value;
+                  // Asignar el precio a la variable global
+                  imagenSeleccionada = modelo.imagen; // Asignar la imagen a la variable global
+                }
+              } else {
+                continuarSUVSBtn.style.display = "none"; // Ocultar el botón de continuar si no se selecciona un modelo
+              }
+            });
+
+            //CAMIONETAS
+            modeloCamionetasSelect.addEventListener("change", () => {
+              const marcaSeleccionada = marcaCamionetasSelect.value;
+              const modeloSeleccionado = modeloCamionetasSelect.value;
+
+              if (modeloSeleccionado) {
+                continuarCAMIONETASBtn.style.display = "block"; // Mostrar el botón de continuar
+
+                // Buscar la imagen y el precio correspondientes al modelo seleccionado
+                const modelo = modelos[marcaSeleccionada].find(
+                  (m) => m.nombre === modeloSeleccionado
+                );
+                if (modelo) {
+                  camionetaImagen.src = modelo.imagen; // Actualizar la imagen
+                  precioCamionetasInput.value = modelo.precio; // Actualizar el precio
+                  camionetaPrecio.textContent = `Precio Referencial: $ ${modelo.precio}`;
+
+                  document.getElementById(
+                    "marca_modelo_Camioneta"
+                  ).textContent = ` ${marcaSeleccionada} ${modeloSeleccionado}`;
+                  // Actualizar variables globales
+                  avaluoActual = precioCamionetasInput.value;
+                  // Asignar el precio a la variable global
+                  imagenSeleccionada = modelo.imagen; // Asignar la imagen a la variable global
+                }
+              } else {
+                continuarCAMIONETASBtn.style.display = "none"; // Ocultar el botón de continuar si no se selecciona un modelo
+              }
+            });
+
+            //CAMIONES
+            modeloCamionesSelect.addEventListener("change", () => {
+              const marcaSeleccionada = marcaCamionesSelect.value;
+              const modeloSeleccionado = modeloCamionesSelect.value;
+
+              if (modeloSeleccionado) {
+                continuarCAMIONESBtn.style.display = "block"; // Mostrar el botón de continuar
+
+                // Buscar la imagen y el precio correspondientes al modelo seleccionado
+                const modelo = modelos[marcaSeleccionada].find(
+                  (m) => m.nombre === modeloSeleccionado
+                );
+                if (modelo) {
+                  camionImagen.src = modelo.imagen; // Actualizar la imagen
+                  precioCamionesInput.value = modelo.precio; // Actualizar el precio
+                  camionPrecio.textContent = `Precio Referencial: $ ${modelo.precio}`;
+
+                  document.getElementById(
+                    "marca_modelo_Camion"
+                  ).textContent = ` ${marcaSeleccionada} ${modeloSeleccionado}`;
+                  // Actualizar variables globales
+                  avaluoActual = precioCamionesInput.value;
+                  // Asignar el precio a la variable global
+                  imagenSeleccionada = modelo.imagen; // Asignar la imagen a la variable global
+                }
+              } else {
+                continuarCAMIONESBtn.style.display = "none"; // Ocultar el botón de continuar si no se selecciona un modelo
+              }
+            });
+
+            //---- IMAGENES DE LOS VEHICULOS DE CADA SECCION
+
+            // con esto hago que si se me muestre el valor del vehiculo seleccionado en la variable global.
+            avaluoActual = avaluoActual;
+            /*
+----------
+--------
+*/
+            //CONTINUAR LUEGO DE LA SELECCION DE MARCA Y MODELO
+            //AUTOS
+
+            continuarBtn.addEventListener("click", () => {
+              // Ocultar la parte de los selectores de marca y modelo
+              document.getElementById("selectores").style.display = "none";
+
+              // Mostrar la parte de los botones "Con Entrada" y "Sin Entrada" en la misma columna derecha
+              document.getElementById("opciones-vehiculo").style.display =
+                "flex";
+
+              //document.getElementById("precio").value = "$" + avaluoActual;
+              document.getElementById("precio").value = avaluoActual;
+            });
+
+            //SUVS
+            continuarSUVSBtn.addEventListener("click", () => {
+              // Ocultar la parte de los selectores de marca y modelo
+              document.getElementById("selectores-suvs").style.display = "none";
+
+              // Mostrar la parte de los botones "Con Entrada" y "Sin Entrada" en la misma columna derecha
+              document.getElementById("opciones-vehiculo-suvs").style.display =
+                "flex";
+
+              //document.getElementById("precio-suvs").value = "$" + avaluoActual;
+              document.getElementById("precio-suvs").value = avaluoActual;
+            });
+
+            //CAMIONETAS
+            continuarCAMIONETASBtn.addEventListener("click", () => {
+              // Ocultar la parte de los selectores de marca y modelo
+              document.getElementById("selectores-camionetas").style.display =
+                "none";
+
+              // Mostrar la parte de los botones "Con Entrada" y "Sin Entrada" en la misma columna derecha
+              document.getElementById(
+                "opciones-vehiculo-camionetas"
+              ).style.display = "flex";
+
+              //document.getElementById("precio-suvs").value = "$" + avaluoActual;
+              document.getElementById("precio-camionetas").value = avaluoActual;
+            });
+
+            //CAMIONES
+            continuarCAMIONESBtn.addEventListener("click", () => {
+              // Ocultar la parte de los selectores de marca y modelo
+              document.getElementById("selectores-camiones").style.display =
+                "none";
+
+              // Mostrar la parte de los botones "Con Entrada" y "Sin Entrada" en la misma columna derecha
+              document.getElementById(
+                "opciones-vehiculo-camiones"
+              ).style.display = "flex";
+
+              //document.getElementById("precio-suvs").value = "$" + avaluoActual;
+              document.getElementById("precio-camiones").value = avaluoActual;
+            });
+            //----------------------------------------------
+            //PARTES CON ENTRADA
+
+            /*
+--------------
+--------------
+*/
+            //llamada a la funcion  de calculos de porcentajes y meses
+            function cargarDatosYActualizarResultados(
+              montoSelectId,
+              mesesSelectId,
+              resultadoPrecioId,
+              resultadoInscripcionId
+            ) {
+              fetch("https://finanmotors.com/vehicular_M.json")
+                .then((response) => response.json())
+                .then((data) => {
+                  const montoSelect = document.getElementById(montoSelectId);
+                  const mesesSelect = document.getElementById(mesesSelectId);
+                  const resultadoPrecio =
+                    document.getElementById(resultadoPrecioId);
+                  const resultadoInscripcion = document.getElementById(
+                    resultadoInscripcionId
+                  );
+                  console.log("JSON CARGADO EXITOSAMENTE", data);
+
+                  montoSelect.onchange = actualizarResultado;
+                  mesesSelect.onchange = actualizarResultado;
+
+                  function actualizarResultado() {
+                    const montoSeleccionado = parseFloat(
+                      montoSelect.value.replace(/,/g, "")
+                    );
+                    const mesesSeleccionado = mesesSelect.value;
+
+                    console.log("Monto seleccionado:", montoSeleccionado);
+                    console.log("Meses seleccionado:", mesesSeleccionado);
+
+                    selectedMonths = mesesSeleccionado;
+
+                    // Buscar en JSON el objeto que coincida con el monto
+                    const resultado = data.find(
+                      (item) => item.MONTO === montoSeleccionado
+                    );
+
+                    if (resultado) {
+                      resultadoPrecio.innerText = resultado[mesesSeleccionado];
+                      monthlyPrice = resultadoPrecio.innerText;
+                      resultadoInscripcion.innerText = resultado.INSCRIPCION;
+                    } else {
+                      resultadoPrecio.innerText = "No disponible";
+                      resultadoInscripcion.innerText = "No disponible";
+                    }
+                  }
+                })
+                .catch((error) =>
+                  console.error("Error al cargar el archivo JSON:", error)
+                );
+            }
+
+            //AUTOS
+            // Llamada a la función para Autos
+            document
+              .getElementById("con-entrada")
+              .addEventListener("click", () => {
+                document.getElementById("precio-vehiculo-con-entrada").value =
+                  avaluoActual;
+                document.getElementById("opciones-vehiculo").style.display =
+                  "none";
+                document.getElementById("opciones-con-entrada").style.display =
+                  "flex";
+                document.getElementById("precio-vehiculo-con-entrada").value =
+                  "AVALUO $" + avaluoActual;
+
+                cargarDatosYActualizarResultados(
+                  "montoSelect",
+                  "mesesSelect",
+                  "resultadoPrecio",
+                  "resultadoInscripcion"
+                );
+              });
+            document
+              .getElementById("porcentaje_auto")
+              .addEventListener("change", () => {
+                porcentajeGlobal =
+                  document.getElementById("porcentaje_auto").value;
+                console.log(
+                  "El porcentaje de entrada seleccionado: " + porcentajeGlobal
+                );
+              });
+
+            document
+              .getElementById("montoSelect")
+              .addEventListener("change", () => {
+                montoEstimado = document.getElementById("montoSelect").value;
+                console.log("Monto  seleccionado: " + montoEstimado);
+              });
+
+            //SUVS
+            // Llamada a la función para SUVs
+            document
+              .getElementById("con-entrada-suvs")
+              .addEventListener("click", () => {
+                document.getElementById(
+                  "precio-vehiculo-con-entrada-suvs"
+                ).value = avaluoActual;
+                document.getElementById(
+                  "opciones-vehiculo-suvs"
+                ).style.display = "none";
+                document.getElementById(
+                  "opciones-con-entrada-suvs"
+                ).style.display = "flex";
+                document.getElementById(
+                  "precio-vehiculo-con-entrada-suvs"
+                ).value = "AVALUO $" + avaluoActual;
+
+                cargarDatosYActualizarResultados(
+                  "montoSelect-suvs",
+                  "mesesSelect-suvs",
+                  "resultadoPrecio-suvs",
+                  "resultadoInscripcion-suvs"
+                );
+              });
+
+            document
+              .getElementById("porcentaje-suvs")
+              .addEventListener("change", () => {
+                porcentajeGlobal =
+                  document.getElementById("porcentaje-suvs").value;
+                console.log(
+                  "El porcentaje de entrada seleccionado: " + porcentajeGlobal
+                );
+              });
+            document
+              .getElementById("montoSelect-suvs")
+              .addEventListener("change", () => {
+                montoEstimado =
+                  document.getElementById("montoSelect-suvs").value;
+                console.log("Monto  seleccionado: " + montoEstimado);
+              });
+
+            //CAMIONETAS
+            // Llamada a la función para Camionetas
+            document
+              .getElementById("con-entrada-camionetas")
+              .addEventListener("click", () => {
+                document.getElementById(
+                  "precio-vehiculo-con-entrada-camionetas"
+                ).value = avaluoActual;
+                document.getElementById(
+                  "opciones-vehiculo-camionetas"
+                ).style.display = "none";
+                document.getElementById(
+                  "opciones-con-entrada-camionetas"
+                ).style.display = "flex";
+                document.getElementById(
+                  "precio-vehiculo-con-entrada-camionetas"
+                ).value = "AVALUO $" + avaluoActual;
+
+                cargarDatosYActualizarResultados(
+                  "montoSelect-camionetas",
+                  "mesesSelect-camionetas",
+                  "resultadoPrecio-camionetas",
+                  "resultadoInscripcion-camionetas"
+                );
+              });
+
+            document
+              .getElementById("porcentaje-camionetas")
+              .addEventListener("change", () => {
+                porcentajeGlobal = document.getElementById(
+                  "porcentaje-camionetas"
+                ).value;
+                console.log(
+                  "El porcentaje de entrada seleccionado: " + porcentajeGlobal
+                );
+              });
+
+            document
+              .getElementById("montoSelect-camionetas")
+              .addEventListener("change", () => {
+                montoEstimado = document.getElementById(
+                  "montoSelect-camionetas"
+                ).value;
+                console.log("Monto  seleccionado: " + montoEstimado);
+              });
+
+            //CAMIONES
+            // Llamada a la función para Camiones
+            document
+              .getElementById("con-entrada-camiones")
+              .addEventListener("click", () => {
+                document.getElementById(
+                  "precio-vehiculo-con-entrada-camiones"
+                ).value = avaluoActual;
+                document.getElementById(
+                  "opciones-vehiculo-camiones"
+                ).style.display = "none";
+                document.getElementById(
+                  "opciones-con-entrada-camiones"
+                ).style.display = "flex";
+                document.getElementById(
+                  "precio-vehiculo-con-entrada-camiones"
+                ).value = "AVALUO $" + avaluoActual;
+
+                cargarDatosYActualizarResultados(
+                  "montoSelect-camiones",
+                  "mesesSelect-camiones",
+                  "resultadoPrecio-camiones",
+                  "resultadoInscripcion-camiones"
+                );
+              });
+
+            document
+              .getElementById("porcentaje-camiones")
+              .addEventListener("change", () => {
+                porcentajeGlobal = document.getElementById(
+                  "porcentaje-camiones"
+                ).value;
+                console.log(
+                  "El porcentaje de entrada seleccionado: " + porcentajeGlobal
+                );
+              });
+
+            document
+              .getElementById("montoSelect-camiones")
+              .addEventListener("change", () => {
+                montoEstimado = document.getElementById(
+                  "montoSelect-camiones"
+                ).value;
+                console.log("Monto  seleccionado: " + montoEstimado);
+              });
+
+            //muestra de POP-UPS
+            function mostrarPopup() {
+              document.getElementById("popup").style.display = "flex";
+            }
+
+            //pop-up sin entrada
+            function mostrarPopupSN() {
+              document.getElementById("popupSN").style.display = "flex";
+            }
+
+            //IMPORTANTE ............
+
+            //LA SECCION DE SIN ENTRADA
+
+            //AUTOS
+            document
+              .getElementById("sin-entrada")
+              .addEventListener("click", () => {
+                mostrarPopupSN();
+                document.getElementById("imagen-carroSN").src =
+                  imagenSeleccionada;
+                document.getElementById("precio-vehiculo-pop").value =
+                  "Precio Referencia $ " + avaluoActual;
+                document.getElementById("precio-vehiculo-popSN").value =
+                  "Precio Referencia $ " + avaluoActual;
+              });
+
+            //SUVS
+            document
+              .getElementById("sin-entrada-suvs")
+              .addEventListener("click", () => {
+                mostrarPopupSN();
+                document.getElementById("imagen-carroSN").src =
+                  imagenSeleccionada;
+                document.getElementById("precio-vehiculo-pop").value =
+                  "Precio Referencia $ " + avaluoActual;
+                document.getElementById("precio-vehiculo-popSN").value =
+                  "Precio Referencia $ " + avaluoActual;
+              });
+
+            //CAMIONETAS
+            document
+              .getElementById("sin-entrada-camionetas")
+              .addEventListener("click", () => {
+                mostrarPopupSN();
+                document.getElementById("imagen-carroSN").src =
+                  imagenSeleccionada;
+                document.getElementById("precio-vehiculo-pop").value =
+                  "Precio Referencia $ " + avaluoActual;
+                document.getElementById("precio-vehiculo-popSN").value =
+                  "Precio Referencia $ " + avaluoActual;
+              });
+
+            //CAMIONES
+            document
+              .getElementById("sin-entrada-camiones")
+              .addEventListener("click", () => {
+                mostrarPopupSN();
+                document.getElementById("imagen-carroSN").src =
+                  imagenSeleccionada;
+                document.getElementById("precio-vehiculo-pop").value =
+                  "Precio Referencia $ " + avaluoActual;
+                document.getElementById("precio-vehiculo-popSN").value =
+                  "Precio Referencia $ " + avaluoActual;
+              });
+
+            //IMPORTANTE ............
+
+            //ENTRADA AL POPUP DE AUTOS,SUVS,CAMIONETAS,CAMIONES
+            document
+              .getElementById("continuar-con-entrada")
+              .addEventListener("click", () => {
+                mostrarPopup();
+                document.getElementById("imagen-carro").src =
+                  imagenSeleccionada;
+                // Asignar el valor al campo de "precio-vehiculo-con-entrada"
+                document.getElementById("precio-vehiculo-pop").value =
+                  " Precio Referencia $ " + avaluoActual;
+              });
+
+            //SUVS
+
+            document
+              .getElementById("continuar-con-entrada-suvs")
+              .addEventListener("click", () => {
+                mostrarPopup();
+                document.getElementById("imagen-carro").src =
+                  imagenSeleccionada;
+                // Asignar el valor al campo de "precio-vehiculo-con-entrada"
+                document.getElementById("precio-vehiculo-pop").value =
+                  "Precio Referencia $ " + avaluoActual;
+              });
+
+            //CAMIONETAS
+            document
+              .getElementById("continuar-con-entrada-camionetas")
+              .addEventListener("click", () => {
+                console.log("SE DIO CLICK A  CAMIONETAS PARA EL POP-UP");
+                mostrarPopup();
+                document.getElementById("imagen-carro").src =
+                  imagenSeleccionada;
+                // Asignar el valor al campo de "precio-vehiculo-con-entrada"
+                document.getElementById("precio-vehiculo-pop").value =
+                  "Precio Referencia $ " + avaluoActual;
+              });
+
+            //CAMIONES
+            document
+              .getElementById("continuar-con-entrada-camiones")
+              .addEventListener("click", () => {
+                console.log("SE DIO CLICK A  CAMIONETAS PARA EL POP-UP");
+                mostrarPopup();
+                document.getElementById("imagen-carro").src =
+                  imagenSeleccionada;
+                // Asignar el valor al campo de "precio-vehiculo-con-entrada"
+                document.getElementById("precio-vehiculo-pop").value =
+                  "Precio Referencia $ " + avaluoActual;
+              });
+
+            //CERRAR POP-UP
+            var closePopBtn = document.getElementById("cerrarPop");
+            var closePopBtnSN = document.getElementById("cerrarPopSN");
+
+            closePopBtn.onclick = function () {
+              document.getElementById("popup").style.display = "none";
+            };
+
+            closePopBtnSN.onclick = function () {
+              document.getElementById("popupSN").style.display = "none";
+            };
+            //---------------------------------------------------------
+
+            // Ocultar contenido inicial del popup y mostrar el PDF
+            document
+              .getElementById("boton-cotizar")
+              .addEventListener("click", (event) => {
+                event.preventDefault(); // Evita la acción predeterminada
+
+                let campos = [
+                  "nombre",
+                  "correo",
+                  "provincia",
+                  "primero-renovacion",
+                  "cedula",
+                  "telefono",
+                  "ciudad",
+                  "terminos",
+                ];
+                let formularioValido = true;
+
+                // Buscar el mensaje global de error si ya existe
+                let mensajeError = document.getElementById(
+                  "mensaje-error-global"
+                );
+                if (!mensajeError) {
+                  mensajeError = document.createElement("p");
+                  mensajeError.id = "mensaje-error-global";
+                  mensajeError.style.color = "red";
+                  mensajeError.style.fontSize = "14px";
+                  mensajeError.style.marginTop = "10px";
+                  mensajeError.style.fontWeight = "bold";
+                  document
+                    .querySelector(".popup-formulario")
+                    .appendChild(mensajeError);
+                }
+
+                campos.forEach(function (campo) {
+                  let input = document.getElementById(campo);
+                  let valor = input.value.trim();
+
+                  if (!valor) {
+                    formularioValido = false;
+                    input.style.border = "2px solid red";
+                  } else {
+                    input.style.border = "2px solid green"; // Indica que el campo está correcto
+                  }
+                });
+
+                if (!formularioValido) {
+                  mensajeError.innerText = "⚠ Campos faltantes obligatorios";
+                  return; // Detiene la ejecución si hay errores
+                } else {
+                  mensajeError.innerText = ""; // Borra el mensaje si el formulario está completo
+                }
+
+                // Ocultar el contenido inicial del popup
+                document.querySelector(".popup-formulario").style.display =
+                  "none";
+                document.querySelector("h2").style.display = "none";
+                document.getElementById("imagen-carro").style.display = "none";
+                document.getElementById("precio-vehiculo-pop").style.display =
+                  "none";
+                document.getElementById("check-terminos").style.display =
+                  "none";
+                document.getElementById("gracias_cotizar").style.display =
+                  "none";
+
+                document.getElementById("auto-sin-entrada-pdf").src =
+                  imagenSeleccionada;
+                document.getElementById("auto-sin-entrada-pdf").style.display =
+                  "block";
+
+                // Mostrar el contenido de PDF
+                document.getElementById("pdf").style.display = "block";
+
+                /*
+            const nombreInput = document.getElementById("nombre");
+            const thankYouMessage = document.getElementById("thankYouMessage");
+
+            function actualizarMensaje() {
+              const nombre = nombreInput.value || "Usuario";
+              thankYouMessage.textContent = `Gracias por Cotizar (${nombre})`;
+            }
+
+            nombreInput.addEventListener("input", actualizarMensaje);
+            actualizarMensaje();
+            */
+
+                document.getElementById(
+                  "precio-vehiculo-pdf"
+                ).value = ` $${avaluoActual.toLocaleString()}`;
+                document.getElementById(
+                  "meses-F"
+                ).value = `     ${selectedMonths}`;
+                document.getElementById(
+                  "porcentaje-F"
+                ).value = `     ${porcentajeGlobal}%`;
+
+                switch (selectedMonths) {
+                  case "24_MESES":
+                    document.getElementById("tasa-F").value = `      5.5%`; // Espacio antes del valor
+                    break;
+                  case "36_MESES":
+                    document.getElementById("tasa-F").value = `      5.84%`;
+                    break;
+                  case "48_MESES":
+                    document.getElementById("tasa-F").value = `      4.38%`;
+                    break;
+                  case "60_MESES":
+                    document.getElementById("tasa-F").value = `      3.5%`;
+                    break;
+                  case "72_MESES":
+                    document.getElementById("tasa-F").value = `      2.92%`;
+                    break;
+                  case "84_MESES":
+                    document.getElementById("tasa-F").value = `      2.92%`;
+                    break;
+                  default:
+                    console.log(
+                      "El tiempo de meses no coincide con ninguno de los valores definidos"
+                    );
+                }
+
+                document.getElementById(
+                  "cuota-F"
+                ).value = `    $${monthlyPrice}`;
+                document.getElementById(
+                  "monto-estimado-F"
+                ).value = ` $${montoEstimado.toLocaleString()}`;
+
+                console.log("MONTO A ESTE PUNTO:" + montoEstimado);
+
+                document.getElementById("boton-cotizar").style.display = "none";
+              });
+
+            //parte de campos obligatorios en SIN ENTRADA
+
+            // Cerrar popup
+            var closePopBtn = document.getElementById("cerrarPop");
+
+            closePopBtn.onclick = function () {
+              document.getElementById("popup").style.display = "none";
+            };
+
+            //-----------DESCARGAR PDF
+            // Helper: format phone to international (Ecuador) for wa.me links
+            function formatPhoneToIntl(phone) {
+              if (!phone) return '';
+              let p = phone.toString().replace(/\D/g, '');
+              // If starts with 0 (e.g., 09xxxx), replace leading 0 with 593
+              if (p.length > 0 && p.charAt(0) === '0') {
+                p = '593' + p.slice(1);
+              }
+              // If starts with +, remove it
+              if (p.charAt(0) === '+') p = p.slice(1);
+              return p;
+            }
+
+            // ...existing code...
+            document
+              .getElementById("btn-quote")
+              .addEventListener("click", function () {
+                console.log("SE DIO CLICK PARA LA DESCARGA");
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+
+                //  Remove the black bar header
+
+                // Añadir logotipo centrado en el encabezado
+                const logoUrl =
+                  "https://finanmotors.com/wp-content/uploads/2025/04/Logo-aplique-blanco_Mesa-de-trabajo-1.png";
+                const logoWidth = 100; // Adjust as needed
+                const logoHeight = 25; // Adjust as needed
+                const logoX =
+                  pdf.internal.pageSize.getWidth() / 2 - logoWidth / 2; // Center horizontally
+                const logoY = 10; // Adjust vertical position as needed
+                pdf.addImage(
+                  logoUrl,
+                  "PNG",
+                  logoX,
+                  logoY,
+                  logoWidth,
+                  logoHeight
+                );
+
+                // Título "PROFORMA VEHICULAR" centrado y con Montserrat Black
+                pdf.setFont("helvetica", "bold");
+                pdf.setFontSize(18);
+                pdf.setTextColor(34, 35, 41);
+                pdf.text(
+                  "PROFORMA VEHICULAR",
+                  pdf.internal.pageSize.getWidth() / 2,
+                  logoY + logoHeight + 10 + 10, // Position below the logo
+                  { align: "center" }
+                );
+
+                // Dos saltos de línea antes de logoImg
+                const logoImg = document.getElementById("auto-sin-entrada-pdf");
+                let imageY = logoY + logoHeight + 20 + 20; // Adjust vertical spacing
+
+                if (logoImg) {
+                  const imgData = logoImg.src;
+                  const imgWidth = 100; // Adjust as needed
+                  const imgHeight = 50; // Adjust as needed
+                  const imgX =
+                    pdf.internal.pageSize.getWidth() / 2 - imgWidth / 2;
+
+                  pdf.addImage(
+                    imgData,
+                    "PNG",
+                    imgX,
+                    imageY,
+                    imgWidth,
+                    imgHeight
+                  );
+                  imageY += imgHeight + 10; // Update for next element
+                } else {
+                  imageY += 20; // If no image, add spacing anyway
+                }
+
+                // Espacio adicional debajo de logoImg antes de las columnas
+                let startY = imageY + 20;
+
+                // Información de usuario (columna izquierda)
+                const nombre = document.getElementById("nombre").value || "";
+                const correo = document.getElementById("correo").value || "";
+                const provincia =
+                  document.getElementById("provincia").value || "";
+                const cedula = document.getElementById("cedula").value || "";
+                const telefono =
+                  document.getElementById("telefono").value || "";
+                const primeroRenovacion =
+                  document.getElementById("primero-renovacion").value || "";
+                const ciudad = document.getElementById("ciudad").value || "";
+                const agencia = document.getElementById("agencia").value || "";
+
+                // Ajuste de posición para columnas
+                let leftColumnX = 25;
+                let rightColumnX = 120;
+                let lineSpacing = 8; // Adjust for spacing between lines
+                let rectHeight = lineSpacing + 4;
+                let rectWidth = 95;
+
+                pdf.setFontSize(10);
+                pdf.setFont("helvetica", "normal");
+                pdf.setTextColor(109, 109, 109);
+                pdf.text("INFORMACIÓN DEL USUARIO", leftColumnX, startY - 12);
+                pdf.setTextColor(164, 164, 164);
+
+                let userStartY = startY + 8;
+
+                pdf.text(`Nombre: ${nombre}`, leftColumnX, startY);
+                pdf.text(`Correo: ${correo}`, leftColumnX, startY + 8);
+                pdf.text(`Provincia: ${provincia}`, leftColumnX, startY + 16);
+                pdf.text(`Cédula: ${cedula}`, leftColumnX, startY + 24);
+                pdf.text(`Teléfono: ${telefono}`, leftColumnX, startY + 32);
+                pdf.text(
+                  `Primero/Renovación: ${primeroRenovacion}`,
+                  leftColumnX,
+                  startY + 40
+                );
+
+                pdf.text(`Ciudad: ${ciudad}`, leftColumnX, startY + 48);
+                pdf.text(`Agencia: ${agencia}`, leftColumnX, startY + 56);
+
+                // Información de la cotización (columna derecha)
+                const precioVehiculo =
+                  document.getElementById("precio-vehiculo-pdf").value || "";
+
+                const meses = document.getElementById("meses-F").value || "";
+
+                const porcentaje =
+                  document.getElementById("porcentaje-F").value || "";
+
+                const tasa = document.getElementById("tasa-F").value || "";
+                const cuota = document.getElementById("cuota-F").value || "";
+
+                const montoEstimado =
+                  document.getElementById("monto-estimado-F").value || "";
+
+                // Obtener marca y modelo
+                const marca =
+                  document.getElementById("marca").value ||
+                  document.getElementById("marca-suvs").value ||
+                  document.getElementById("marca-camionetas").value ||
+                  document.getElementById("marca-camiones").value ||
+                  "";
+
+                const modelo =
+                  document.getElementById("modelo").value ||
+                  document.getElementById("modelo-suvs").value ||
+                  document.getElementById("modelo-camionetas").value ||
+                  document.getElementById("modelo-camiones").value ||
+                  "";
+
+                pdf.setFontSize(10);
+                pdf.setFont("helvetica", "normal");
+                pdf.setTextColor(109, 109, 109);
+                pdf.text(
+                  "INFORMACIÓN DE COTIZACIÓN",
+                  rightColumnX,
+                  startY - 12
+                );
+                pdf.setTextColor(164, 164, 164);
+
+                let cotizacionStartY = startY + 8;
+
+                // Precio estimado del vehículo
+                pdf.text(
+                  `Precio estimado del vehículo: ${precioVehiculo}`,
+                  rightColumnX,
+                  startY
+                );
+                pdf.text(`Marca: ${marca}`, rightColumnX, startY + 8);
+                pdf.text(`Modelo: ${modelo}`, rightColumnX, startY + 16);
+                pdf.text(`Plan Seleccionado: ${planSeleccionado || 'No especificado'}`, rightColumnX, startY + 24);
+                pdf.text(`Meses: ${meses}`, rightColumnX, startY + 32);
+                pdf.text(`Monto:  ${montoEstimado}`, rightColumnX, startY + 40);
+                pdf.text(
+                  `Porcentaje de Entrada: ${porcentaje}`,
+                  rightColumnX,
+                  startY + 48
+                );
+                pdf.text(
+                  `Tasa Administrativa:  ${tasa}`,
+                  rightColumnX,
+                  startY + 56
+                );
+                pdf.text(`Cuota Fija:  ${cuota}`, rightColumnX, startY + 64);
+
+                // Agregar la frase antes del pie de página
+                pdf.setTextColor(109, 109, 109);
+                pdf.setFontSize(9);
+                pdf.setFont("helvetica", "italic");
+                pdf.text(
+                  "Los valores mencionados constituyen una estimación aproximada para su plan vehicular",
+                  pdf.internal.pageSize.getWidth() / 2,
+                  pdf.internal.pageSize.getHeight() - 40,
+                  { align: "center" }
+                );
+
+                // Pie de página
+                pdf.setFontSize(9);
+                pdf.setFont("helvetica", "normal");
+                pdf.text(
+                  "www.finanmotors.com",
+                  pdf.internal.pageSize.getWidth() / 2,
+                  pdf.internal.pageSize.getHeight() - 10,
+                  { align: "center" }
+                );
+                
+                // Keep the existing download behavior
+                const filename = "cotizacion.pdf";
+                pdf.save(filename);
+
+                // Also upload the generated PDF to the REST endpoint and open WhatsApp with the public URL
+                try {
+                  const blob = pdf.output('blob');
+                  const fd = new FormData();
+                  fd.append('file', blob, filename);
+                  fd.append('nombre', nombre);
+                  fd.append('correo', correo);
+                  fd.append('telefono', telefono);
+                  fd.append('vehiculo_marca', marca);
+                  fd.append('vehiculo_modelo', modelo);
+                  fd.append('precio_vehiculo', precioVehiculo);
+                  fd.append('tipo_financiacion', 'CON_O_SIN_ENTRADA');
+
+                  fetch(window.location.origin + '/wp-json/pdf/v1/send', {
+                    method: 'POST',
+                    body: fd,
+                  })
+                    .then((r) => r.json())
+                    .then((json) => {
+                      console.log('PDF upload response:', json);
+                      const publicUrl = json && json.public_url ? json.public_url : '';
+                      const phoneIntl = formatPhoneToIntl(telefono);
+                      const msg = encodeURIComponent(
+                        `Hola ${nombre || ''}, aquí tienes tu cotización: ${publicUrl}`
+                      );
+                      if (phoneIntl) {
+                        window.open('https://wa.me/' + phoneIntl + '?text=' + msg, '_blank');
+                      } else {
+                        // Fallback: open WhatsApp Web share dialog with message only
+                        window.open('https://wa.me/?text=' + msg, '_blank');
+                      }
+                    })
+                    .catch((err) => console.error('Error uploading PDF:', err));
+                } catch (e) {
+                  console.error('PDF blob/upload error', e);
+                }
+              });
+            // ...existing code...
+
+            //COTIZAR OTRO VEHICULO REFRESCANDO LA PAGINA
+            document
+              .getElementById("cotizar-otro")
+              .addEventListener("click", function () {
+                location.reload(); // Recarga la página actual
+              });
+
+            //-----------BTN COTIZAR SIN ENTRADA
+            document
+              .getElementById("boton-cotizarSN")
+              .addEventListener("click", function (event) {
+                event.preventDefault();
+                console.log("SE DIO CLICK PARA LA DESCARGA");
+
+                let campos = [
+                  "nombreSN",
+                  "correoSN",
+                  "provinciaSN",
+                  "cedulaSN",
+                  "telefonoSN",
+                  "ciudadSN",
+                ];
+                let formularioValido = true;
+
+                // Restablecer estilos previos
+                campos.forEach((campo) => {
+                  let input = document.getElementById(campo);
+                  console.log(input);
+                  input.style.border = "1px";
+                });
+
+                document.getElementById("mensajeErrorSN")?.remove();
+
+                // Validar campos vacíos
+                campos.forEach((campo) => {
+                  let input = document.getElementById(campo);
+                  if (!input.value.trim()) {
+                    input.style.border = "2px solid red";
+                    formularioValido = false;
+                  }
+                });
+
+                // Mostrar mensaje de error si hay campos vacíos
+                if (!formularioValido) {
+                  let mensajeError = document.createElement("p");
+                  mensajeError.id = "mensajeErrorSN";
+                  mensajeError.textContent = "⚠ Campos faltantes obligatorios";
+                  mensajeError.style.color = "red";
+                  mensajeError.style.textAlign = "center";
+                  mensajeError.style.marginTop = "10px";
+
+                  document
+                    .querySelector("#popupSN .popup-formulario")
+                    .appendChild(mensajeError);
+                  return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+
+                // Configuración del encabezado
+                const logoUrl =
+                  "https://finanmotors.com/wp-content/uploads/2025/04/Logo-aplique-blanco_Mesa-de-trabajo-1.png";
+                const logoWidth = 100; // Adjust as needed
+                const logoHeight = 25; // Adjust as needed
+                const logoX =
+                  pdf.internal.pageSize.getWidth() / 2 - logoWidth / 2; // Center horizontally
+                const logoY = 10; // Adjust vertical position as needed
+                pdf.addImage(
+                  logoUrl,
+                  "PNG",
+                  logoX,
+                  logoY,
+                  logoWidth,
+                  logoHeight
+                );
+
+                // Título "PROFORMA VEHICULAR" centrado y con Montserrat Black
+                pdf.setFont("helvetica", "bold");
+                pdf.setFontSize(18);
+                pdf.setTextColor(34, 35, 41);
+                pdf.text(
+                  "PROFORMA VEHICULAR",
+                  pdf.internal.pageSize.getWidth() / 2,
+                  logoY + logoHeight + 10 + 10, // Position below the logo
+                  { align: "center" }
+                );
+
+                // Dos saltos de línea antes de logoImg
+                const logoImg = document.getElementById("imagen-carroSN");
+                let imageY = logoY + logoHeight + 20 + 20; // Adjust vertical spacing
+
+                if (logoImg) {
+                  const imgData = logoImg.src;
+                  const imgWidth = 100; // Adjust as needed
+                  const imgHeight = 50; // Adjust as needed
+                  const imgX =
+                    pdf.internal.pageSize.getWidth() / 2 - imgWidth / 2;
+
+                  pdf.addImage(
+                    imgData,
+                    "PNG",
+                    imgX,
+                    imageY,
+                    imgWidth,
+                    imgHeight
+                  );
+                  imageY += imgHeight + 10; // Update for next element
+                } else {
+                  imageY += 20; // If no image, add spacing anyway
+                }
+
+                // Espacio adicional debajo de logoImg antes de las columnas
+                let startY = imageY + 20;
+
+                // Obtener datos del usuario
+                const nombre = document.getElementById("nombreSN").value || "";
+                const correo = document.getElementById("correoSN").value || "";
+                const provincia =
+                  document.getElementById("provinciaSN").value || "";
+                const cedula = document.getElementById("cedulaSN").value || "";
+                const telefono =
+                  document.getElementById("telefonoSN").value || "";
+                const agencia =
+                  document.getElementById("agenciaSN").value || "";
+                const ciudad = document.getElementById("ciudadSN").value || "";
+                const primeroRenovacion =
+                  document.getElementById("primero-renovacionSN").value || "";
+
+                // Ajuste de posición para columnas
+                let leftColumnX = 25;
+                let rightColumnX = 120;
+                let lineSpacing = 8; // Adjust for spacing between lines
+                let rectHeight = lineSpacing + 4;
+                let rectWidth = 95;
+
+                pdf.setFontSize(10);
+                pdf.setFont("helvetica", "normal");
+                pdf.setTextColor(109, 109, 109);
+                pdf.text("INFORMACIÓN DEL USUARIO", leftColumnX, startY - 12);
+                pdf.setTextColor(164, 164, 164);
+
+                let userStartY = startY + 8;
+
+                pdf.text(`Nombre: ${nombre}`, leftColumnX, startY);
+                pdf.text(`Correo: ${correo}`, leftColumnX, startY + 8);
+                pdf.text(`Provincia: ${provincia}`, leftColumnX, startY + 16);
+                pdf.text(`Cédula: ${cedula}`, leftColumnX, startY + 24);
+                pdf.text(`Teléfono: ${telefono}`, leftColumnX, startY + 32);
+                pdf.text(`Agencia: ${agencia}`, leftColumnX, startY + 40);
+                pdf.text(`Ciudad: ${ciudad}`, leftColumnX, startY + 48);
+                pdf.text(
+                  `Primero/Renovación: ${primeroRenovacion}`,
+                  leftColumnX,
+                  startY + 56
+                ); // Información de cotización
+                const precioVehiculo =
+                  document.getElementById("precio-vehiculo-popSN").value || "";
+
+                // Obtener marca y modelo seleccionados correctamente
+                const marcaSeleccionada =
+                  document.getElementById("marca").value ||
+                  document.getElementById("marca-suvs").value ||
+                  document.getElementById("marca-camionetas").value ||
+                  document.getElementById("marca-camiones").value ||
+                  "";
+
+                const modeloSeleccionado =
+                  document.getElementById("modelo").value ||
+                  document.getElementById("modelo-suvs").value ||
+                  document.getElementById("modelo-camionetas").value ||
+                  document.getElementById("modelo-camiones").value ||
+                  "";
+
+                pdf.setFontSize(10);
+                pdf.setFont("helvetica", "normal");
+                pdf.setTextColor(109, 109, 109);
+                pdf.text(
+                  "INFORMACIÓN DE COTIZACIÓN",
+                  rightColumnX,
+                  startY - 12
+                );
+                pdf.setTextColor(164, 164, 164);
+
+                // Precio estimado del vehículo
+                pdf.text(
+                  `Precio Estimado: ${precioVehiculo}`,
+                  rightColumnX,
+                  startY
+                );
+                pdf.text(
+                  `Marca: ${marcaSeleccionada}`,
+                  rightColumnX,
+                  startY + 8
+                );
+                pdf.text(
+                  `Modelo: ${modeloSeleccionado}`,
+                  rightColumnX,
+                  startY + 16
+                );
+                pdf.text(`Plan Seleccionado: ${planSeleccionado || 'No especificado'}`, rightColumnX, startY + 24);
+                pdf.text(`Tipo: Sin Entrada`, rightColumnX, startY + 32);
+
+                // Agregar la frase antes del pie de página
+                pdf.setTextColor(109, 109, 109);
+                pdf.setFontSize(9);
+                pdf.setFont("helvetica", "italic");
+                pdf.text(
+                  "Los valores mencionados constituyen una estimación aproximada para su plan vehicular",
+                  pdf.internal.pageSize.getWidth() / 2,
+                  pdf.internal.pageSize.getHeight() - 40,
+                  { align: "center" }
+                );
+
+                // Pie de página
+                pdf.setFontSize(9);
+                pdf.setFont("helvetica", "normal");
+                pdf.text(
+                  "www.finanmotors.com",
+                  pdf.internal.pageSize.getWidth() / 2,
+                  pdf.internal.pageSize.getHeight() - 10,
+                  { align: "center" }
+                ); 
+                // Descargar el PDF localmente
+                const filenameSN = "cotizacion.pdf";
+                pdf.save(filenameSN);
+
+                // Subir y abrir WhatsApp con enlace público
+                try {
+                  const blobSN = pdf.output('blob');
+                  const fdSN = new FormData();
+                  fdSN.append('file', blobSN, filenameSN);
+                  fdSN.append('nombre', nombre);
+                  fdSN.append('correo', correo);
+                  fdSN.append('telefono', telefono);
+                  fdSN.append('vehiculo_marca', marcaSeleccionada);
+                  fdSN.append('vehiculo_modelo', modeloSeleccionado);
+                  fdSN.append('precio_vehiculo', precioVehiculo);
+                  fdSN.append('tipo_financiacion', 'SIN_ENTRADA');
+
+                  fetch(window.location.origin + '/wp-json/pdf/v1/send', {
+                    method: 'POST',
+                    body: fdSN,
+                  })
+                    .then((r) => r.json())
+                    .then((json) => {
+                      console.log('PDF upload SN response:', json);
+                      const publicUrl = json && json.public_url ? json.public_url : '';
+                      const phoneIntl = formatPhoneToIntl(telefono);
+                      const msg = encodeURIComponent(
+                        `Hola ${nombre || ''}, aquí tienes tu cotización: ${publicUrl}`
+                      );
+                      if (phoneIntl) {
+                        window.open('https://wa.me/' + phoneIntl + '?text=' + msg, '_blank');
+                      } else {
+                        window.open('https://wa.me/?text=' + msg, '_blank');
+                      }
+                    })
+                    .catch((err) => console.error('Error uploading PDF SN:', err));
+                } catch (e) {
+                  console.error('PDF SN blob/upload error', e);
+                }
+              });
+
+            //COTIZAR OTRO VEHICULO REFRESCANDO LA PAGINA
+            document
+              .getElementById("boton-cotizar-otroSN")
+              .addEventListener("click", function () {
+                location.reload(); // Recarga la página actual
+
+              });
+          })
+          .catch((error) => {
+            console.error("Error fetching modelos:", error);
+          });
+      });
+    </script>
+  </body>
+</html>
