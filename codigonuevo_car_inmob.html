@@ -1083,6 +1083,85 @@
         let montoEstimado = 0;
         let monthlyPrice = 0;
         let selectedMonths = "";
+        
+        // Arreglo de agencias por provincia
+        const agencias = {
+          Azuay: [
+            { nombre: "Cuenca (Av. América 7-35 y Turuhuayco)" },
+            { nombre: "Cuenca Sur (Av. Gil Ramírez Davalos 7-38 y Av. Solano)" }
+          ],
+          Pichincha: [
+            { nombre: "Quito Guajalo (Av. Pedro Vicente Maldonado S28-32, entre Calle Borbom, Río Zabaleta)" },
+            { nombre: "Quito Norte (Av. Diego de Vaca y Ramón Chiriboga)" },
+            { nombre: "Quito Sur (Av. Maldonado S1-388 y Chilibulo)" }
+          ],
+          Imbabura: [
+            { nombre: "Ibarra (Av. Cristobal de Troya 5-42 y Velásquez)" }
+          ],
+          Tungurahua: [
+            { nombre: "Ambato (Av. Los Guaytambos 03-15 y Juan Benigno Vela)" }
+          ],
+          Chimborazo: [
+            { nombre: "Riobamba (Av. 11 de Noviembre y Olmedo)" }
+          ],
+          Guayas: [
+            { nombre: "Guayaquil Norte (Av. Francisco de Orellana y Alberto Borges)" },
+            { nombre: "Guayaquil Sur (Av. 25 de Julio 1315 y Av. del Bombero)" },
+            { nombre: "Durán (Av. Nicolás Lapenti, Km 1.5 vía Durán - Tambo)" }
+          ],
+          Manabí: [
+            { nombre: "Manta (Calle 106 y Av. 4 de Noviembre)" },
+            { nombre: "Portoviejo (Av. América y Calle Chile)" }
+          ],
+          El_Oro: [
+            { nombre: "Machala (9 de Mayo entre Tarqui y Rocafuerte)" }
+          ],
+          Loja: [
+            { nombre: "Loja (Av. Universidad Nacional de Loja y José Antonio Eguiguren)" }
+          ],
+          Los_Ríos: [
+            { nombre: "Quevedo (Av. Walter Andrade y 7ma Transversal)" }
+          ],
+          Esmeraldas: [
+            { nombre: "Esmeraldas (Av. Libertad y Calle Sucre)" }
+          ],
+          Santo_Domingo: [
+            { nombre: "Santo Domingo (Av. Quito km 1.5 vía Quevedo)" }
+          ],
+          Cotopaxi: [
+            { nombre: "Latacunga (Av. Eloy Alfaro y Gral. Maldonado)" }
+          ],
+          Cañar: [
+            { nombre: "Azogues (Av. 16 de Abril y Luis Cordero)" }
+          ],
+          Carchi: [
+            { nombre: "Tulcán (Av. Verónica Arias y Sucre)" }
+          ],
+          Bolívar: [
+            { nombre: "Guaranda (Av. Candélario Ríos y 7 de Mayo)" }
+          ],
+          Morona_Santiago: [
+            { nombre: "Macas (Av. del Ejército y Sucre)" }
+          ],
+          Napo: [
+            { nombre: "Tena (Av. Jumandy y 15 de Noviembre)" }
+          ],
+          Orellana: [
+            { nombre: "Coca (Av. Alejandro Labaka y Napo)" }
+          ],
+          Pastaza: [
+            { nombre: "Puyo (Av. Alberto Zambrano y 27 de Febrero)" }
+          ],
+          Santa_Elena: [
+            { nombre: "La Libertad (Av. Eleodoro Solorzano y Calle 23)" }
+          ],
+          Sucumbíos: [
+            { nombre: "Lago Agrio (Av. Quito y Colombia)" }
+          ],
+          Zamora_Chinchipe: [
+            { nombre: "Zamora (Av. del Ejército y Diego de Vaca)" }
+          ]
+        };
 
 
         // Referencias a elementos del DOM
@@ -1539,6 +1618,38 @@
         // Manejar popup
         initializePopup();
         
+        // Configurar funcionalidad de agencias por provincia
+        function configurarAgencias() {
+          document.getElementById("provincia").addEventListener("change", function() {
+            const provinciaSeleccionada = this.value;
+            const agenciaSelect = document.getElementById("agencia");
+            
+            // Limpiar opciones anteriores
+            agenciaSelect.innerHTML = '<option value="">Selecciona la agencia más cercana</option>';
+            
+            if (provinciaSeleccionada && agencias[provinciaSeleccionada]) {
+              // Habilitar el selector de agencia
+              agenciaSelect.disabled = false;
+              
+              // Agregar opciones de agencias para la provincia seleccionada
+              agencias[provinciaSeleccionada].forEach(function(agencia) {
+                const option = document.createElement("option");
+                option.value = agencia.nombre;
+                option.textContent = agencia.nombre;
+                agenciaSelect.appendChild(option);
+              });
+              
+              console.log(`Agencias cargadas para ${provinciaSeleccionada}:`, agencias[provinciaSeleccionada]);
+            } else {
+              // Deshabilitar si no hay provincia seleccionada
+              agenciaSelect.disabled = true;
+            }
+          });
+        }
+        
+        // Inicializar agencias
+        configurarAgencias();
+        
         function initializePopup() {
           // Cerrar popup
           document.getElementById("cerrarPop").addEventListener("click", () => {
@@ -1550,7 +1661,7 @@
             event.preventDefault();
             
             const campos = [
-              "nombre", "correo", "provincia", "primero-renovacion", 
+              "nombre", "correo", "provincia", "agencia", "primero-renovacion", 
               "cedula", "telefono", "ciudad", "terminos"
             ];
             let formularioValido = true;
@@ -1609,9 +1720,11 @@
             
             if (!formularioValido) {
               mensajeError.textContent = "⚠ Por favor completa todos los campos correctamente";
+              mensajeError.style.color = "#f44336";
               return;
             } else {
               mensajeError.textContent = "";
+              mensajeError.style.color = "";
             }
             
             // Mostrar ventana de autorización
@@ -1627,10 +1740,12 @@
           document.getElementById("btn-cancelar").addEventListener("click", () => {
             // Ocultar ventana de autorización
             document.getElementById("ventana-autorizacion").classList.add("hidden");
-            // Mostrar mensaje de cancelación
+            // Mostrar botón COTIZAR nuevamente
+            document.getElementById("boton-cotizar").style.display = "block";
+            // Limpiar cualquier mensaje de error anterior
             const mensajeError = document.getElementById("mensaje-error-global");
-            mensajeError.textContent = "❌ Autorización requerida para continuar con la cotización";
-            mensajeError.style.color = "#f44336";
+            mensajeError.textContent = "";
+            mensajeError.style.color = "";
           });
           
           // Botón descargar PDF
@@ -1703,6 +1818,8 @@
           document.getElementById("nombre").value = "";
           document.getElementById("correo").value = "";
           document.getElementById("provincia").value = "";
+          document.getElementById("agencia").value = "";
+          document.getElementById("agencia").disabled = true;
           document.getElementById("cedula").value = "";
           document.getElementById("telefono").value = "";
           document.getElementById("ciudad").value = "";
@@ -1739,7 +1856,9 @@
           document.getElementById("pdf").classList.add("hidden");
           
           // Limpiar mensajes de error
-          document.getElementById("mensaje-error-global").textContent = "";
+          const mensajeError = document.getElementById("mensaje-error-global");
+          mensajeError.textContent = "";
+          mensajeError.style.color = "";
         }
         
         function generarPDF() {
