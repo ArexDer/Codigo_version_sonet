@@ -395,14 +395,16 @@
       
       .imagen-precio {
         text-align: center;
-        margin: 20px 0;
+        margin: 15px 0;
       }
       
       .imagen-carro {
-        max-width: 300px;
+        max-width: 180px;
         width: 100%;
         height: auto;
         border-radius: 10px;
+        margin: 10px auto;
+        display: block;
       }
       
       .precio-vehiculo-pop {
@@ -509,9 +511,13 @@
       }
       
       .thankYouMessage {
-        color: #072386;
-        font-size: 1.8rem;
+        color: #072386 !important;
+        font-size: 2.2rem;
+        font-weight: bold;
         margin-bottom: 20px;
+        background: none !important;
+        background-color: transparent !important;
+        /* Fondo verde removido completamente - override forzado */
       }
       
       .form-row {
@@ -665,15 +671,15 @@
                 <h3 style="text-align: center; margin-bottom: 20px;">Selecciona tu opción de financiación</h3>
                 <div class="opciones-financiacion">
                   <button class="opcion-financiacion" id="con-entrada">
-                    CON ENTRADA
+                    CON ENTRADA - PLAN ADELANTADO
                     <div class="tooltip">Ideal para reducir tu cuota mensual con un pago inicial</div>
                   </button>
                   <button class="opcion-financiacion" id="sin-entrada">
-                    SIN ENTRADA
+                    SIN ENTRADA - PLAN PUNTUACION
                     <div class="tooltip">Sin pago inicial, comenzar inmediatamente tu plan</div>
                   </button>
                   <button class="opcion-financiacion" id="justo-tiempo">
-                    JUSTO A TIEMPO
+                    JUSTO A TIEMPO - PLAN JUSTO A TIEMPO
                     <div class="tooltip">Planifica tu compra para el momento exacto que necesitas</div>
                   </button>
                 </div>
@@ -899,6 +905,8 @@
               alt="Imagen del carro"
               class="imagen-carro"
             />
+           
+            <!-- PRECIO VEHÍCULO POPUP - COMENTADO PARA USO FUTURO
             <input
               class="precio-vehiculo-pop"
               type="text"
@@ -906,6 +914,8 @@
               disabled
               value=""
             />
+            -->
+           
           </div>
 
           <div class="popup-formulario">
@@ -957,9 +967,11 @@
                 <option value="Zamora_Chinchipe">Zamora Chinchipe</option>
               </select>
 
+              <!-- AGENCIA - COMENTADO PARA USO FUTURO
               <select class="pop-input" id="agencia" disabled>
                 <option value="">Selecciona la agencia más cercana</option>
               </select>
+              -->
 
               <select class="pop-input" id="primero-renovacion">
                 <option value="primero">Mi Primer vehículo</option>
@@ -1033,8 +1045,10 @@
               </div>
 
               <div class="form-row" id="formfinal">
+                <!-- MONTO PLANIFICADO - COMENTADO PARA USO FUTURO
                 <p class="title">Monto Planificado ($):</p>
                 <input class="precio-vehiculo-pdf" type="text" id="precio-vehiculo-pdf" disabled value="" />
+                -->
                 
                 <p class="title">Tiempo de Planificación (Meses):</p>
                 <input class="meses-F" id="meses-F" disabled value="" />
@@ -1083,7 +1097,9 @@
         let montoEstimado = 0;
         let monthlyPrice = 0;
         let selectedMonths = "";
+        let planSeleccionado = ""; // Variable para almacenar el plan seleccionado
         
+        /* ARREGLO DE AGENCIAS POR PROVINCIA - COMENTADO PARA USO FUTURO
         // Arreglo de agencias por provincia
         const agencias = {
           Azuay: [
@@ -1162,6 +1178,7 @@
             { nombre: "Zamora (Av. del Ejército y Diego de Vaca)" }
           ]
         };
+        */
 
 
         // Referencias a elementos del DOM
@@ -1249,6 +1266,7 @@
             
             // Botón CON ENTRADA
             document.getElementById("con-entrada").addEventListener("click", () => {
+              planSeleccionado = "PLAN ADELANTADO"; // Capturar plan seleccionado
               document.getElementById("opciones-financiacion-container").classList.add("hidden");
               document.getElementById("opciones-con-entrada").classList.remove("hidden");
               
@@ -1282,7 +1300,7 @@
                 
                 // Configurar popup
                 document.getElementById("imagen-carro").src = imagenSeleccionada;
-                document.getElementById("precio-vehiculo-pop").value = `${marcaModelo} - Cuota: $${precioMensualTexto}`;
+                // document.getElementById("precio-vehiculo-pop").value = `${marcaModelo} - Cuota: $${precioMensualTexto}`; // COMENTADO - campo oculto
                 document.getElementById("usuario").textContent = "";
                 
                 // Mostrar popup
@@ -1618,6 +1636,7 @@
         // Manejar popup
         initializePopup();
         
+        /* FUNCIONALIDAD DE AGENCIAS - COMENTADO PARA USO FUTURO
         // Configurar funcionalidad de agencias por provincia
         function configurarAgencias() {
           document.getElementById("provincia").addEventListener("change", function() {
@@ -1648,7 +1667,8 @@
         }
         
         // Inicializar agencias
-        configurarAgencias();
+        // configurarAgencias(); // COMENTADO - descomentar si se reactiva funcionalidad
+        */
         
         function initializePopup() {
           // Cerrar popup
@@ -1661,8 +1681,9 @@
             event.preventDefault();
             
             const campos = [
-              "nombre", "correo", "provincia", "agencia", "primero-renovacion", 
+              "nombre", "correo", "provincia", "primero-renovacion", 
               "cedula", "telefono", "ciudad", "terminos"
+              // "agencia", // COMENTADO - descomentar si se reactiva funcionalidad de agencias
             ];
             let formularioValido = true;
             const mensajeError = document.getElementById("mensaje-error-global");
@@ -1795,7 +1816,7 @@
           document.getElementById("auto-pdf").src = imagenSeleccionada;
           
           // Llenar datos del formulario
-          document.getElementById("precio-vehiculo-pdf").value = `$${avaluoActual.toLocaleString()}`;
+          // document.getElementById("precio-vehiculo-pdf").value = `$${avaluoActual.toLocaleString()}`; // COMENTADO - Monto Planificado
           document.getElementById("meses-F").value = selectedMonths.replace("_MESES", " Meses");
           document.getElementById("porcentaje-F").value = `${porcentajeGlobal}%`;
           document.getElementById("cuota-F").value = `$${monthlyPrice}`;
@@ -1818,8 +1839,8 @@
           document.getElementById("nombre").value = "";
           document.getElementById("correo").value = "";
           document.getElementById("provincia").value = "";
-          document.getElementById("agencia").value = "";
-          document.getElementById("agencia").disabled = true;
+          // document.getElementById("agencia").value = ""; // COMENTADO - descomentar si se reactiva agencias
+          // document.getElementById("agencia").disabled = true; // COMENTADO - descomentar si se reactiva agencias
           document.getElementById("cedula").value = "";
           document.getElementById("telefono").value = "";
           document.getElementById("ciudad").value = "";
@@ -1845,6 +1866,7 @@
           montoEstimado = 0;
           monthlyPrice = 0;
           selectedMonths = "";
+          planSeleccionado = ""; // Resetear plan seleccionado
           
           // Mostrar elementos iniciales del popup
           document.querySelector(".popup-formulario").style.display = "flex";
@@ -1874,36 +1896,92 @@
           
           pdf.addImage(logoUrl, "PNG", logoX, logoY, logoWidth, logoHeight);
           
-          // Título
+          // Título principal
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(18);
-          pdf.setTextColor(34, 35, 41);
+          pdf.setTextColor(7, 35, 134); // Color azul corporativo
           pdf.text("PROFORMA VEHICULAR", pdf.internal.pageSize.getWidth() / 2, logoY + logoHeight + 20, { align: 'center' });
+          
+          // Plan seleccionado (debajo del título)
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(14);
+          pdf.setTextColor(102, 126, 234); // Azul más claro
+          pdf.text(planSeleccionado || "PLAN PERSONALIZADO", pdf.internal.pageSize.getWidth() / 2, logoY + logoHeight + 35, { align: 'center' });
+          
+          // Línea decorativa
+          pdf.setDrawColor(102, 126, 234);
+          pdf.setLineWidth(2);
+          pdf.line(20, logoY + logoHeight + 45, pdf.internal.pageSize.getWidth() - 20, logoY + logoHeight + 45);
+          
+          // Sección de datos del cliente con fondo azul claro
+          let yPos = logoY + logoHeight + 60;
+          pdf.setFillColor(240, 244, 255); // Fondo azul muy claro
+          pdf.rect(15, yPos - 5, pdf.internal.pageSize.getWidth() - 30, 50, 'F');
           
           // Datos del cliente
           const nombre = document.getElementById("nombre").value;
           const telefono = document.getElementById("telefono").value;
           const correo = document.getElementById("correo").value;
+          const cedula = document.getElementById("cedula").value;
+          const ciudad = document.getElementById("ciudad").value;
           
           pdf.setFontSize(12);
+          pdf.setFont("helvetica", "bold");
+          pdf.setTextColor(7, 35, 134);
+          pdf.text("INFORMACIÓN DEL CLIENTE", 20, yPos);
+          
           pdf.setFont("helvetica", "normal");
-          let yPos = logoY + logoHeight + 40;
+          pdf.setTextColor(0, 0, 0);
+          pdf.text(`Cliente: ${nombre}`, 20, yPos + 15);
+          pdf.text(`Cédula: ${cedula}`, 20, yPos + 25);
+          pdf.text(`Teléfono: ${telefono}`, 20, yPos + 35);
+          pdf.text(`Email: ${correo}`, 110, yPos + 25);
+          pdf.text(`Ciudad: ${ciudad}`, 110, yPos + 35);
           
-          pdf.text(`Cliente: ${nombre}`, 20, yPos);
-          pdf.text(`Teléfono: ${telefono}`, 20, yPos + 10);
-          pdf.text(`Email: ${correo}`, 20, yPos + 20);
+          // Sección de datos del vehículo
+          yPos += 65;
+          pdf.setFillColor(7, 35, 134); // Fondo azul corporativo
+          pdf.rect(15, yPos - 5, pdf.internal.pageSize.getWidth() - 30, 80, 'F');
           
-          // Datos del vehículo
-          yPos += 40;
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(12);
+          pdf.setTextColor(255, 255, 255); // Texto blanco
+          pdf.text("DETALLES DEL VEHÍCULO", 20, yPos);
+          
           const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
-          pdf.text(`Vehículo: ${vehiculoNombre}`, 20, yPos);
-          pdf.text(`Precio: $${avaluoActual.toLocaleString()}`, 20, yPos + 10);
-          pdf.text(`Cuota mensual: $${monthlyPrice}`, 20, yPos + 20);
-          pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, 20, yPos + 30);
-          pdf.text(`Entrada: ${porcentajeGlobal}%`, 20, yPos + 40);
+          
+          // Calcular tasa administrativa según meses
+          const tasas = {
+            "24_MESES": "5.5%",
+            "36_MESES": "5.84%", 
+            "48_MESES": "4.38%",
+            "60_MESES": "3.5%",
+            "72_MESES": "2.92%",
+            "84_MESES": "2.92%"
+          };
+          const tasaAdministrativa = tasas[selectedMonths] || "2.92%";
+          
+          pdf.setFont("helvetica", "normal");
+          pdf.text(`Vehículo: ${vehiculoNombre}`, 20, yPos + 15);
+          pdf.text(`Tasa administrativa: ${tasaAdministrativa}`, 20, yPos + 25);
+          pdf.text(`Cuota mensual: $${monthlyPrice}`, 20, yPos + 35);
+          pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, 20, yPos + 45);
+          pdf.text(`Entrada: ${porcentajeGlobal}%`, 20, yPos + 55);
+          pdf.text(`Monto estimado: $${montoEstimado.toLocaleString()}`, 20, yPos + 65);
+          
+          // Pie de página con gradiente azul
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          pdf.setFillColor(102, 126, 234);
+          pdf.rect(0, pageHeight - 30, pdf.internal.pageSize.getWidth(), 30, 'F');
+          
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(10);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text("FINANMOTORS - Tu aliado en financiamiento vehicular", pdf.internal.pageSize.getWidth() / 2, pageHeight - 15, { align: 'center' });
+          pdf.text("www.finanmotors.com | contacto@finanmotors.com", pdf.internal.pageSize.getWidth() / 2, pageHeight - 5, { align: 'center' });
           
           // Descargar
-          pdf.save(`Cotizacion_${nombre.replace(/\s+/g, '_')}.pdf`);
+          pdf.save(`Cotizacion_${planSeleccionado.replace(/\s+/g, '_')}_${nombre.replace(/\s+/g, '_')}.pdf`);
         }
 
       });
