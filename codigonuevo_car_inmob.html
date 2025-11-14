@@ -293,6 +293,309 @@
       .hidden {
         display: none !important;
       }
+      
+      /* Estilos para el formulario CON ENTRADA */
+      .opciones-con-entrada {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+      }
+      
+      .titulo_marca_modelo {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      
+      .opciones-con-entrada select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        background: white;
+      }
+      
+      .precio_mensual, .inscripcion {
+        background: #667eea;
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-weight: bold;
+      }
+      
+      .opciones-con-entrada button {
+        background: #072386;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.3s ease;
+      }
+      
+      .opciones-con-entrada button:hover {
+        background: #0a2d99;
+      }
+      
+      /* Estilos para el popup */
+      .popup {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .popup-contenido {
+        background-color: white;
+        padding: 20px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+      }
+      
+      .cerrar {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      
+      .cerrar:hover {
+        color: #000;
+      }
+      
+      .gracias_cotizar {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #072386;
+        margin-bottom: 20px;
+      }
+      
+      .imagen-precio {
+        text-align: center;
+        margin: 20px 0;
+      }
+      
+      .imagen-carro {
+        max-width: 300px;
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+      
+      .precio-vehiculo-pop {
+        width: 300px;
+        max-width: 100%;
+        padding: 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: center;
+        border: 2px solid #667eea;
+        border-radius: 8px;
+        margin-top: 10px;
+        background: #f0f4ff;
+      }
+      
+      .popup-formulario {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+      
+      .columna {
+        flex: 1;
+        min-width: 250px;
+      }
+      
+      .pop-input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+      
+      .pop-input.error {
+        border-color: #f44336;
+      }
+      
+      .pop-input.success {
+        border-color: #4CAF50;
+      }
+      
+      .check-terminos {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+      }
+      
+      .boton-cotizar {
+        background: #072386;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 0 10px;
+        transition: background 0.3s ease;
+      }
+      
+      .boton-cotizar:hover {
+        background: #0a2d99;
+      }
+      
+      .btn-quote, .cotizar-otro {
+        background: #4CAF50;
+        color: white;
+        padding: 15px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+        transition: background 0.3s ease;
+      }
+      
+      .btn-quote:hover, .cotizar-otro:hover {
+        background: #45a049;
+      }
+      
+      .cotizar-otro {
+        background: #667eea;
+      }
+      
+      .cotizar-otro:hover {
+        background: #5a6fd8;
+      }
+      
+      #mensaje-error-global {
+        color: #f44336;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        margin: 10px 0;
+      }
+      
+      .pdf {
+        text-align: center;
+      }
+      
+      .thankYouMessage {
+        color: #072386;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+      }
+      
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 20px 0;
+        text-align: left;
+      }
+      
+      .form-row .title {
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .form-row input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #f9f9f9;
+      }
+      
+      .frase_adjudicacion {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 20px;
+      }
+      
+      /* Estilos para la ventana de autorización */
+      .ventana-autorizacion {
+        background: #f8f9fa;
+        border: 2px solid #667eea;
+        border-radius: 15px;
+        padding: 25px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      
+      .mensaje-autorizacion {
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 20px;
+        line-height: 1.5;
+        font-weight: bold;
+      }
+      
+      .botones-autorizacion {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .btn-autorizar {
+        background: #4CAF50;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      
+      .btn-autorizar:hover {
+        background: #45a049;
+      }
+      
+      .btn-cancelar {
+        background: #f44336;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      
+      .btn-cancelar:hover {
+        background: #d32f2f;
+      }
     </style>
   </head>
 
@@ -375,6 +678,136 @@
                   </button>
                 </div>
               </div>
+              
+              <!-- Formulario CON ENTRADA (inicialmente oculto) -->
+              <div class="opciones-con-entrada hidden" id="opciones-con-entrada">
+                <p class="titulo_marca_modelo">
+                  Estas a un paso de planificar tu auto
+                  <span id="marca_modelo"></span>
+                </p>
+                <input type="text" id="precio-vehiculo-con-entrada" style="display: none" />
+                
+                <select id="montoSelect">
+                  <option value="">Selecciona el monto que deseas:</option>
+                  <option value="8000">$ 8.000</option>
+                  <option value="8500">$ 8.500</option>
+                  <option value="9000">$ 9.000</option>
+                  <option value="9500">$ 9.500</option>
+                  <option value="10000">$ 10.000</option>
+                  <option value="10500">$ 10.500</option>
+                  <option value="11000">$ 11.000</option>
+                  <option value="11500">$ 11.500</option>
+                  <option value="12000">$ 12.000</option>
+                  <option value="12500">$ 12.500</option>
+                  <option value="13000">$ 13.000</option>
+                  <option value="13500">$ 13.500</option>
+                  <option value="14000">$ 14.000</option>
+                  <option value="14500">$ 14.500</option>
+                  <option value="15000">$ 15.000</option>
+                  <option value="15500">$ 15.500</option>
+                  <option value="16000">$ 16.000</option>
+                  <option value="16500">$ 16.500</option>
+                  <option value="17000">$ 17.000</option>
+                  <option value="17500">$ 17.500</option>
+                  <option value="18000">$ 18.000</option>
+                  <option value="18500">$ 18.500</option>
+                  <option value="19000">$ 19.000</option>
+                  <option value="19500">$ 19.500</option>
+                  <option value="20000">$ 20.000</option>
+                  <option value="20500">$ 20.500</option>
+                  <option value="21000">$ 21.000</option>
+                  <option value="21500">$ 21.500</option>
+                  <option value="22000">$ 22.000</option>
+                  <option value="22500">$ 22.500</option>
+                  <option value="23000">$ 23.000</option>
+                  <option value="23500">$ 23.500</option>
+                  <option value="24000">$ 24.000</option>
+                  <option value="24500">$ 24.500</option>
+                  <option value="25000">$ 25.000</option>
+                  <option value="25500">$ 25.500</option>
+                  <option value="26000">$ 26.000</option>
+                  <option value="26500">$ 26.500</option>
+                  <option value="27000">$ 27.000</option>
+                  <option value="27500">$ 27.500</option>
+                  <option value="28000">$ 28.000</option>
+                  <option value="28500">$ 28.500</option>
+                  <option value="29000">$ 29.000</option>
+                  <option value="29500">$ 29.500</option>
+                  <option value="30000">$ 30.000</option>
+                  <option value="30500">$ 30.500</option>
+                  <option value="31000">$ 31.000</option>
+                  <option value="31500">$ 31.500</option>
+                  <option value="32000">$ 32.000</option>
+                  <option value="32500">$ 32.500</option>
+                  <option value="33000">$ 33.000</option>
+                  <option value="33500">$ 33.500</option>
+                  <option value="34000">$ 34.000</option>
+                  <option value="34500">$ 34.500</option>
+                  <option value="35000">$ 35.000</option>
+                  <option value="35500">$ 35.500</option>
+                  <option value="36000">$ 36.000</option>
+                  <option value="36500">$ 36.500</option>
+                  <option value="37000">$ 37.000</option>
+                  <option value="37500">$ 37.500</option>
+                  <option value="38000">$ 38.000</option>
+                  <option value="38500">$ 38.500</option>
+                  <option value="39000">$ 39.000</option>
+                  <option value="39500">$ 39.500</option>
+                  <option value="40000">$ 40000</option>
+                  <option value="40500">$ 40.500</option>
+                  <option value="41000">$ 41.000</option>
+                  <option value="41500">$ 41.500</option>
+                  <option value="42000">$ 42.000</option>
+                  <option value="42500">$ 42.500</option>
+                  <option value="43000">$ 43.000</option>
+                  <option value="43500">$ 43.500</option>
+                  <option value="44000">$ 44.000</option>
+                  <option value="44500">$ 44.500</option>
+                  <option value="45000">$ 45.000</option>
+                  <option value="45500">$ 45.500</option>
+                  <option value="46000">$ 46.000</option>
+                  <option value="46500">$ 46.500</option>
+                  <option value="47000">$ 47.000</option>
+                  <option value="47500">$ 47.500</option>
+                  <option value="48000">$ 48.000</option>
+                  <option value="48500">$ 48.500</option>
+                  <option value="49000">$ 49.000</option>
+                  <option value="49500">$ 49.500</option>
+                  <option value="50000">$ 50.000</option>
+                </select>
+                
+                <select id="porcentaje_auto" name="porcentaje">
+                  <option value="">¿Qué porcentaje de entrada abonas?:</option>
+                  <option value="15">15%</option>
+                  <option value="20">20%</option>
+                  <option value="30">30%</option>
+                  <option value="40">40%</option>
+                  <option value="50">50%</option>
+                  <option value="60">60%</option>
+                </select>
+                
+                <select id="mesesSelect">
+                  <option value="">¿Por cuántos meses deseas pagar?:</option>
+                  <option value="24_MESES">24 Meses</option>
+                  <option value="36_MESES">36 Meses</option>
+                  <option value="48_MESES">48 Meses</option>
+                  <option value="60_MESES">60 Meses</option>
+                  <option value="72_MESES">72 Meses</option>
+                  <option value="84_MESES">84 Meses</option>
+                </select>
+                
+                <div>
+                  <p class="precio_mensual">
+                    Precio mensual: $ <span id="resultadoPrecio">0</span>
+                  </p>
+                  <p class="inscripcion">
+                    Inscripción: $ <span id="resultadoInscripcion">0</span>
+                  </p>
+                </div>
+                
+                <button id="continuar-con-entrada">CONTINUAR</button>
+                <button id="volver-opciones">VOLVER A OPCIONES</button>
+              </div>
             </div>
           </div>
         </div>
@@ -451,6 +884,192 @@
         </div>
       </section>
 
+      <!-- Popup de cotización -->
+      <div id="popup" class="popup hidden">
+        <div class="popup-contenido">
+          <span class="cerrar" id="cerrarPop">&times;</span>
+          <p class="gracias_cotizar" id="gracias_cotizar">
+            Gracias por cotizar con nosotros <span id="usuario"></span>
+          </p>
+
+          <div class="imagen-precio" id="imagen-precio">
+            <img
+              id="imagen-carro"
+              src=""
+              alt="Imagen del carro"
+              class="imagen-carro"
+            />
+            <input
+              class="precio-vehiculo-pop"
+              type="text"
+              id="precio-vehiculo-pop"
+              disabled
+              value=""
+            />
+          </div>
+
+          <div class="popup-formulario">
+            <div class="columna izquierda">
+              <input
+                class="pop-input"
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="Nombres y Apellidos"
+              />
+
+              <input
+                class="pop-input"
+                type="email"
+                id="correo"
+                name="correo"
+                placeholder="Correo Electrónico"
+              />
+
+              <select
+                class="pop-input"
+                id="provincia"
+                name="provincia"
+              >
+                <option value="">Seleccione una Provincia</option>
+                <option value="Azuay">Azuay</option>
+                <option value="Bolívar">Bolívar</option>
+                <option value="Cañar">Cañar</option>
+                <option value="Carchi">Carchi</option>
+                <option value="Chimborazo">Chimborazo</option>
+                <option value="Cotopaxi">Cotopaxi</option>
+                <option value="El_Oro">El Oro</option>
+                <option value="Esmeraldas">Esmeraldas</option>
+                <option value="Guayas">Guayas</option>
+                <option value="Imbabura">Imbabura</option>
+                <option value="Loja">Loja</option>
+                <option value="Los_Ríos">Los Ríos</option>
+                <option value="Manabí">Manabí</option>
+                <option value="Morona_Santiago">Morona Santiago</option>
+                <option value="Napo">Napo</option>
+                <option value="Orellana">Orellana</option>
+                <option value="Pastaza">Pastaza</option>
+                <option value="Pichincha">Pichincha</option>
+                <option value="Santa_Elena">Santa Elena</option>
+                <option value="Santo_Domingo">Santo Domingo</option>
+                <option value="Sucumbíos">Sucumbíos</option>
+                <option value="Tungurahua">Tungurahua</option>
+                <option value="Zamora_Chinchipe">Zamora Chinchipe</option>
+              </select>
+
+              <select class="pop-input" id="agencia" disabled>
+                <option value="">Selecciona la agencia más cercana</option>
+              </select>
+
+              <select class="pop-input" id="primero-renovacion">
+                <option value="primero">Mi Primer vehículo</option>
+                <option value="renovacion">Renovar mi vehículo</option>
+              </select>
+            </div>
+            <div class="columna derecha">
+              <input
+                class="pop-input"
+                type="text"
+                id="cedula"
+                name="cedula"
+                placeholder="Cédula de Identidad"
+              />
+
+              <input
+                class="pop-input"
+                type="text"
+                id="telefono"
+                name="telefono"
+                placeholder="Teléfono"
+              />
+
+              <input
+                class="pop-input"
+                type="text"
+                id="ciudad"
+                name="ciudad"
+                placeholder="Ciudad de Residencia"
+              />
+            </div>
+          </div>
+          
+          <div class="check-terminos">
+            <input type="checkbox" id="terminos" />
+            <label for="terminos">
+              <a
+                style="font-size: 14px"
+                href="https://finanmotors.com/terminos-y-condiciones/"
+                target="_blank"
+                >Acepto los términos y condiciones</a
+              >
+            </label>
+          </div>
+          
+          <div style="text-align: center; margin-top: 20px">
+            <p id="mensaje-error-global"></p>
+            <button class="boton-cotizar" id="boton-cotizar">COTIZAR</button>
+          </div>
+          
+          <!-- VENTANA DE AUTORIZACIÓN -->
+          <div class="ventana-autorizacion hidden" id="ventana-autorizacion">
+            <div class="mensaje-autorizacion">
+              <p>🔒 <strong>AUTORIZACIÓN DE VERIFICACIÓN</strong></p>
+              <p>Autorizo que se revise mi información personal y crediticia en caso de ser necesaria para la verificación de mis datos y evaluación de mi capacidad de pago, de acuerdo con las políticas de la empresa y normativas vigentes.</p>
+              <p><em>Esta autorización es requerida para proceder con la cotización oficial.</em></p>
+            </div>
+            <div class="botones-autorizacion">
+              <button class="btn-autorizar" id="btn-autorizar">SÍ, AUTORIZO</button>
+              <button class="btn-cancelar" id="btn-cancelar">NO AUTORIZO</button>
+            </div>
+          </div>
+          
+          <!-- PARTE FINAL PDF PARA LA DESCARGA -->
+          <div class="pdf hidden" id="pdf">
+            <div class="form-container-pdf" id="form-container-pdf">
+              <h2 id="thankYouMessage" class="thankYouMessage">Gracias por cotizar!</h2>
+
+              <div class="car-image">
+                <img id="auto-pdf" src="" alt="Auto Seleccionado" style="max-width: 300px; width: 100%; border-radius: 10px;" />
+              </div>
+
+              <div class="form-row" id="formfinal">
+                <p class="title">Monto Planificado ($):</p>
+                <input class="precio-vehiculo-pdf" type="text" id="precio-vehiculo-pdf" disabled value="" />
+                
+                <p class="title">Tiempo de Planificación (Meses):</p>
+                <input class="meses-F" id="meses-F" disabled value="" />
+                
+                <p class="title">Porcentaje de Entrada (%):</p>
+                <input class="porcentaje-F" id="porcentaje-F" disabled value="" />
+                
+                <p class="title">Tasa Administrativa (%):</p>
+                <input class="tasa-F" id="tasa-F" disabled value="" />
+                
+                <p class="title">Cuota Fija ($):</p>
+                <input class="cuota-F" id="cuota-F" disabled value="" />
+                
+                <p class="title">Monto Estimado ($):</p>
+                <input type="text" id="monto-estimado-F" disabled value="" />
+              </div>
+              
+              <div>
+                <button class="btn-quote" id="btn-quote">DESCARGAR COTIZACIÓN PDF</button>
+              </div>
+              
+              <div style="margin-top: 20px;">
+                <button class="cotizar-otro" id="cotizar-otro">🚗 COTIZAR OTRO VEHÍCULO</button>
+              </div>
+              
+              <div>
+                <p class="frase_adjudicacion">
+                  <em>* La adjudicación de tu vehículo dependerá del plan que elijas.</em>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <script>
@@ -460,6 +1079,11 @@
         let categoriaSeleccionada = ''; // tipo específico seleccionado
         let avaluoActual = 0;
         let imagenSeleccionada = "";
+        let porcentajeGlobal = 0;
+        let montoEstimado = 0;
+        let monthlyPrice = 0;
+        let selectedMonths = "";
+
 
         // Referencias a elementos del DOM
         const seccionInicial = document.getElementById("seccion-inicial");
@@ -543,6 +1167,132 @@
                 document.getElementById("opciones-financiacion-container").classList.remove("hidden");
               }
             });
+            
+            // Botón CON ENTRADA
+            document.getElementById("con-entrada").addEventListener("click", () => {
+              document.getElementById("opciones-financiacion-container").classList.add("hidden");
+              document.getElementById("opciones-con-entrada").classList.remove("hidden");
+              
+              // Actualizar información del vehículo
+              document.getElementById("precio-vehiculo-con-entrada").value = "AVALUO $" + avaluoActual;
+              const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+              document.getElementById("marca_modelo").textContent = marcaModelo;
+              
+              // Inicializar cálculos
+              cargarDatosYActualizarResultados(
+                "montoSelect",
+                "mesesSelect",
+                "resultadoPrecio",
+                "resultadoInscripcion"
+              );
+            });
+            
+            // Botón volver a opciones
+            document.getElementById("volver-opciones").addEventListener("click", () => {
+              document.getElementById("opciones-con-entrada").classList.add("hidden");
+              document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+            });
+            
+            // Botón continuar CON ENTRADA - abrir popup
+            document.getElementById("continuar-con-entrada").addEventListener("click", () => {
+              if (avaluoActual > 0 && monthlyPrice > 0) {
+                // Preparar datos para el popup
+                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                const precioMensualTexto = document.getElementById("resultadoPrecio").textContent;
+                const inscripcionTexto = document.getElementById("resultadoInscripcion").textContent;
+                
+                // Configurar popup
+                document.getElementById("imagen-carro").src = imagenSeleccionada;
+                document.getElementById("precio-vehiculo-pop").value = `${marcaModelo} - Cuota: $${precioMensualTexto}`;
+                document.getElementById("usuario").textContent = "";
+                
+                // Mostrar popup
+                document.getElementById("popup").classList.remove("hidden");
+                
+                console.log("Abriendo popup con datos:", {
+                  vehiculo: marcaModelo,
+                  precio: avaluoActual,
+                  cuota: precioMensualTexto,
+                  inscripcion: inscripcionTexto,
+                  imagen: imagenSeleccionada
+                });
+              } else {
+                alert("Por favor completa todos los campos antes de continuar.");
+              }
+            });
+            function cargarDatosYActualizarResultados(montoSelectId, mesesSelectId, resultadoPrecioId, resultadoInscripcionId) {
+              fetch("https://finanmotors.com/vehicular_M.json")
+                .then((response) => response.json())
+                .then((data) => {
+                  const montoSelect = document.getElementById(montoSelectId);
+                  const mesesSelect = document.getElementById(mesesSelectId);
+                  const resultadoPrecio = document.getElementById(resultadoPrecioId);
+                  const resultadoInscripcion = document.getElementById(resultadoInscripcionId);
+                  
+                  console.log("JSON CARGADO EXITOSAMENTE", data);
+            
+                  montoSelect.onchange = actualizarResultado;
+                  mesesSelect.onchange = actualizarResultado;
+            
+                  function actualizarResultado() {
+                    const montoSeleccionado = parseFloat(montoSelect.value.replace(/,/g, ""));
+                    const mesesSeleccionado = mesesSelect.value;
+            
+                    console.log("Monto seleccionado:", montoSeleccionado);
+                    console.log("Meses seleccionado:", mesesSeleccionado);
+            
+                    // Buscar en JSON el objeto que coincida con el monto
+                    const resultado = data.find((item) => item.MONTO === montoSeleccionado);
+            
+                    if (resultado && mesesSeleccionado) {
+                      resultadoPrecio.innerText = resultado[mesesSeleccionado] || "No disponible";
+                      resultadoInscripcion.innerText = resultado.INSCRIPCION || "No disponible";
+                      monthlyPrice = resultadoPrecio.innerText;
+                      selectedMonths = mesesSeleccionado;
+                    } else {
+                      resultadoPrecio.innerText = "0";
+                      resultadoInscripcion.innerText = "0";
+                    }
+                  }
+                  
+                  // Agregar event listeners para porcentaje y monto
+                  document.getElementById("porcentaje_auto").addEventListener("change", () => {
+                    porcentajeGlobal = document.getElementById("porcentaje_auto").value;
+                    console.log("El porcentaje de entrada seleccionado: " + porcentajeGlobal);
+                  });
+                  
+                  document.getElementById("montoSelect").addEventListener("change", () => {
+                    montoEstimado = document.getElementById("montoSelect").value;
+                    console.log("Monto seleccionado: " + montoEstimado);
+                  });
+                })
+                .catch((error) => {
+                  console.error("Error al cargar el archivo JSON:", error);
+                  // Fallback con valores simulados
+                  const montoSelect = document.getElementById(montoSelectId);
+                  const mesesSelect = document.getElementById(mesesSelectId);
+                  const resultadoPrecio = document.getElementById(resultadoPrecioId);
+                  const resultadoInscripcion = document.getElementById(resultadoInscripcionId);
+                  
+                  montoSelect.onchange = mesesSelect.onchange = () => {
+                    const monto = parseFloat(montoSelect.value || 0);
+                    const meses = parseInt((mesesSelect.value || "24_MESES").replace("_MESES", ""));
+                    
+                    if (monto > 0 && meses > 0) {
+                      const precioMensual = Math.round((monto * 1.15) / meses);
+                      const inscripcion = Math.round(monto * 0.05);
+                      
+                      resultadoPrecio.innerText = precioMensual.toLocaleString();
+                      resultadoInscripcion.innerText = inscripcion.toLocaleString();
+                      
+                      // Actualizar variables globales
+                      monthlyPrice = precioMensual;
+                      selectedMonths = mesesSelect.value;
+                      montoEstimado = monto;
+                    }
+                  };
+                });
+            }
           }
         }
 
@@ -785,6 +1535,257 @@
             volverInicio();
           }
         });
+        
+        // Manejar popup
+        initializePopup();
+        
+        function initializePopup() {
+          // Cerrar popup
+          document.getElementById("cerrarPop").addEventListener("click", () => {
+            document.getElementById("popup").classList.add("hidden");
+          });
+          
+          // Botón COTIZAR con validaciones
+          document.getElementById("boton-cotizar").addEventListener("click", (event) => {
+            event.preventDefault();
+            
+            const campos = [
+              "nombre", "correo", "provincia", "primero-renovacion", 
+              "cedula", "telefono", "ciudad", "terminos"
+            ];
+            let formularioValido = true;
+            const mensajeError = document.getElementById("mensaje-error-global");
+            
+            // Validar cada campo
+            campos.forEach(function(campo) {
+              const input = document.getElementById(campo);
+              let valor;
+              
+              if (campo === "terminos") {
+                valor = input.checked;
+              } else {
+                valor = input.value.trim();
+              }
+              
+              if (!valor) {
+                formularioValido = false;
+                input.classList.add("error");
+                input.classList.remove("success");
+              } else {
+                // Validaciones específicas
+                if (campo === "cedula") {
+                  if (!/^\d{10}$/.test(valor)) {
+                    formularioValido = false;
+                    input.classList.add("error");
+                    input.classList.remove("success");
+                  } else {
+                    input.classList.add("success");
+                    input.classList.remove("error");
+                  }
+                } else if (campo === "telefono") {
+                  if (!/^\d{9,10}$/.test(valor)) {
+                    formularioValido = false;
+                    input.classList.add("error");
+                    input.classList.remove("success");
+                  } else {
+                    input.classList.add("success");
+                    input.classList.remove("error");
+                  }
+                } else if (campo === "correo") {
+                  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)) {
+                    formularioValido = false;
+                    input.classList.add("error");
+                    input.classList.remove("success");
+                  } else {
+                    input.classList.add("success");
+                    input.classList.remove("error");
+                  }
+                } else {
+                  input.classList.add("success");
+                  input.classList.remove("error");
+                }
+              }
+            });
+            
+            if (!formularioValido) {
+              mensajeError.textContent = "⚠ Por favor completa todos los campos correctamente";
+              return;
+            } else {
+              mensajeError.textContent = "";
+            }
+            
+            // Mostrar ventana de autorización
+            mostrarVentanaAutorizacion();
+          });
+          
+          // Manejar autorización
+          document.getElementById("btn-autorizar").addEventListener("click", () => {
+            // Mostrar sección PDF
+            mostrarSeccionPDF();
+          });
+          
+          document.getElementById("btn-cancelar").addEventListener("click", () => {
+            // Ocultar ventana de autorización
+            document.getElementById("ventana-autorizacion").classList.add("hidden");
+            // Mostrar mensaje de cancelación
+            const mensajeError = document.getElementById("mensaje-error-global");
+            mensajeError.textContent = "❌ Autorización requerida para continuar con la cotización";
+            mensajeError.style.color = "#f44336";
+          });
+          
+          // Botón descargar PDF
+          document.getElementById("btn-quote").addEventListener("click", () => {
+            generarPDF();
+          });
+          
+          // Botón cotizar otro
+          document.getElementById("cotizar-otro").addEventListener("click", () => {
+            // Cerrar popup
+            document.getElementById("popup").classList.add("hidden");
+            
+            // Reset completo del formulario y variables
+            resetearFormularioCompleto();
+            
+            // Volver al inicio
+            volverInicio();
+            
+            // Mensaje de confirmación
+            setTimeout(() => {
+              alert("✅ Listo para una nueva cotización. Selecciona el tipo de vehículo.");
+            }, 500);
+          });
+        }
+        
+        function mostrarVentanaAutorizacion() {
+          // Ocultar botón COTIZAR y mostrar ventana de autorización
+          document.getElementById("boton-cotizar").style.display = "none";
+          document.getElementById("ventana-autorizacion").classList.remove("hidden");
+        }
+        
+        function mostrarSeccionPDF() {
+          // Ocultar formulario y ventana de autorización
+          document.querySelector(".popup-formulario").style.display = "none";
+          document.getElementById("gracias_cotizar").style.display = "none";
+          document.getElementById("imagen-precio").style.display = "none";
+          document.querySelector(".check-terminos").style.display = "none";
+          document.getElementById("boton-cotizar").style.display = "none";
+          document.getElementById("ventana-autorizacion").classList.add("hidden");
+          
+          // Mostrar PDF
+          document.getElementById("pdf").classList.remove("hidden");
+          
+          // Actualizar datos del PDF
+          const nombre = document.getElementById("nombre").value || "Usuario";
+          document.getElementById("thankYouMessage").textContent = `🎉 ¡Gracias por cotizar, ${nombre}!`;
+          document.getElementById("auto-pdf").src = imagenSeleccionada;
+          
+          // Llenar datos del formulario
+          document.getElementById("precio-vehiculo-pdf").value = `$${avaluoActual.toLocaleString()}`;
+          document.getElementById("meses-F").value = selectedMonths.replace("_MESES", " Meses");
+          document.getElementById("porcentaje-F").value = `${porcentajeGlobal}%`;
+          document.getElementById("cuota-F").value = `$${monthlyPrice}`;
+          document.getElementById("monto-estimado-F").value = `$${montoEstimado.toLocaleString()}`;
+          
+          // Calcular tasa administrativa según meses
+          const tasas = {
+            "24_MESES": "5.5%",
+            "36_MESES": "5.84%", 
+            "48_MESES": "4.38%",
+            "60_MESES": "3.5%",
+            "72_MESES": "2.92%",
+            "84_MESES": "2.92%"
+          };
+          document.getElementById("tasa-F").value = tasas[selectedMonths] || "2.92%";
+        }
+        
+        function resetearFormularioCompleto() {
+          // Resetear todos los campos del formulario
+          document.getElementById("nombre").value = "";
+          document.getElementById("correo").value = "";
+          document.getElementById("provincia").value = "";
+          document.getElementById("cedula").value = "";
+          document.getElementById("telefono").value = "";
+          document.getElementById("ciudad").value = "";
+          document.getElementById("primero-renovacion").value = "primero";
+          document.getElementById("terminos").checked = false;
+          
+          // Remover clases de validación
+          document.querySelectorAll(".pop-input").forEach(input => {
+            input.classList.remove("error", "success");
+          });
+          
+          // Resetear formulario CON ENTRADA
+          document.getElementById("montoSelect").value = "";
+          document.getElementById("porcentaje_auto").value = "";
+          document.getElementById("mesesSelect").value = "";
+          document.getElementById("resultadoPrecio").textContent = "0";
+          document.getElementById("resultadoInscripcion").textContent = "0";
+          
+          // Resetear variables globales
+          avaluoActual = 0;
+          imagenSeleccionada = "";
+          porcentajeGlobal = 0;
+          montoEstimado = 0;
+          monthlyPrice = 0;
+          selectedMonths = "";
+          
+          // Mostrar elementos iniciales del popup
+          document.querySelector(".popup-formulario").style.display = "flex";
+          document.getElementById("gracias_cotizar").style.display = "block";
+          document.getElementById("imagen-precio").style.display = "block";
+          document.querySelector(".check-terminos").style.display = "flex";
+          document.getElementById("boton-cotizar").style.display = "block";
+          document.getElementById("ventana-autorizacion").classList.add("hidden");
+          document.getElementById("pdf").classList.add("hidden");
+          
+          // Limpiar mensajes de error
+          document.getElementById("mensaje-error-global").textContent = "";
+        }
+        
+        function generarPDF() {
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF();
+          
+          // Logo
+          const logoUrl = "https://finanmotors.com/wp-content/uploads/2025/04/Logo-aplique-blanco_Mesa-de-trabajo-1.png";
+          const logoWidth = 100;
+          const logoHeight = 25;
+          const logoX = pdf.internal.pageSize.getWidth() / 2 - logoWidth / 2;
+          const logoY = 10;
+          
+          pdf.addImage(logoUrl, "PNG", logoX, logoY, logoWidth, logoHeight);
+          
+          // Título
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(18);
+          pdf.setTextColor(34, 35, 41);
+          pdf.text("PROFORMA VEHICULAR", pdf.internal.pageSize.getWidth() / 2, logoY + logoHeight + 20, { align: 'center' });
+          
+          // Datos del cliente
+          const nombre = document.getElementById("nombre").value;
+          const telefono = document.getElementById("telefono").value;
+          const correo = document.getElementById("correo").value;
+          
+          pdf.setFontSize(12);
+          pdf.setFont("helvetica", "normal");
+          let yPos = logoY + logoHeight + 40;
+          
+          pdf.text(`Cliente: ${nombre}`, 20, yPos);
+          pdf.text(`Teléfono: ${telefono}`, 20, yPos + 10);
+          pdf.text(`Email: ${correo}`, 20, yPos + 20);
+          
+          // Datos del vehículo
+          yPos += 40;
+          const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
+          pdf.text(`Vehículo: ${vehiculoNombre}`, 20, yPos);
+          pdf.text(`Precio: $${avaluoActual.toLocaleString()}`, 20, yPos + 10);
+          pdf.text(`Cuota mensual: $${monthlyPrice}`, 20, yPos + 20);
+          pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, 20, yPos + 30);
+          pdf.text(`Entrada: ${porcentajeGlobal}%`, 20, yPos + 40);
+          
+          // Descargar
+          pdf.save(`Cotizacion_${nombre.replace(/\s+/g, '_')}.pdf`);
+        }
 
       });
     </script>
