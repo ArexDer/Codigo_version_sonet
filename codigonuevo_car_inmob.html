@@ -861,6 +861,420 @@
                 <button id="continuar-con-entrada">CONTINUAR</button>
                 <button id="volver-opciones">VOLVER A OPCIONES</button>
               </div>
+              
+              <!-- Formulario SIN ENTRADA (inicialmente oculto) -->
+              <div class="opciones-con-entrada hidden" id="opciones-sin-entrada">
+                <p class="titulo_marca_modelo">
+                  Estás a un paso de planificar tu auto
+                  <span id="marca_modelo_sin_entrada"></span>
+                </p>
+                <input type="text" id="precio-vehiculo-sin-entrada" style="display: none" />
+                
+                <select id="montoSelectSinEntrada">
+                  <option value="">Selecciona el monto que deseas:</option>
+                  <option value="8000">$ 8.000</option>
+                  <option value="8500">$ 8.500</option>
+                  <option value="9000">$ 9.000</option>
+                  <option value="9500">$ 9.500</option>
+                  <option value="10000">$ 10.000</option>
+                  <option value="10500">$ 10.500</option>
+                  <option value="11000">$ 11.000</option>
+                  <option value="11500">$ 11.500</option>
+                  <option value="12000">$ 12.000</option>
+                  <option value="12500">$ 12.500</option>
+                  <option value="13000">$ 13.000</option>
+                  <option value="13500">$ 13.500</option>
+                  <option value="14000">$ 14.000</option>
+                  <option value="14500">$ 14.500</option>
+                  <option value="15000">$ 15.000</option>
+                  <option value="15500">$ 15.500</option>
+                  <option value="16000">$ 16.000</option>
+                  <option value="16500">$ 16.500</option>
+                  <option value="17000">$ 17.000</option>
+                  <option value="17500">$ 17.500</option>
+                  <option value="18000">$ 18.000</option>
+                  <option value="18500">$ 18.500</option>
+                  <option value="19000">$ 19.000</option>
+                  <option value="19500">$ 19.500</option>
+                  <option value="20000">$ 20.000</option>
+                  <option value="20500">$ 20.500</option>
+                  <option value="21000">$ 21.000</option>
+                  <option value="21500">$ 21.500</option>
+                  <option value="22000">$ 22.000</option>
+                  <option value="22500">$ 22.500</option>
+                  <option value="23000">$ 23.000</option>
+                  <option value="23500">$ 23.500</option>
+                  <option value="24000">$ 24.000</option>
+                  <option value="24500">$ 24.500</option>
+                  <option value="25000">$ 25.000</option>
+                  <option value="25500">$ 25.500</option>
+                  <option value="26000">$ 26.000</option>
+                  <option value="26500">$ 26.500</option>
+                  <option value="27000">$ 27.000</option>
+                  <option value="27500">$ 27.500</option>
+                  <option value="28000">$ 28.000</option>
+                  <option value="28500">$ 28.500</option>
+                  <option value="29000">$ 29.000</option>
+                  <option value="29500">$ 29.500</option>
+                  <option value="30000">$ 30.000</option>
+                  <option value="30500">$ 30.500</option>
+                  <option value="31000">$ 31.000</option>
+                  <option value="31500">$ 31.500</option>
+                  <option value="32000">$ 32.000</option>
+                  <option value="32500">$ 32.500</option>
+                  <option value="33000">$ 33.000</option>
+                  <option value="33500">$ 33.500</option>
+                  <option value="34000">$ 34.000</option>
+                  <option value="34500">$ 34.500</option>
+                  <option value="35000">$ 35.000</option>
+                  <option value="35500">$ 35.500</option>
+                  <option value="36000">$ 36.000</option>
+                  <option value="36500">$ 36.500</option>
+                  <option value="37000">$ 37.000</option>
+                  <option value="37500">$ 37.500</option>
+                  <option value="38000">$ 38.000</option>
+                  <option value="38500">$ 38.500</option>
+                  <option value="39000">$ 39.000</option>
+                  <option value="39500">$ 39.500</option>
+                  <option value="40000">$ 40000</option>
+                  <option value="40500">$ 40.500</option>
+                  <option value="41000">$ 41.000</option>
+                  <option value="41500">$ 41.500</option>
+                  <option value="42000">$ 42.000</option>
+                  <option value="42500">$ 42.500</option>
+                  <option value="43000">$ 43.000</option>
+                  <option value="43500">$ 43.500</option>
+                  <option value="44000">$ 44.000</option>
+                  <option value="44500">$ 44.500</option>
+                  <option value="45000">$ 45.000</option>
+                  <option value="45500">$ 45.500</option>
+                  <option value="46000">$ 46.000</option>
+                  <option value="46500">$ 46.500</option>
+                  <option value="47000">$ 47.000</option>
+                  <option value="47500">$ 47.500</option>
+                  <option value="48000">$ 48.000</option>
+                  <option value="48500">$ 48.500</option>
+                  <option value="49000">$ 49.000</option>
+                  <option value="49500">$ 49.500</option>
+                  <option value="50000">$ 50.000</option>
+                </select>
+                
+                <select id="mesesSelectSinEntrada">
+                  <option value="">¿Por cuántos meses deseas pagar?:</option>
+                  <option value="24_MESES">24 Meses</option>
+                  <option value="36_MESES">36 Meses</option>
+                  <option value="48_MESES">48 Meses</option>
+                  <option value="60_MESES">60 Meses</option>
+                  <option value="72_MESES">72 Meses</option>
+                  <option value="84_MESES">84 Meses</option>
+                </select>
+                
+                <div>
+                  <p class="precio_mensual">
+                    Precio mensual: $ <span id="resultadoPrecioSinEntrada">0</span>
+                  </p>
+                  <p class="inscripcion">
+                    Inscripción: $ <span id="resultadoInscripcionSinEntrada">0</span>
+                  </p>
+                </div>
+                
+                <button id="continuar-sin-entrada">CONTINUAR</button>
+                <button id="volver-opciones-sin-entrada">VOLVER A OPCIONES</button>
+              </div>
+              
+              <!-- Formulario JUSTO A TIEMPO (inicialmente oculto) -->
+              <div class="opciones-con-entrada hidden" id="opciones-justo-tiempo">
+                <p class="titulo_marca_modelo">
+                  Estás a un paso de planificar tu auto
+                  <span id="marca_modelo_justo_tiempo"></span>
+                </p>
+                <input type="text" id="precio-vehiculo-justo-tiempo" style="display: none" />
+                
+                <select id="montoSelectJustoTiempo">
+                  <option value="">Selecciona el monto que deseas:</option>
+                  <option value="8000">$ 8.000</option>
+                  <option value="8500">$ 8.500</option>
+                  <option value="9000">$ 9.000</option>
+                  <option value="9500">$ 9.500</option>
+                  <option value="10000">$ 10.000</option>
+                  <option value="10500">$ 10.500</option>
+                  <option value="11000">$ 11.000</option>
+                  <option value="11500">$ 11.500</option>
+                  <option value="12000">$ 12.000</option>
+                  <option value="12500">$ 12.500</option>
+                  <option value="13000">$ 13.000</option>
+                  <option value="13500">$ 13.500</option>
+                  <option value="14000">$ 14.000</option>
+                  <option value="14500">$ 14.500</option>
+                  <option value="15000">$ 15.000</option>
+                  <option value="15500">$ 15.500</option>
+                  <option value="16000">$ 16.000</option>
+                  <option value="16500">$ 16.500</option>
+                  <option value="17000">$ 17.000</option>
+                  <option value="17500">$ 17.500</option>
+                  <option value="18000">$ 18.000</option>
+                  <option value="18500">$ 18.500</option>
+                  <option value="19000">$ 19.000</option>
+                  <option value="19500">$ 19.500</option>
+                  <option value="20000">$ 20.000</option>
+                  <option value="20500">$ 20.500</option>
+                  <option value="21000">$ 21.000</option>
+                  <option value="21500">$ 21.500</option>
+                  <option value="22000">$ 22.000</option>
+                  <option value="22500">$ 22.500</option>
+                  <option value="23000">$ 23.000</option>
+                  <option value="23500">$ 23.500</option>
+                  <option value="24000">$ 24.000</option>
+                  <option value="24500">$ 24.500</option>
+                  <option value="25000">$ 25.000</option>
+                  <option value="25500">$ 25.500</option>
+                  <option value="26000">$ 26.000</option>
+                  <option value="26500">$ 26.500</option>
+                  <option value="27000">$ 27.000</option>
+                  <option value="27500">$ 27.500</option>
+                  <option value="28000">$ 28.000</option>
+                  <option value="28500">$ 28.500</option>
+                  <option value="29000">$ 29.000</option>
+                  <option value="29500">$ 29.500</option>
+                  <option value="30000">$ 30.000</option>
+                  <option value="30500">$ 30.500</option>
+                  <option value="31000">$ 31.000</option>
+                  <option value="31500">$ 31.500</option>
+                  <option value="32000">$ 32.000</option>
+                  <option value="32500">$ 32.500</option>
+                  <option value="33000">$ 33.000</option>
+                  <option value="33500">$ 33.500</option>
+                  <option value="34000">$ 34.000</option>
+                  <option value="34500">$ 34.500</option>
+                  <option value="35000">$ 35.000</option>
+                  <option value="35500">$ 35.500</option>
+                  <option value="36000">$ 36.000</option>
+                  <option value="36500">$ 36.500</option>
+                  <option value="37000">$ 37.000</option>
+                  <option value="37500">$ 37.500</option>
+                  <option value="38000">$ 38.000</option>
+                  <option value="38500">$ 38.500</option>
+                  <option value="39000">$ 39.000</option>
+                  <option value="39500">$ 39.500</option>
+                  <option value="40000">$ 40000</option>
+                  <option value="40500">$ 40.500</option>
+                  <option value="41000">$ 41.000</option>
+                  <option value="41500">$ 41.500</option>
+                  <option value="42000">$ 42.000</option>
+                  <option value="42500">$ 42.500</option>
+                  <option value="43000">$ 43.000</option>
+                  <option value="43500">$ 43.500</option>
+                  <option value="44000">$ 44.000</option>
+                  <option value="44500">$ 44.500</option>
+                  <option value="45000">$ 45.000</option>
+                  <option value="45500">$ 45.500</option>
+                  <option value="46000">$ 46.000</option>
+                  <option value="46500">$ 46.500</option>
+                  <option value="47000">$ 47.000</option>
+                  <option value="47500">$ 47.500</option>
+                  <option value="48000">$ 48.000</option>
+                  <option value="48500">$ 48.500</option>
+                  <option value="49000">$ 49.000</option>
+                  <option value="49500">$ 49.500</option>
+                  <option value="50000">$ 50.000</option>
+                </select>
+                
+                <select id="mesEntregaSelect">
+                  <option value="">Selecciona el mes de entrega:</option>
+                  <option value="3">3 Meses</option>
+                  <option value="4">4 Meses</option>
+                  <option value="5">5 Meses</option>
+                  <option value="6">6 Meses</option>
+                  <option value="7">7 Meses</option>
+                  <option value="8">8 Meses</option>
+                  <option value="9">9 Meses</option>
+                  <option value="10">10 Meses</option>
+                  <option value="11">11 Meses</option>
+                  <option value="12">12 Meses</option>
+                  <option value="13">13 Meses</option>
+                  <option value="14">14 Meses</option>
+                  <option value="15">15 Meses</option>
+                  <option value="18">18 Meses</option>
+                  <option value="21">21 Meses</option>
+                </select>
+                
+                <!-- Tabla de Plazos y Porcentajes -->
+                <div id="tabla-justo-tiempo" style="margin: 20px 0;">
+                  <h4 style="text-align: center; color: #072386; margin-bottom: 15px;">📊 Tabla de Plazos y Porcentajes</h4>
+                  <table id="tabla-plazos" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                    <thead>
+                      <tr style="background: #072386; color: white;">
+                        <th style="padding: 8px; border: 1px solid #ddd;">Plazo (Meses)</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">30%</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">35%</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">40%</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">45%</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">50%</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabla-plazos-body">
+                      <!-- Las filas se generarán dinámicamente -->
+                    </tbody>
+                  </table>
+                </div>
+                
+                <!-- Resultado de selección -->
+                <div id="resultado-justo-tiempo" style="margin: 20px 0; padding: 15px; background: #f0f4ff; border-radius: 8px; border-left: 4px solid #072386;">
+                  <p id="texto-resultado" style="margin: 0; font-weight: bold; color: #072386;">
+                    Selecciona un monto y mes de entrega para ver el resultado.
+                  </p>
+                </div>
+                
+                <button id="continuar-justo-tiempo">CONTINUAR</button>
+                <button id="volver-opciones-justo-tiempo">VOLVER A OPCIONES</button>
+              </div>
+              
+              <!-- Formulario JUSTO A TIEMPO (inicialmente oculto) -->
+              <div class="opciones-con-entrada hidden" id="opciones-justo-tiempo">
+                <p class="titulo_marca_modelo">
+                  Estás a un paso de planificar tu auto
+                  <span id="marca_modelo_justo_tiempo"></span>
+                </p>
+                <input type="text" id="precio-vehiculo-justo-tiempo" style="display: none" />
+                
+                <select id="montoSelectJustoTiempo">
+                  <option value="">Selecciona el monto que deseas:</option>
+                  <option value="8000">$ 8.000</option>
+                  <option value="8500">$ 8.500</option>
+                  <option value="9000">$ 9.000</option>
+                  <option value="9500">$ 9.500</option>
+                  <option value="10000">$ 10.000</option>
+                  <option value="10500">$ 10.500</option>
+                  <option value="11000">$ 11.000</option>
+                  <option value="11500">$ 11.500</option>
+                  <option value="12000">$ 12.000</option>
+                  <option value="12500">$ 12.500</option>
+                  <option value="13000">$ 13.000</option>
+                  <option value="13500">$ 13.500</option>
+                  <option value="14000">$ 14.000</option>
+                  <option value="14500">$ 14.500</option>
+                  <option value="15000">$ 15.000</option>
+                  <option value="15500">$ 15.500</option>
+                  <option value="16000">$ 16.000</option>
+                  <option value="16500">$ 16.500</option>
+                  <option value="17000">$ 17.000</option>
+                  <option value="17500">$ 17.500</option>
+                  <option value="18000">$ 18.000</option>
+                  <option value="18500">$ 18.500</option>
+                  <option value="19000">$ 19.000</option>
+                  <option value="19500">$ 19.500</option>
+                  <option value="20000">$ 20.000</option>
+                  <option value="20500">$ 20.500</option>
+                  <option value="21000">$ 21.000</option>
+                  <option value="21500">$ 21.500</option>
+                  <option value="22000">$ 22.000</option>
+                  <option value="22500">$ 22.500</option>
+                  <option value="23000">$ 23.000</option>
+                  <option value="23500">$ 23.500</option>
+                  <option value="24000">$ 24.000</option>
+                  <option value="24500">$ 24.500</option>
+                  <option value="25000">$ 25.000</option>
+                  <option value="25500">$ 25.500</option>
+                  <option value="26000">$ 26.000</option>
+                  <option value="26500">$ 26.500</option>
+                  <option value="27000">$ 27.000</option>
+                  <option value="27500">$ 27.500</option>
+                  <option value="28000">$ 28.000</option>
+                  <option value="28500">$ 28.500</option>
+                  <option value="29000">$ 29.000</option>
+                  <option value="29500">$ 29.500</option>
+                  <option value="30000">$ 30.000</option>
+                  <option value="30500">$ 30.500</option>
+                  <option value="31000">$ 31.000</option>
+                  <option value="31500">$ 31.500</option>
+                  <option value="32000">$ 32.000</option>
+                  <option value="32500">$ 32.500</option>
+                  <option value="33000">$ 33.000</option>
+                  <option value="33500">$ 33.500</option>
+                  <option value="34000">$ 34.000</option>
+                  <option value="34500">$ 34.500</option>
+                  <option value="35000">$ 35.000</option>
+                  <option value="35500">$ 35.500</option>
+                  <option value="36000">$ 36.000</option>
+                  <option value="36500">$ 36.500</option>
+                  <option value="37000">$ 37.000</option>
+                  <option value="37500">$ 37.500</option>
+                  <option value="38000">$ 38.000</option>
+                  <option value="38500">$ 38.500</option>
+                  <option value="39000">$ 39.000</option>
+                  <option value="39500">$ 39.500</option>
+                  <option value="40000">$ 40000</option>
+                  <option value="40500">$ 40.500</option>
+                  <option value="41000">$ 41.000</option>
+                  <option value="41500">$ 41.500</option>
+                  <option value="42000">$ 42.000</option>
+                  <option value="42500">$ 42.500</option>
+                  <option value="43000">$ 43.000</option>
+                  <option value="43500">$ 43.500</option>
+                  <option value="44000">$ 44.000</option>
+                  <option value="44500">$ 44.500</option>
+                  <option value="45000">$ 45.000</option>
+                  <option value="45500">$ 45.500</option>
+                  <option value="46000">$ 46.000</option>
+                  <option value="46500">$ 46.500</option>
+                  <option value="47000">$ 47.000</option>
+                  <option value="47500">$ 47.500</option>
+                  <option value="48000">$ 48.000</option>
+                  <option value="48500">$ 48.500</option>
+                  <option value="49000">$ 49.000</option>
+                  <option value="49500">$ 49.500</option>
+                  <option value="50000">$ 50.000</option>
+                </select>
+                
+                <select id="mesEntregaSelect">
+                  <option value="">Selecciona el mes de entrega:</option>
+                  <option value="3">3 Meses</option>
+                  <option value="4">4 Meses</option>
+                  <option value="5">5 Meses</option>
+                  <option value="6">6 Meses</option>
+                  <option value="7">7 Meses</option>
+                  <option value="8">8 Meses</option>
+                  <option value="9">9 Meses</option>
+                  <option value="10">10 Meses</option>
+                  <option value="11">11 Meses</option>
+                  <option value="12">12 Meses</option>
+                  <option value="13">13 Meses</option>
+                  <option value="14">14 Meses</option>
+                  <option value="15">15 Meses</option>
+                  <option value="18">18 Meses</option>
+                  <option value="21">21 Meses</option>
+                </select>
+                
+                <!-- Tabla de Plazos y Porcentajes -->
+                <div id="tabla-justo-tiempo" style="margin: 20px 0;">
+                  <h4 style="text-align: center; color: #072386; margin-bottom: 15px;">📊 Tabla de Plazos y Porcentajes</h4>
+                  <table id="tabla-plazos" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                    <thead>
+                      <tr style="background: #072386; color: white;">
+                        <th style="padding: 8px; border: 1px solid #ddd;">Plazo (Meses)</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">30%</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">35%</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">40%</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">45%</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">50%</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabla-plazos-body">
+                      <!-- Las filas se generarán dinámicamente -->
+                    </tbody>
+                  </table>
+                </div>
+                
+                <!-- Resultado de selección -->
+                <div id="resultado-justo-tiempo" style="margin: 20px 0; padding: 15px; background: #f0f4ff; border-radius: 8px; border-left: 4px solid #072386;">
+                  <p id="texto-resultado" style="margin: 0; font-weight: bold; color: #072386;">
+                    Selecciona un monto y mes de entrega para ver el resultado.
+                  </p>
+                </div>
+                
+                <button id="continuar-justo-tiempo">CONTINUAR</button>
+                <button id="volver-opciones-justo-tiempo">VOLVER A OPCIONES</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1345,10 +1759,81 @@
               );
             });
             
-            // Botón volver a opciones
-            document.getElementById("volver-opciones").addEventListener("click", () => {
-              document.getElementById("opciones-con-entrada").classList.add("hidden");
+            // Botón SIN ENTRADA
+            document.getElementById("sin-entrada").addEventListener("click", () => {
+              planSeleccionado = "PLAN PUNTUACIÓN"; // Capturar plan seleccionado
+              document.getElementById("opciones-financiacion-container").classList.add("hidden");
+              document.getElementById("opciones-sin-entrada").classList.remove("hidden");
+              
+              // Actualizar información del vehículo
+              document.getElementById("precio-vehiculo-sin-entrada").value = "AVALUO $" + avaluoActual;
+              const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+              document.getElementById("marca_modelo_sin_entrada").textContent = marcaModelo;
+              
+              // Inicializar cálculos para SIN ENTRADA
+              cargarDatosYActualizarResultados(
+                "montoSelectSinEntrada",
+                "mesesSelectSinEntrada", 
+                "resultadoPrecioSinEntrada",
+                "resultadoInscripcionSinEntrada",
+                "SIN_ENTRADA"
+              );
+            });
+            
+            // Botón volver a opciones SIN ENTRADA
+            document.getElementById("volver-opciones-sin-entrada").addEventListener("click", () => {
+              document.getElementById("opciones-sin-entrada").classList.add("hidden");
               document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+            });
+            
+            // Botón JUSTO A TIEMPO
+            document.getElementById("justo-tiempo").addEventListener("click", () => {
+              planSeleccionado = "PLAN JUSTO A TIEMPO"; // Capturar plan seleccionado
+              document.getElementById("opciones-financiacion-container").classList.add("hidden");
+              document.getElementById("opciones-justo-tiempo").classList.remove("hidden");
+              
+              // Actualizar información del vehículo
+              document.getElementById("precio-vehiculo-justo-tiempo").value = "AVALUO $" + avaluoActual;
+              const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+              document.getElementById("marca_modelo_justo_tiempo").textContent = marcaModelo;
+              
+              // Generar tabla de plazos
+              generarTablaPlazos();
+              
+              // Inicializar event listeners para JUSTO A TIEMPO
+              inicializarJustoTiempo();
+            });
+            
+            // Botón volver a opciones JUSTO A TIEMPO
+            document.getElementById("volver-opciones-justo-tiempo").addEventListener("click", () => {
+              document.getElementById("opciones-justo-tiempo").classList.add("hidden");
+              document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+            });
+            
+            // Botón continuar JUSTO A TIEMPO - abrir popup
+            document.getElementById("continuar-justo-tiempo").addEventListener("click", () => {
+              if (avaluoActual > 0) {
+                // Preparar datos para el popup
+                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                const textoResultado = document.getElementById("texto-resultado").textContent;
+                
+                // Configurar popup
+                document.getElementById("imagen-carro").src = imagenSeleccionada;
+                document.getElementById("usuario").textContent = "";
+                
+                // Mostrar popup
+                document.getElementById("popup").classList.remove("hidden");
+                
+                console.log("Abriendo popup JUSTO A TIEMPO con datos:", {
+                  vehiculo: marcaModelo,
+                  precio: avaluoActual,
+                  resultado: textoResultado,
+                  imagen: imagenSeleccionada,
+                  plan: planSeleccionado
+                });
+              } else {
+                alert("Por favor completa todos los campos antes de continuar.");
+              }
             });
             
             // Botón continuar CON ENTRADA - abrir popup
@@ -1378,7 +1863,7 @@
                 alert("Por favor completa todos los campos antes de continuar.");
               }
             });
-            function cargarDatosYActualizarResultados(montoSelectId, mesesSelectId, resultadoPrecioId, resultadoInscripcionId) {
+            function cargarDatosYActualizarResultados(montoSelectId, mesesSelectId, resultadoPrecioId, resultadoInscripcionId, tipoEntrada = "CON_ENTRADA") {
               fetch("https://finanmotors.com/vehicular_M.json")
                 .then((response) => response.json())
                 .then((data) => {
@@ -1400,6 +1885,7 @@
             
                     console.log("Monto seleccionado:", montoSeleccionado);
                     console.log("Meses seleccionado:", mesesSeleccionado);
+                    console.log("Tipo de entrada:", tipoEntrada);
             
                     // Almacenar monto seleccionado globalmente
                     montoSeleccionadoGlobal = montoSeleccionado;
@@ -1408,9 +1894,19 @@
                     const resultado = data.find((item) => item.MONTO === montoSeleccionado);
             
                     if (resultado && mesesSeleccionado) {
-                      resultadoPrecio.innerText = resultado[mesesSeleccionado] || "No disponible";
+                      let precioCalculado = resultado[mesesSeleccionado] || "No disponible";
+                      
+                      // Para SIN ENTRADA, puede que necesites ajustar el precio
+                      // En este caso, usaremos el mismo valor pero podrías implementar una lógica diferente
+                      if (tipoEntrada === "SIN_ENTRADA") {
+                        // Aquí puedes aplicar cualquier lógica especial para SIN ENTRADA
+                        // Por ejemplo, podría ser un recargo del 10%
+                        // precioCalculado = precioCalculado * 1.1;
+                      }
+                      
+                      resultadoPrecio.innerText = precioCalculado;
                       resultadoInscripcion.innerText = resultado.INSCRIPCION || "No disponible";
-                      monthlyPrice = resultadoPrecio.innerText;
+                      monthlyPrice = precioCalculado;
                       selectedMonths = mesesSeleccionado;
                     } else {
                       resultadoPrecio.innerText = "0";
@@ -1418,16 +1914,23 @@
                     }
                   }
                   
-                  // Agregar event listeners para porcentaje y monto
-                  document.getElementById("porcentaje_auto").addEventListener("change", () => {
-                    porcentajeGlobal = document.getElementById("porcentaje_auto").value;
-                    console.log("El porcentaje de entrada seleccionado: " + porcentajeGlobal);
+                  // Agregar event listener para monto
+                  montoSelect.addEventListener("change", () => {
+                    montoEstimado = montoSelect.value;
+                    console.log("Monto seleccionado (" + tipoEntrada + "): " + montoEstimado);
                   });
                   
-                  document.getElementById("montoSelect").addEventListener("change", () => {
-                    montoEstimado = document.getElementById("montoSelect").value;
-                    console.log("Monto seleccionado: " + montoEstimado);
-                  });
+                  // Solo agregar event listener para porcentaje si es CON_ENTRADA
+                  if (tipoEntrada === "CON_ENTRADA") {
+                    document.getElementById("porcentaje_auto").addEventListener("change", () => {
+                      porcentajeGlobal = document.getElementById("porcentaje_auto").value;
+                      console.log("El porcentaje de entrada seleccionado: " + porcentajeGlobal);
+                    });
+                  } else {
+                    // Para SIN ENTRADA, el porcentaje es 0
+                    porcentajeGlobal = 0;
+                    console.log("SIN ENTRADA - Porcentaje establecido en: 0%");
+                  }
                 })
                 .catch((error) => {
                   console.error("Error al cargar el archivo JSON:", error);
@@ -1442,7 +1945,13 @@
                     const meses = parseInt((mesesSelect.value || "24_MESES").replace("_MESES", ""));
                     
                     if (monto > 0 && meses > 0) {
-                      const precioMensual = Math.round((monto * 1.15) / meses);
+                      let precioMensual = Math.round((monto * 1.15) / meses);
+                      
+                      // Ajuste para SIN ENTRADA (ejemplo: 10% adicional)
+                      if (tipoEntrada === "SIN_ENTRADA") {
+                        precioMensual = Math.round(precioMensual * 1.1);
+                      }
+                      
                       const inscripcion = Math.round(monto * 0.05);
                       
                       resultadoPrecio.innerText = precioMensual.toLocaleString();
@@ -1452,6 +1961,10 @@
                       monthlyPrice = precioMensual;
                       selectedMonths = mesesSelect.value;
                       montoEstimado = monto;
+                      
+                      if (tipoEntrada === "SIN_ENTRADA") {
+                        porcentajeGlobal = 0;
+                      }
                     }
                   };
                 });
@@ -1929,6 +2442,25 @@
           document.getElementById("resultadoPrecio").textContent = "0";
           document.getElementById("resultadoInscripcion").textContent = "0";
           
+          // Resetear formulario SIN ENTRADA
+          document.getElementById("montoSelectSinEntrada").value = "";
+          document.getElementById("mesesSelectSinEntrada").value = "";
+          document.getElementById("resultadoPrecioSinEntrada").textContent = "0";
+          document.getElementById("resultadoInscripcionSinEntrada").textContent = "0";
+          
+          // Resetear formulario JUSTO A TIEMPO
+          document.getElementById("montoSelectJustoTiempo").value = "";
+          document.getElementById("mesEntregaSelect").value = "";
+          document.getElementById("texto-resultado").textContent = "Selecciona un monto y mes de entrega para ver el resultado.";
+          
+          // Limpiar selección de tabla
+          document.querySelectorAll(".seleccionada").forEach(celda => {
+            celda.classList.remove("seleccionada");
+            celda.style.backgroundColor = "";
+            celda.style.color = "";
+            celda.style.fontWeight = "";
+          });
+          
           // Resetear variables globales
           avaluoActual = 0;
           imagenSeleccionada = "";
@@ -1948,6 +2480,11 @@
           document.getElementById("boton-cotizar").style.display = "block";
           document.getElementById("ventana-autorizacion").classList.add("hidden");
           document.getElementById("pdf").classList.add("hidden");
+          
+          // Ocultar formularios de opciones
+          document.getElementById("opciones-con-entrada").classList.add("hidden");
+          document.getElementById("opciones-sin-entrada").classList.add("hidden");
+          document.getElementById("opciones-justo-tiempo").classList.add("hidden");
           
           // Limpiar mensajes de error
           const mensajeError = document.getElementById("mensaje-error-global");
@@ -2282,6 +2819,227 @@
             console.error('❌ Error al descargar PDF:', error);
             alert('Error al generar el PDF. Revisa la consola para más detalles.');
           }
+        }
+        
+        // Función para generar tabla de plazos
+        function generarTablaPlazos() {
+          // Datos de la tabla según especificaciones del usuario
+          const datosTabla = {
+            24: { 30: 7, 35: 6, 40: 5, 45: 4, 50: 3 },
+            36: { 30: 11, 35: 9, 40: 8, 45: 6, 50: 5 },
+            48: { 30: 14, 35: 12, 40: 10, 45: 8, 50: 6 },
+            60: { 30: 18, 35: 15, 40: 13, 45: 10, 50: 8 },
+            72: { 30: 21, 35: 18, 40: 15, 45: 12, 50: 9 }
+          };
+          
+          const tbody = document.getElementById("tabla-plazos-body");
+          tbody.innerHTML = "";
+          
+          // Generar filas de la tabla
+          Object.keys(datosTabla).forEach(plazo => {
+            const fila = document.createElement("tr");
+            fila.style.cursor = "pointer";
+            fila.setAttribute("data-plazo", plazo);
+            
+            // Columna de plazo
+            const celdaPlazo = document.createElement("td");
+            celdaPlazo.style.padding = "8px";
+            celdaPlazo.style.border = "1px solid #ddd";
+            celdaPlazo.style.textAlign = "center";
+            celdaPlazo.style.fontWeight = "bold";
+            celdaPlazo.textContent = `${plazo} meses`;
+            fila.appendChild(celdaPlazo);
+            
+            // Columnas de porcentajes
+            [30, 35, 40, 45, 50].forEach(porcentaje => {
+              const celda = document.createElement("td");
+              celda.style.padding = "8px";
+              celda.style.border = "1px solid #ddd";
+              celda.style.textAlign = "center";
+              celda.setAttribute("data-porcentaje", porcentaje);
+              celda.textContent = datosTabla[plazo][porcentaje];
+              
+              // Agregar hover effect
+              celda.addEventListener("mouseenter", () => {
+                celda.style.backgroundColor = "#e3f2fd";
+              });
+              celda.addEventListener("mouseleave", () => {
+                if (!celda.classList.contains("seleccionada")) {
+                  celda.style.backgroundColor = "";
+                }
+              });
+              
+              fila.appendChild(celda);
+            });
+            
+            // Alternar color de fondo
+            if (parseInt(plazo) % 2 === 0) {
+              fila.style.backgroundColor = "#f9f9f9";
+            }
+            
+            tbody.appendChild(fila);
+          });
+        }
+        
+        // Función para inicializar JUSTO A TIEMPO
+        function inicializarJustoTiempo() {
+          const montoSelect = document.getElementById("montoSelectJustoTiempo");
+          const mesEntregaSelect = document.getElementById("mesEntregaSelect");
+          const textoResultado = document.getElementById("texto-resultado");
+          
+          function actualizarResultado() {
+            const monto = parseFloat(montoSelect.value);
+            const mesEntregaValue = mesEntregaSelect.value;
+            
+            // Datos de la tabla
+            const datosTabla = {
+              24: { 30: 7, 35: 6, 40: 5, 45: 4, 50: 3 },
+              36: { 30: 11, 35: 9, 40: 8, 45: 6, 50: 5 },
+              48: { 30: 14, 35: 12, 40: 10, 45: 8, 50: 6 },
+              60: { 30: 18, 35: 15, 40: 13, 45: 10, 50: 8 },
+              72: { 30: 21, 35: 18, 40: 15, 45: 12, 50: 9 }
+            };
+            
+            // Limpiar todas las selecciones anteriores
+            document.querySelectorAll(".seleccionada, .resaltada-numero").forEach(celda => {
+              celda.classList.remove("seleccionada", "resaltada-numero");
+              celda.style.backgroundColor = "";
+              celda.style.color = "";
+              celda.style.fontWeight = "";
+            });
+            
+            // Limpiar colores de fondo de filas
+            document.querySelectorAll("#tabla-plazos-body tr").forEach(fila => {
+              fila.style.backgroundColor = "";
+              const plazo = fila.getAttribute("data-plazo");
+              if (parseInt(plazo) % 2 === 0) {
+                fila.style.backgroundColor = "#f9f9f9";
+              }
+            });
+            
+            if (mesEntregaValue) {
+              // Resaltar todas las celdas que contengan el número seleccionado
+              document.querySelectorAll("#tabla-plazos-body td").forEach(celda => {
+                const textoCelda = celda.textContent.trim();
+                if (textoCelda === mesEntregaValue) {
+                  celda.classList.add("resaltada-numero");
+                  celda.style.backgroundColor = "#ffeb3b";
+                  celda.style.color = "#000";
+                  celda.style.fontWeight = "bold";
+                  celda.style.border = "2px solid #ff9800";
+                }
+              });
+              
+              // Si hay monto seleccionado, calcular opciones de pago
+              if (monto) {
+                // Buscar en qué filas y columnas aparece el mes seleccionado
+                const opcionesPago = [];
+                
+                Object.keys(datosTabla).forEach(plazoMeses => {
+                  Object.keys(datosTabla[plazoMeses]).forEach(porcentaje => {
+                    const valorCelda = datosTabla[plazoMeses][porcentaje];
+                    if (valorCelda.toString() === mesEntregaValue) {
+                      // Calcular el monto a pagar con este porcentaje
+                      const montoPorcentaje = monto * (parseInt(porcentaje) / 100);
+                      opcionesPago.push({
+                        plazo: plazoMeses,
+                        porcentaje: porcentaje,
+                        montoAPagar: montoPorcentaje
+                      });
+                    }
+                  });
+                });
+                
+                // Mostrar resultados
+                if (opcionesPago.length > 0) {
+                  let textoOpciones = `<div style="background: #f0f8ff; padding: 15px; border-radius: 8px; border-left: 4px solid #072386;">`;
+                  textoOpciones += `<h4 style="margin: 0 0 10px 0; color: #072386;">🎯 Opciones de Pago para el Mes ${mesEntregaValue}</h4>`;
+                  textoOpciones += `<p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #666;"><strong>Monto Base:</strong> $${monto.toLocaleString()}</p>`;
+                  
+                  opcionesPago.forEach((opcion, index) => {
+                    textoOpciones += `
+                      <div style="background: white; margin: 8px 0; padding: 12px; border-radius: 6px; border: 1px solid #ddd;">
+                        <h5 style="margin: 0 0 8px 0; color: #072386;">📋 Opción ${index + 1}: Plan de ${opcion.plazo} meses</h5>
+                        <p style="margin: 0; font-size: 0.95rem;">
+                          📊 <strong>Porcentaje:</strong> ${opcion.porcentaje}% del monto base<br>
+                          💰 <strong>Cálculo:</strong> $${monto.toLocaleString()} × ${opcion.porcentaje}% = <span style="color: #072386; font-weight: bold;">$${Math.round(opcion.montoAPagar).toLocaleString()}</span><br>
+                          📅 <strong>Debes pagar:</strong> $${Math.round(opcion.montoAPagar).toLocaleString()} en el mes ${mesEntregaValue}
+                        </p>
+                      </div>
+                    `;
+                    
+                    // Resaltar la celda correspondiente en azul
+                    const fila = document.querySelector(`tr[data-plazo="${opcion.plazo}"]`);
+                    if (fila) {
+                      const celdaCorrespondiente = fila.querySelector(`td[data-porcentaje="${opcion.porcentaje}"]`);
+                      if (celdaCorrespondiente && celdaCorrespondiente.textContent.trim() === mesEntregaValue) {
+                        celdaCorrespondiente.style.backgroundColor = "#072386";
+                        celdaCorrespondiente.style.color = "white";
+                        celdaCorrespondiente.style.fontWeight = "bold";
+                        celdaCorrespondiente.style.border = "3px solid #001122";
+                      }
+                    }
+                  });
+                  
+                  textoOpciones += `</div>`;
+                  textoResultado.innerHTML = textoOpciones;
+                  
+                  // Almacenar valores para PDF (usar la primera opción)
+                  monthlyPrice = Math.round(opcionesPago[0].montoAPagar);
+                  selectedMonths = `${opcionesPago[0].plazo}_MESES`;
+                  porcentajeGlobal = parseInt(opcionesPago[0].porcentaje);
+                  montoEstimado = monto;
+                  
+                } else {
+                  textoResultado.innerHTML = `
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                      <h4 style="margin: 0; color: #856404;">⚠️ No hay opciones disponibles</h4>
+                      <p style="margin: 8px 0 0 0; color: #856404;">El mes ${mesEntregaValue} no está disponible en la tabla de plazos con el monto actual.</p>
+                    </div>
+                  `;
+                }
+              } else {
+                textoResultado.innerHTML = `
+                  <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
+                    <h4 style="margin: 0 0 8px 0; color: #1976d2;">📝 Mes ${mesEntregaValue} seleccionado</h4>
+                    <p style="margin: 0; color: #1976d2;">Selecciona un monto para ver las opciones de pago disponibles para este mes.</p>
+                  </div>
+                `;
+              }
+            } else {
+              textoResultado.textContent = "Selecciona un monto y mes a pagar para ver el resultado.";
+            }
+          }
+          
+          // Event listeners
+          montoSelect.addEventListener("change", actualizarResultado);
+          mesEntregaSelect.addEventListener("change", actualizarResultado);
+          
+          // Event listener adicional solo para resaltar números cuando se cambie el mes
+          mesEntregaSelect.addEventListener("change", function() {
+            const mesSeleccionado = this.value;
+            
+            // Limpiar resaltados anteriores de números
+            document.querySelectorAll(".resaltada-numero").forEach(celda => {
+              celda.classList.remove("resaltada-numero");
+              celda.style.border = "1px solid #ddd";
+              // No cambiar otros estilos aquí para que actualizarResultado maneje todo
+            });
+            
+            // Si hay un mes seleccionado, resaltar todas las celdas con ese número
+            if (mesSeleccionado) {
+              document.querySelectorAll("#tabla-plazos-body td").forEach(celda => {
+                const textoCelda = celda.textContent.trim();
+                if (textoCelda === mesSeleccionado) {
+                  celda.classList.add("resaltada-numero");
+                  celda.style.backgroundColor = "#ffeb3b"; // Amarillo para resaltar números
+                  celda.style.color = "#000";
+                  celda.style.fontWeight = "bold";
+                  celda.style.border = "3px solid #ff9800";
+                }
+              });
+            }
+          });
         }
 
       });
