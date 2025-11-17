@@ -1,0 +1,580 @@
+/*
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+*/
+
+
+body {
+    background-color: #54595F;
+    font-family: mont;
+   
+}
+
+p{
+    text-align: center;
+    font-size: 12px;
+     
+}
+
+.inscripcion, .precio_mensual,.marca,.modelo{
+    color: #54595F;
+    text-align: left;
+    font-size: 12px;
+    font-family: Mont;
+    
+
+}
+.entrada_opciones{
+    color: #54595F
+    
+}
+
+.texto-vehicular{
+    font-size: 16px;
+   
+}
+
+
+.cotizador {
+    margin: 0px auto;
+}
+
+h1 {
+    font-size: 15px;
+    color: #54595F;
+}
+
+.titulo_marca_modelo{
+    font-size: 16px;
+    font-family: Mont;
+    color: #54595F;
+    margin-bottom: 18px;
+}
+
+
+.highlight {
+    color: orange;
+    font-weight: bold;
+   
+}
+
+.vehicle-types {
+    display: flex;
+    justify-content: center;
+   
+    gap: 80px;
+    margin-top: 50px;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten a nuevas líneas en pantallas pequeñas */
+}
+
+@media (max-width: 1024px) {
+    .vehicle-types {
+        gap: 30px; /* Reducir el espacio entre los elementos en pantallas medianas */
+        margin-top: 20px; /* Reducir el margen superior */
+    }
+}
+
+@media (max-width: 768px) {
+    .vehicle-types {
+        display: grid;
+        grid-template-columns: 50% 50%; 
+        grid-template-rows: auto auto; /* Dos filas */
+        gap: 10px; /* Espacio entre elementos */
+        justify-content: center; /* Centrar los elementos horizontalmente */
+        margin-top: 10px; /* Ajustar el margen superior */
+    }
+}
+
+
+
+@media (max-width: 480px) {
+    .vehicle-types {
+        gap: 0px; /* Reducir el espacio aún más en pantallas muy pequeñas */
+        margin-top: 0px; /* Ajustar el margen superior */
+    }
+}
+
+
+.vehicle {
+    text-align: center;
+}
+
+.vehicle img {
+    width: 120px;
+    height: auto;
+    border-radius: 1px;
+    transition: transform 2s ease; /* Transición suave de 2 segundos */
+}
+
+
+.vehicle:hover img {
+    transform: scale(1.3); /* Aumenta el tamaño al 120% */
+}
+
+.vehicle p {
+    margin-top: 0px;
+    font-size: 15px;
+    color: #54595F;
+}
+
+
+.vehicle {
+    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+}
+
+.vehicle.selected {
+    opacity: 1; /* Asegura que el vehículo seleccionado tenga opacidad total */
+}
+
+/* LINEA HORIZAONTAL */
+
+
+/* ---------- VEHICULOS     ---------- */
+
+.detalle-vehiculo {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*background-color: cadetblue;*/
+    
+}
+
+
+
+.detalle-vehiculo-suvs{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(117, 119, 219);
+
+}
+
+.detalle-vehiculo-camionetas{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(89, 204, 114);
+}
+.detalle-vehiculo-camiones{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(207, 81, 211);
+
+}
+
+.vehiculo-container {
+    display: flex;
+    gap: 140px;
+    margin: 10px;
+    width: 100%; /* Usamos 100% para que ocupe todo el espacio disponible */
+    max-width: 1000px; /* Limita el ancho máximo a 1000px */
+    margin-left: auto; /* Centra el contenedor en pantallas grandes */
+    margin-right: auto; /* Centra el contenedor en pantallas grandes */
+    
+    
+}
+
+
+
+@media (max-width: 1024px) {
+    .vehiculo-container {
+        gap: 80px; /* Reducir el espacio entre elementos en pantallas medianas */
+    }
+}
+
+@media (max-width: 768px) {
+    .vehiculo-container {
+        gap: 30px; /* Reducir aún más el espacio entre elementos */
+        flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+        align-items: center; /* Centrar los elementos cuando están en columna */
+    }
+}
+
+@media (max-width: 480px) {
+    .vehiculo-container {
+        gap: 20px; /* Reducir el espacio aún más en pantallas muy pequeñas */
+        margin: 10px; /* Reducir el margen */
+    }
+}
+
+
+.vehiculo-imagen img {
+    width: 500px;
+    height: auto;
+    border-radius: 0px;
+   
+}
+
+#auto-precio, #suv-precio, #camioneta-precio, #camion-precio{
+    font-size: 15px;
+    font-family: Mont;
+    color: #54595F;
+    border-bottom: 0.5px solid orange;
+    
+}
+
+.vehiculo-selectores-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px; /* Ancho fijo para mantener consistencia */
+     /*gap:20px*/
+    
+}
+
+
+.vehiculo-selectores {
+    display: flex;
+    flex-direction: column;
+
+    
+}
+
+
+
+select {
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 8px;
+    margin: 8px 0px;
+    border: none;
+    border-bottom: 3px solid #FFA400;
+    background: #F7F7F7;
+    
+
+}
+
+option{
+    background: #F7F7F7;
+}
+
+
+.precio-vehiculo{
+    border: none;
+    color: #54595F;
+    background-color: #F7F7F7;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.precio_mensual, .inscripcion{
+    padding: 10px;
+    font-family: 'Mont';
+    font-weight: 500; 
+    border-radius: 8px;
+    background-color: #54595F;
+    color: #FFA400;
+    border-bottom: 1px solid #FFA400;
+    margin-top: 20px; 
+    margin-bottom: 15px; 
+}
+
+
+/* BOTON DE CONTINUAR */
+#continuar{
+    font-size: 15px;
+    background: #FFA400;
+    font-weight: 500; 
+}  
+
+button {
+    margin-top: 5px;
+    padding: 10px ;
+    font-size: 15px;
+    color: white;
+    font-weight: 500; 
+    background-color: rgb(35, 161, 56);
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+    justify-content: center;
+    width: 100%; /*ajustado al tamaño de la parte derecha */
+}
+
+
+button:hover {
+    color: white;
+    background-color: #FFA400;
+    font-weight: 500; 
+}
+
+/* Botones de opciones (inicialmente ocultos) */
+.opciones-botones  {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.opciones-con-entrada{
+    display: flex;
+    flex-direction: column;
+   
+}
+
+#precio-vehiculo-con-entrada, #estimado{
+    border-radius: 7px;
+}
+
+#marca_modelo, #marca_modelo_Suv, #marca_modelo_Camioneta,#marca_modelo_Camion{
+     font-weight: bold;
+     color: #FFA400;
+}
+
+/* --- pdf */
+/* POPUP */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que esté encima de todos los elementos */
+}
+
+.popup-contenido {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 600px; /* Establece un tamaño máximo para evitar que se haga muy grande */
+    max-height: 90%; /* Para asegurarte de que el contenido no exceda la pantalla */
+    overflow-y: auto; /* Permitir scroll si el contenido es más grande que el popup */
+    text-align: center;
+}
+
+/* Responsividad para pantallas medianas y pequeñas */
+@media (max-width: 1024px) {
+    .popup-contenido {
+        width: 60%; /* Reducir el ancho para pantallas medianas */
+        max-width: 500px; /* Reducir el tamaño máximo */
+    }
+}
+
+@media (max-width: 768px) {
+    .popup-contenido {
+        width: 80%; /* Aumentar el ancho para pantallas más pequeñas */
+        max-width: 400px; /* Reducir el tamaño máximo */
+        padding: 15px; /* Reducir el padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-contenido {
+        width: 90%; /* Hacer el popup más grande en pantallas muy pequeñas */
+        max-width: 350px; /* Limitar el tamaño máximo */
+        padding: 10px; /* Ajustar el padding */
+    }
+}
+
+
+
+
+.precio-vehiculo-pop, .precio-vehiculo-popSN {
+    display: block; /* Para que se comporte como un bloque y se pueda centrar */
+    margin: auto auto; /* Centra horizontalmente el input */
+    width: 80%; /* Ajusta el ancho del input */
+    text-align: center; /* Centra el texto dentro del input */
+    border: none;
+    
+    color: #F9B651;
+    font-size: 14px;
+   
+}
+#precio-vehiculo-pop, #precio-vehiculo-popSN{
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #F9B651;
+    
+}
+
+.gracias_cotizar{
+    color: #54595F;
+    font-size: 16px;
+    font-weight: bold
+}
+
+.cerrar {
+    float: right;
+    font-size: 16px;
+    cursor: pointer;
+    color: #54595F;
+   
+}
+.pop-input{
+    font-size: 12px;
+    
+    
+}
+
+.imagen-carro {
+    width: 450px;
+    height: auto;
+    margin: 20px auto;
+   
+}
+
+.popup-formulario {
+    display: grid;
+    grid-template-columns: 50% 50%; /* Dos columnas iguales */
+    gap: 10px; /* Espacio entre columnas */
+    margin-top: 0px;
+    padding: 10px 20px;
+}
+
+.columna-izquierda, .columna-derecha {
+    background: #f0f0f0; /* Solo para visualizar */
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.check-terminos {
+    grid-column: span 2; /* Ocupa las dos columnas */
+    text-align: center; /* Alinea el contenido al centro */
+    margin-top: 10px;
+}
+
+.columna {
+    width: 98%;
+}
+
+.columna label {
+    display: block;
+    /*margin-top: 1px;*/
+    text-align: left; /* Alinear los labels a la izquierda */
+}
+
+.columna input,
+.columna select {
+    width: 100%;
+    padding: 6px;
+    margin-top: 8px;
+    text-align: left; /* Asegurarte de que el texto dentro del input esté alineado a la izquierda */
+    color: #A4A4A4;
+   border-radius: 8px;
+   border: 1px solid #EEEEEE;
+}
+
+.check-terminos{
+    gap: 10px;
+    justify-content: center;
+}
+.checkbox-group {
+    display: grid;
+    grid-row: 1;
+    justify-content: left;
+
+    gap: 10px; /* Ajusta el espacio entre el checkbox y el texto */
+}
+.terminos{
+    font-size: 10px;
+}
+
+
+
+/* Ajustes para el contenedor de .pdf */
+.pdf {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+   /* border: 4px solid rgb(206, 17, 17); */
+    width: 100%; /* Asegurarte de que no exceda el ancho del popup */
+    height: auto; /* Ajusta la altura automáticamente según el contenido */
+    max-height: 100%; /* Respetar el tamaño del popup */
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.form-container-pdf {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    width: 100%; /* Ajuste al 100% del contenedor padre */
+    max-width: 100%; /* Limitar el ancho para evitar desbordamiento */
+}
+
+/* Ajustes para el formulario */
+#formfinal {
+    display: grid;
+    justify-content: left;
+    align-items: center;
+    
+    grid-template-columns: 60% 30%;
+    gap: 2px;
+    
+    background-color: white;
+    
+    border-radius: 4px;
+    
+    max-width: 100%; /* Limita el ancho máximo para que respete el popup */
+    box-sizing: border-box; /* Asegurar que el padding no expanda más allá del contenedor */
+    
+}
+#formfinal p{
+  
+    text-align: left;
+}
+#formfinal input{
+    border-radius: 8px;
+    width: 130px;
+    height: 25px;
+    margin: 5px 0px;
+    border: none;
+    background: #F7F7F7;
+    
+}
+
+/* Ajustes para el botón */
+.frase_adjudicacion {
+    margin-top: 20px;
+    font-family: 'Mont';
+    font-size: 13px;
+    
+}
+
+
+#thankYouMessage{
+    font-size: 10px;
+    color: black;
+    background: green;
+    padding: 10px;
+}
+
+#auto-sin-entrada-pdf{
+    width: 350px;
+    height: auto;
+    margin: 5px auto;
+}
+
+
+.precio_mensual, .inscripcion {
+  font-family: Mont;
+  font-weight: #54595f;
+  font-size: 15px;
+}
+
+.precio-vehiculo-pdf{
+    text-align: left;
+}
+
+
+
+

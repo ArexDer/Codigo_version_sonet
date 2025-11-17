@@ -602,6 +602,53 @@
       .btn-cancelar:hover {
         background: #d32f2f;
       }
+      
+      /* Estilos para la tabla completa de opciones */
+      .tabla-opciones-completa {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      
+      .tabla-opciones-completa th {
+        background: linear-gradient(135deg, #072386, #0a2d99);
+        color: white;
+        padding: 12px 8px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+      
+      .tabla-opciones-completa td {
+        padding: 10px 8px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        font-size: 0.85rem;
+      }
+      
+      .tabla-opciones-completa tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+      
+      .tabla-opciones-completa tr:hover {
+        background: #f0f4ff;
+      }
+      
+      .tabla-opciones-completa .opcion-seleccionada {
+        background: #e3f2fd !important;
+        color: #072386;
+        font-weight: bold;
+        box-shadow: inset 0 0 0 2px #072386;
+      }
+      
+      .tabla-opciones-completa .opcion-seleccionada td {
+        color: #072386;
+        font-weight: bold;
+      }
     </style>
   </head>
 
@@ -1066,6 +1113,18 @@
                 <input type="text" id="monto-estimado-F" disabled value="" />
               </div>
               
+              <!-- TABLA COMPLETA DE OPCIONES -->
+              <div id="tabla-completa-opciones" style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                <h3 style="text-align: center; color: #072386; margin-bottom: 20px; font-size: 1.3rem;">📋 Tabla Completa de Opciones de Financiamiento</h3>
+                <p style="text-align: center; color: #666; margin-bottom: 15px;">Monto seleccionado: <strong id="monto-tabla-titulo">$0</strong> | Inscripción: <strong id="inscripcion-tabla-titulo">$0</strong></p>
+                <div id="contenedor-tabla-opciones" style="overflow-x: auto;">
+                  <!-- La tabla se generará dinámicamente con JavaScript -->
+                </div>
+                <p style="text-align: center; color: #999; font-size: 0.9rem; margin-top: 10px; font-style: italic;">
+                  * La opción seleccionada está marcada en <span style="color: #072386; font-weight: bold;">azul</span>
+                </p>
+              </div>
+              
               <div>
                 <button class="btn-quote" id="btn-quote">DESCARGAR COTIZACIÓN PDF</button>
               </div>
@@ -1098,6 +1157,8 @@
         let monthlyPrice = 0;
         let selectedMonths = "";
         let planSeleccionado = ""; // Variable para almacenar el plan seleccionado
+        let datosCompletosJSON = null; // Variable para almacenar todos los datos del JSON
+        let montoSeleccionadoGlobal = 0; // Variable para el monto seleccionado
         
         /* ARREGLO DE AGENCIAS POR PROVINCIA - COMENTADO PARA USO FUTURO
         // Arreglo de agencias por provincia
@@ -1326,6 +1387,8 @@
                   const resultadoPrecio = document.getElementById(resultadoPrecioId);
                   const resultadoInscripcion = document.getElementById(resultadoInscripcionId);
                   
+                  // Almacenar datos completos globalmente
+                  datosCompletosJSON = data;
                   console.log("JSON CARGADO EXITOSAMENTE", data);
             
                   montoSelect.onchange = actualizarResultado;
@@ -1337,6 +1400,9 @@
             
                     console.log("Monto seleccionado:", montoSeleccionado);
                     console.log("Meses seleccionado:", mesesSeleccionado);
+            
+                    // Almacenar monto seleccionado globalmente
+                    montoSeleccionadoGlobal = montoSeleccionado;
             
                     // Buscar en JSON el objeto que coincida con el monto
                     const resultado = data.find((item) => item.MONTO === montoSeleccionado);
@@ -1832,6 +1898,9 @@
             "84_MESES": "2.92%"
           };
           document.getElementById("tasa-F").value = tasas[selectedMonths] || "2.92%";
+          
+          // Generar tabla completa de opciones
+          generarTablaCompletaOpciones();
         }
         
         function resetearFormularioCompleto() {
@@ -1867,6 +1936,8 @@
           monthlyPrice = 0;
           selectedMonths = "";
           planSeleccionado = ""; // Resetear plan seleccionado
+          datosCompletosJSON = null; // Resetear datos del JSON
+          montoSeleccionadoGlobal = 0; // Resetear monto seleccionado
           
           // Mostrar elementos iniciales del popup
           document.querySelector(".popup-formulario").style.display = "flex";
@@ -1881,6 +1952,84 @@
           const mensajeError = document.getElementById("mensaje-error-global");
           mensajeError.textContent = "";
           mensajeError.style.color = "";
+        }
+        
+        function generarTablaCompletaOpciones() {
+          if (!datosCompletosJSON || !montoSeleccionadoGlobal) {
+            console.log("No hay datos completos disponibles para generar la tabla");
+            return;
+          }
+          
+          // Buscar el registro del monto seleccionado
+          const registroMonto = datosCompletosJSON.find(item => item.MONTO === montoSeleccionadoGlobal);
+          
+          if (!registroMonto) {
+            console.log("No se encontró el monto seleccionado en los datos");
+            return;
+          }
+          
+          // Actualizar títulos
+          document.getElementById("monto-tabla-titulo").textContent = `$${montoSeleccionadoGlobal.toLocaleString()}`;
+          document.getElementById("inscripcion-tabla-titulo").textContent = `$${registroMonto.INSCRIPCION || 'N/A'}`;
+          
+          // Opciones de meses disponibles
+          const opcionesMeses = [
+            { key: '24_MESES', label: '24 Meses', tasa: '5.5%' },
+            { key: '36_MESES', label: '36 Meses', tasa: '5.84%' },
+            { key: '48_MESES', label: '48 Meses', tasa: '4.38%' },
+            { key: '60_MESES', label: '60 Meses', tasa: '3.5%' },
+            { key: '72_MESES', label: '72 Meses', tasa: '2.92%' },
+            { key: '84_MESES', label: '84 Meses', tasa: '2.92%' }
+          ];
+          
+          // Crear tabla HTML
+          let tablaHTML = `
+            <table class="tabla-opciones-completa">
+              <thead>
+                <tr>
+                  <th>Plazo</th>
+                  <th>Tasa Admin.</th>
+                  <th>Cuota Mensual</th>
+                  <th>Inscripción</th>
+                  <th>Total a Pagar</th>
+                </tr>
+              </thead>
+              <tbody>
+          `;
+          
+          opcionesMeses.forEach(opcion => {
+            const cuotaMensual = registroMonto[opcion.key] || 'N/A';
+            const esMesesSeleccionado = selectedMonths === opcion.key;
+            const claseSeleccionada = esMesesSeleccionado ? 'opcion-seleccionada' : '';
+            
+            // Calcular total a pagar
+            let totalAPagar = 'N/A';
+            if (cuotaMensual !== 'N/A' && !isNaN(cuotaMensual)) {
+              const numMeses = parseInt(opcion.key.replace('_MESES', ''));
+              const totalCalculado = parseFloat(cuotaMensual) * numMeses;
+              totalAPagar = `$${totalCalculado.toLocaleString()}`;
+            }
+            
+            tablaHTML += `
+              <tr class="${claseSeleccionada}">
+                <td>${opcion.label}${esMesesSeleccionado ? ' ⭐' : ''}</td>
+                <td>${opcion.tasa}</td>
+                <td>${cuotaMensual !== 'N/A' ? `$${cuotaMensual}` : 'N/A'}</td>
+                <td>${registroMonto && registroMonto.INSCRIPCION ? `$${registroMonto.INSCRIPCION}` : 'N/A'}</td>
+                <td>${totalAPagar}</td>
+              </tr>
+            `;
+          });
+          
+          tablaHTML += `
+              </tbody>
+            </table>
+          `;
+          
+          // Insertar tabla en el contenedor
+          document.getElementById("contenedor-tabla-opciones").innerHTML = tablaHTML;
+          
+          console.log("Tabla completa generada exitosamente");
         }
         
         function generarPDF() {
@@ -1968,6 +2117,110 @@
           pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, 20, yPos + 45);
           pdf.text(`Entrada: ${porcentajeGlobal}%`, 20, yPos + 55);
           pdf.text(`Monto estimado: $${montoEstimado.toLocaleString()}`, 20, yPos + 65);
+          
+          // Sección de tabla completa de opciones
+          yPos += 85;
+          
+          // Verificar si hay espacio en la página, si no, agregar nueva página
+          if (yPos > pageHeight - 100) {
+            pdf.addPage();
+            yPos = 20;
+          }
+          
+          // Título de la tabla
+          pdf.setFillColor(102, 126, 234);
+          pdf.rect(15, yPos - 5, pdf.internal.pageSize.getWidth() - 30, 15, 'F');
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(12);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text("TABLA COMPLETA DE OPCIONES DE FINANCIAMIENTO", 20, yPos + 5);
+          
+          yPos += 20;
+          
+          // Subtítulo con monto e inscripción
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(10);
+          pdf.setTextColor(0, 0, 0);
+          const registroMonto = datosCompletosJSON?.find(item => item.MONTO === montoSeleccionadoGlobal);
+          const inscripcionMonto = registroMonto ? registroMonto.INSCRIPCION : 'N/A';
+          pdf.text(`Monto seleccionado: $${montoSeleccionadoGlobal.toLocaleString()} | Inscripción: $${inscripcionMonto}`, 20, yPos);
+          
+          yPos += 15;
+          
+          // Encabezados de la tabla
+          pdf.setFillColor(7, 35, 134);
+          pdf.rect(15, yPos - 2, pdf.internal.pageSize.getWidth() - 30, 12, 'F');
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(9);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text("PLAZO", 20, yPos + 6);
+          pdf.text("TASA ADMIN.", 55, yPos + 6);
+          pdf.text("CUOTA MENSUAL", 90, yPos + 6);
+          pdf.text("INSCRIPCIÓN", 130, yPos + 6);
+          pdf.text("TOTAL A PAGAR", 165, yPos + 6);
+          
+          yPos += 15;
+          
+          // Datos de la tabla
+          const opcionesMeses = [
+            { key: '24_MESES', label: '24 Meses', tasa: '5.5%' },
+            { key: '36_MESES', label: '36 Meses', tasa: '5.84%' },
+            { key: '48_MESES', label: '48 Meses', tasa: '4.38%' },
+            { key: '60_MESES', label: '60 Meses', tasa: '3.5%' },
+            { key: '72_MESES', label: '72 Meses', tasa: '2.92%' },
+            { key: '84_MESES', label: '84 Meses', tasa: '2.92%' }
+          ];
+          
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(8);
+          
+          opcionesMeses.forEach((opcion, index) => {
+            const cuotaMensual = registroMonto ? registroMonto[opcion.key] : 'N/A';
+            const esMesesSeleccionado = selectedMonths === opcion.key;
+            
+            // Resaltar la opción seleccionada
+            if (esMesesSeleccionado) {
+              pdf.setFillColor(227, 242, 253); // Azul claro
+              pdf.rect(15, yPos - 2, pdf.internal.pageSize.getWidth() - 30, 10, 'F');
+              pdf.setFont("helvetica", "bold");
+              pdf.setTextColor(7, 35, 134);
+            } else {
+              pdf.setFont("helvetica", "normal");
+              pdf.setTextColor(0, 0, 0);
+              // Alternar color de fondo
+              if (index % 2 === 1) {
+                pdf.setFillColor(249, 249, 249);
+                pdf.rect(15, yPos - 2, pdf.internal.pageSize.getWidth() - 30, 10, 'F');
+              }
+            }
+            
+            // Calcular total a pagar
+            let totalAPagar = 'N/A';
+            if (cuotaMensual !== 'N/A' && !isNaN(cuotaMensual)) {
+              const numMeses = parseInt(opcion.key.replace('_MESES', ''));
+              const totalCalculado = parseFloat(cuotaMensual) * numMeses;
+              totalAPagar = `$${totalCalculado.toLocaleString()}`;
+            }
+            
+            const plazoTexto = esMesesSeleccionado ? `${opcion.label} ⭐` : opcion.label;
+            const cuotaTexto = cuotaMensual !== 'N/A' ? `$${cuotaMensual}` : 'N/A';
+            const inscripcionTexto = inscripcionMonto !== 'N/A' ? `$${inscripcionMonto}` : 'N/A';
+            
+            pdf.text(plazoTexto, 20, yPos + 6);
+            pdf.text(opcion.tasa, 55, yPos + 6);
+            pdf.text(cuotaTexto, 90, yPos + 6);
+            pdf.text(inscripcionTexto, 130, yPos + 6);
+            pdf.text(totalAPagar, 165, yPos + 6);
+            
+            yPos += 12;
+          });
+          
+          // Nota explicativa
+          yPos += 5;
+          pdf.setFont("helvetica", "italic");
+          pdf.setFontSize(7);
+          pdf.setTextColor(153, 153, 153);
+          pdf.text("* La opción seleccionada está marcada con ⭐ y resaltada en azul", 20, yPos);
           
           // Pie de página con gradiente azul
           const pageHeight = pdf.internal.pageSize.getHeight();
