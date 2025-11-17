@@ -1837,6 +1837,7 @@
           
           // Botón descargar PDF
           document.getElementById("btn-quote").addEventListener("click", () => {
+            console.log('🖱️ Botón DESCARGAR PDF clickeado');
             generarPDF();
           });
           
@@ -1991,7 +1992,7 @@
                   <th>Tasa Admin.</th>
                   <th>Cuota Mensual</th>
                   <th>Inscripción</th>
-                  <th>Total a Pagar</th>
+                  <th>Pago Primer Mes</th>
                 </tr>
               </thead>
               <tbody>
@@ -2002,12 +2003,13 @@
             const esMesesSeleccionado = selectedMonths === opcion.key;
             const claseSeleccionada = esMesesSeleccionado ? 'opcion-seleccionada' : '';
             
-            // Calcular total a pagar
-            let totalAPagar = 'N/A';
-            if (cuotaMensual !== 'N/A' && !isNaN(cuotaMensual)) {
-              const numMeses = parseInt(opcion.key.replace('_MESES', ''));
-              const totalCalculado = parseFloat(cuotaMensual) * numMeses;
-              totalAPagar = `$${totalCalculado.toLocaleString()}`;
+            // Calcular pago primer mes (cuota mensual + inscripción)
+            let pagoPrimerMes = 'N/A';
+            if (cuotaMensual !== 'N/A' && !isNaN(cuotaMensual) && registroMonto && registroMonto.INSCRIPCION) {
+              const cuota = parseFloat(cuotaMensual);
+              const inscripcion = parseFloat(registroMonto.INSCRIPCION);
+              const primerMes = cuota + inscripcion;
+              pagoPrimerMes = `$${primerMes.toLocaleString()}`;
             }
             
             tablaHTML += `
@@ -2016,7 +2018,7 @@
                 <td>${opcion.tasa}</td>
                 <td>${cuotaMensual !== 'N/A' ? `$${cuotaMensual}` : 'N/A'}</td>
                 <td>${registroMonto && registroMonto.INSCRIPCION ? `$${registroMonto.INSCRIPCION}` : 'N/A'}</td>
-                <td>${totalAPagar}</td>
+                <td>${pagoPrimerMes}</td>
               </tr>
             `;
           });
@@ -2033,39 +2035,62 @@
         }
         
         function generarPDF() {
+          console.log('🚀 Iniciando generación de PDF...');
+          console.log('📊 Datos disponibles:', {
+            monthlyPrice,
+            selectedMonths,
+            planSeleccionado,
+            montoSeleccionadoGlobal,
+            datosCompletosJSON,
+            imagenSeleccionada,
+            avaluoActual,
+            porcentajeGlobal,
+            montoEstimado
+          });
+          
           const { jsPDF } = window.jspdf;
+          console.log('📋 jsPDF cargado:', !!jsPDF);
+          
+          if (!jsPDF) {
+            console.error('❌ jsPDF no está disponible');
+            alert('Error: No se pudo cargar la librería de PDF. Por favor, recarga la página e intenta nuevamente.');
+            return;
+          }
+          
           const pdf = new jsPDF();
+          console.log('📄 PDF inicializado correctamente');
           
-          // Logo
-          const logoUrl = "https://finanmotors.com/wp-content/uploads/2025/04/Logo-aplique-blanco_Mesa-de-trabajo-1.png";
-          const logoWidth = 100;
-          const logoHeight = 25;
-          const logoX = pdf.internal.pageSize.getWidth() / 2 - logoWidth / 2;
-          const logoY = 10;
+          // Obtener dimensiones de la página
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          console.log('📏 Dimensiones de página:', { pageWidth, pageHeight });
           
-          pdf.addImage(logoUrl, "PNG", logoX, logoY, logoWidth, logoHeight);
+          // Línea horizontal azul marino al inicio de la hoja
+          pdf.setDrawColor(7, 35, 134); // Azul marino
+          pdf.setLineWidth(4);
+          pdf.line(10, 10, pageWidth - 10, 10);
           
           // Título principal
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(18);
+          pdf.setFontSize(16);
           pdf.setTextColor(7, 35, 134); // Color azul corporativo
-          pdf.text("PROFORMA VEHICULAR", pdf.internal.pageSize.getWidth() / 2, logoY + logoHeight + 20, { align: 'center' });
+          pdf.text("PROFORMA VEHICULAR", pageWidth / 2, 25, { align: 'center' });
           
           // Plan seleccionado (debajo del título)
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(14);
+          pdf.setFontSize(12);
           pdf.setTextColor(102, 126, 234); // Azul más claro
-          pdf.text(planSeleccionado || "PLAN PERSONALIZADO", pdf.internal.pageSize.getWidth() / 2, logoY + logoHeight + 35, { align: 'center' });
+          pdf.text(planSeleccionado || "PLAN PERSONALIZADO", pageWidth / 2, 35, { align: 'center' });
           
           // Línea decorativa
           pdf.setDrawColor(102, 126, 234);
-          pdf.setLineWidth(2);
-          pdf.line(20, logoY + logoHeight + 45, pdf.internal.pageSize.getWidth() - 20, logoY + logoHeight + 45);
+          pdf.setLineWidth(1);
+          pdf.line(20, 42, pageWidth - 20, 42);
           
           // Sección de datos del cliente con fondo azul claro
-          let yPos = logoY + logoHeight + 60;
+          let yPos = 50;
           pdf.setFillColor(240, 244, 255); // Fondo azul muy claro
-          pdf.rect(15, yPos - 5, pdf.internal.pageSize.getWidth() - 30, 50, 'F');
+          pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
           
           // Datos del cliente
           const nombre = document.getElementById("nombre").value;
@@ -2074,28 +2099,33 @@
           const cedula = document.getElementById("cedula").value;
           const ciudad = document.getElementById("ciudad").value;
           
-          pdf.setFontSize(12);
+          console.log('👤 Datos del cliente obtenidos:', {
+            nombre, telefono, correo, cedula, ciudad
+          });
+          
+          pdf.setFontSize(10);
           pdf.setFont("helvetica", "bold");
           pdf.setTextColor(7, 35, 134);
-          pdf.text("INFORMACIÓN DEL CLIENTE", 20, yPos);
+          pdf.text("INFORMACIÓN DEL CLIENTE", 20, yPos + 3);
           
           pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(8);
           pdf.setTextColor(0, 0, 0);
-          pdf.text(`Cliente: ${nombre}`, 20, yPos + 15);
-          pdf.text(`Cédula: ${cedula}`, 20, yPos + 25);
-          pdf.text(`Teléfono: ${telefono}`, 20, yPos + 35);
-          pdf.text(`Email: ${correo}`, 110, yPos + 25);
-          pdf.text(`Ciudad: ${ciudad}`, 110, yPos + 35);
+          pdf.text(`Cliente: ${nombre}`, 20, yPos + 12);
+          pdf.text(`Cédula: ${cedula}`, 20, yPos + 18);
+          pdf.text(`Teléfono: ${telefono}`, 20, yPos + 24);
+          pdf.text(`Email: ${correo}`, 110, yPos + 18);
+          pdf.text(`Ciudad: ${ciudad}`, 110, yPos + 24);
           
-          // Sección de datos del vehículo
-          yPos += 65;
+          // Sección de datos del vehículo en dos columnas
+          yPos += 40;
           pdf.setFillColor(7, 35, 134); // Fondo azul corporativo
-          pdf.rect(15, yPos - 5, pdf.internal.pageSize.getWidth() - 30, 80, 'F');
+          pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(12);
+          pdf.setFontSize(10);
           pdf.setTextColor(255, 255, 255); // Texto blanco
-          pdf.text("DETALLES DEL VEHÍCULO", 20, yPos);
+          pdf.text("DETALLES DEL VEHÍCULO", 20, yPos + 3);
           
           const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
           
@@ -2111,53 +2141,56 @@
           const tasaAdministrativa = tasas[selectedMonths] || "2.92%";
           
           pdf.setFont("helvetica", "normal");
-          pdf.text(`Vehículo: ${vehiculoNombre}`, 20, yPos + 15);
-          pdf.text(`Tasa administrativa: ${tasaAdministrativa}`, 20, yPos + 25);
-          pdf.text(`Cuota mensual: $${monthlyPrice}`, 20, yPos + 35);
-          pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, 20, yPos + 45);
-          pdf.text(`Entrada: ${porcentajeGlobal}%`, 20, yPos + 55);
-          pdf.text(`Monto estimado: $${montoEstimado.toLocaleString()}`, 20, yPos + 65);
+          pdf.setFontSize(8);
+          
+          // Columna izquierda
+          pdf.text(`Vehículo: ${vehiculoNombre}`, 20, yPos + 12);
+          pdf.text(`Cuota mensual: $${monthlyPrice}`, 20, yPos + 18);
+          pdf.text(`Entrada: ${porcentajeGlobal}%`, 20, yPos + 24);
+          
+          // Columna derecha
+          pdf.text(`Tasa administrativa: ${tasaAdministrativa}`, pageWidth / 2 + 10, yPos + 12);
+          pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, pageWidth / 2 + 10, yPos + 18);
+          pdf.text(`Monto estimado: $${montoEstimado.toLocaleString()}`, pageWidth / 2 + 10, yPos + 24);
           
           // Sección de tabla completa de opciones
-          yPos += 85;
+          yPos += 40;
           
           // Verificar si hay espacio en la página, si no, agregar nueva página
-          if (yPos > pageHeight - 100) {
+          if (yPos > pageHeight - 80) {
             pdf.addPage();
             yPos = 20;
           }
           
-          // Título de la tabla
-          pdf.setFillColor(102, 126, 234);
-          pdf.rect(15, yPos - 5, pdf.internal.pageSize.getWidth() - 30, 15, 'F');
-          pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(12);
-          pdf.setTextColor(255, 255, 255);
-          pdf.text("TABLA COMPLETA DE OPCIONES DE FINANCIAMIENTO", 20, yPos + 5);
-          
-          yPos += 20;
-          
-          // Subtítulo con monto e inscripción
-          pdf.setFont("helvetica", "normal");
-          pdf.setFontSize(10);
-          pdf.setTextColor(0, 0, 0);
-          const registroMonto = datosCompletosJSON?.find(item => item.MONTO === montoSeleccionadoGlobal);
-          const inscripcionMonto = registroMonto ? registroMonto.INSCRIPCION : 'N/A';
-          pdf.text(`Monto seleccionado: $${montoSeleccionadoGlobal.toLocaleString()} | Inscripción: $${inscripcionMonto}`, 20, yPos);
-          
-          yPos += 15;
-          
-          // Encabezados de la tabla
+          // Título de la tabla con mejor estilo
           pdf.setFillColor(7, 35, 134);
-          pdf.rect(15, yPos - 2, pdf.internal.pageSize.getWidth() - 30, 12, 'F');
+          pdf.rect(15, yPos - 3, pageWidth - 30, 15, 'F');
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(9);
+          pdf.setFontSize(11);
           pdf.setTextColor(255, 255, 255);
-          pdf.text("PLAZO", 20, yPos + 6);
-          pdf.text("TASA ADMIN.", 55, yPos + 6);
-          pdf.text("CUOTA MENSUAL", 90, yPos + 6);
-          pdf.text("INSCRIPCIÓN", 130, yPos + 6);
-          pdf.text("TOTAL A PAGAR", 165, yPos + 6);
+          pdf.text("📋 TABLA DE OPCIONES DE FINANCIAMIENTO", pageWidth / 2, yPos + 5, { align: 'center' });
+          
+          yPos += 18;
+          
+          // Encabezados de la tabla con mejor estilo
+          pdf.setFillColor(7, 35, 134);
+          pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(8);
+          pdf.setTextColor(255, 255, 255);
+          
+          // Distribución mejorada de columnas (más compacta)
+          const col1 = 22;  // PLAZO
+          const col2 = 55;  // TASA ADMIN
+          const col3 = 88;  // CUOTA MENSUAL
+          const col4 = 125; // INSCRIPCIÓN
+          const col5 = 165; // PAGO PRIMER MES
+          
+          pdf.text("PLAZO", col1, yPos + 6);
+          pdf.text("TASA ADMIN.", col2, yPos + 6);
+          pdf.text("CUOTA MENSUAL", col3, yPos + 6);
+          pdf.text("INSCRIPCIÓN", col4, yPos + 6);
+          pdf.text("PAGO PRIMER MES", col5, yPos + 6);
           
           yPos += 15;
           
@@ -2171,8 +2204,12 @@
             { key: '84_MESES', label: '84 Meses', tasa: '2.92%' }
           ];
           
+          // Obtener datos del monto para inscripción
+          const registroMonto = datosCompletosJSON?.find(item => item.MONTO === montoSeleccionadoGlobal);
+          const inscripcionMonto = registroMonto ? registroMonto.INSCRIPCION : 'N/A';
+          
           pdf.setFont("helvetica", "normal");
-          pdf.setFontSize(8);
+          pdf.setFontSize(7);
           
           opcionesMeses.forEach((opcion, index) => {
             const cuotaMensual = registroMonto ? registroMonto[opcion.key] : 'N/A';
@@ -2181,7 +2218,7 @@
             // Resaltar la opción seleccionada
             if (esMesesSeleccionado) {
               pdf.setFillColor(227, 242, 253); // Azul claro
-              pdf.rect(15, yPos - 2, pdf.internal.pageSize.getWidth() - 30, 10, 'F');
+              pdf.rect(15, yPos - 2, pageWidth - 30, 10, 'F');
               pdf.setFont("helvetica", "bold");
               pdf.setTextColor(7, 35, 134);
             } else {
@@ -2190,51 +2227,61 @@
               // Alternar color de fondo
               if (index % 2 === 1) {
                 pdf.setFillColor(249, 249, 249);
-                pdf.rect(15, yPos - 2, pdf.internal.pageSize.getWidth() - 30, 10, 'F');
+                pdf.rect(15, yPos - 2, pageWidth - 30, 10, 'F');
               }
             }
             
-            // Calcular total a pagar
-            let totalAPagar = 'N/A';
-            if (cuotaMensual !== 'N/A' && !isNaN(cuotaMensual)) {
-              const numMeses = parseInt(opcion.key.replace('_MESES', ''));
-              const totalCalculado = parseFloat(cuotaMensual) * numMeses;
-              totalAPagar = `$${totalCalculado.toLocaleString()}`;
+            // Calcular pago primer mes (cuota mensual + inscripción)
+            let pagoPrimerMes = 'N/A';
+            if (cuotaMensual !== 'N/A' && !isNaN(cuotaMensual) && inscripcionMonto !== 'N/A' && !isNaN(inscripcionMonto)) {
+              const cuota = parseFloat(cuotaMensual);
+              const inscripcion = parseFloat(inscripcionMonto);
+              const primerMes = cuota + inscripcion;
+              pagoPrimerMes = `$${primerMes.toLocaleString()}`;
             }
             
             const plazoTexto = esMesesSeleccionado ? `${opcion.label} ⭐` : opcion.label;
             const cuotaTexto = cuotaMensual !== 'N/A' ? `$${cuotaMensual}` : 'N/A';
             const inscripcionTexto = inscripcionMonto !== 'N/A' ? `$${inscripcionMonto}` : 'N/A';
             
-            pdf.text(plazoTexto, 20, yPos + 6);
-            pdf.text(opcion.tasa, 55, yPos + 6);
-            pdf.text(cuotaTexto, 90, yPos + 6);
-            pdf.text(inscripcionTexto, 130, yPos + 6);
-            pdf.text(totalAPagar, 165, yPos + 6);
+            pdf.text(plazoTexto, col1, yPos + 5);
+            pdf.text(opcion.tasa, col2, yPos + 5);
+            pdf.text(cuotaTexto, col3, yPos + 5);
+            pdf.text(inscripcionTexto, col4, yPos + 5);
+            pdf.text(pagoPrimerMes, col5, yPos + 5);
             
-            yPos += 12;
+            yPos += 11;
           });
           
           // Nota explicativa
-          yPos += 5;
+          yPos += 3;
           pdf.setFont("helvetica", "italic");
-          pdf.setFontSize(7);
+          pdf.setFontSize(6);
           pdf.setTextColor(153, 153, 153);
           pdf.text("* La opción seleccionada está marcada con ⭐ y resaltada en azul", 20, yPos);
           
           // Pie de página con gradiente azul
-          const pageHeight = pdf.internal.pageSize.getHeight();
           pdf.setFillColor(102, 126, 234);
-          pdf.rect(0, pageHeight - 30, pdf.internal.pageSize.getWidth(), 30, 'F');
+          pdf.rect(0, pageHeight - 25, pageWidth, 25, 'F');
           
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(10);
           pdf.setTextColor(255, 255, 255);
-          pdf.text("FINANMOTORS - Tu aliado en financiamiento vehicular", pdf.internal.pageSize.getWidth() / 2, pageHeight - 15, { align: 'center' });
-          pdf.text("www.finanmotors.com | contacto@finanmotors.com", pdf.internal.pageSize.getWidth() / 2, pageHeight - 5, { align: 'center' });
+          pdf.text("FINANMOTORS - Tu aliado en financiamiento vehicular", pageWidth / 2, pageHeight - 12, { align: 'center' });
+          pdf.setFontSize(8);
+          pdf.text("www.finanmotors.com | contacto@finanmotors.com", pageWidth / 2, pageHeight - 4, { align: 'center' });
           
           // Descargar
-          pdf.save(`Cotizacion_${planSeleccionado.replace(/\s+/g, '_')}_${nombre.replace(/\s+/g, '_')}.pdf`);
+          const nombreArchivo = `Cotizacion_${planSeleccionado.replace(/\s+/g, '_')}_${nombre.replace(/\s+/g, '_')}.pdf`;
+          console.log('💾 Intentando descargar PDF con nombre:', nombreArchivo);
+          
+          try {
+            pdf.save(nombreArchivo);
+            console.log('✅ PDF descargado exitosamente');
+          } catch (error) {
+            console.error('❌ Error al descargar PDF:', error);
+            alert('Error al generar el PDF. Revisa la consola para más detalles.');
+          }
         }
 
       });
