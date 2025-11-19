@@ -1163,17 +1163,21 @@
       <section class="seccion-inmobiliaria hidden" id="seccion-inmobiliaria">
         <!-- Tipos de propiedades -->
         <div class="vehicle-types">
-          <div class="vehicle" id="selector_casas">
-            <img src="https://via.placeholder.com/100x80/667eea/ffffff?text=Casa" alt="Casas" />
-            <p>Casas</p>
-          </div>
           <div class="vehicle" id="selector_terrenos">
-            <img src="https://via.placeholder.com/100x80/667eea/ffffff?text=Terreno" alt="Terrenos" />
-            <p>Terrenos</p>
+            <img src="https://finanmotors.com/wp-content/uploads/2025/11/terreno.jpg" alt="Terrenos" />
+            <p>Terreno</p>
           </div>
           <div class="vehicle" id="selector_departamentos">
-            <img src="https://via.placeholder.com/100x80/667eea/ffffff?text=Depto" alt="Departamentos" />
-            <p>Departamentos</p>
+            <img src="https://finanmotors.com/wp-content/uploads/2025/11/departamento.avif" alt="Departamentos" />
+            <p>Departamento</p>
+          </div>
+          <div class="vehicle" id="selector_fincas">
+            <img src="https://finanmotors.com/wp-content/uploads/2025/11/finca.jpg" alt="Fincas" />
+            <p>Finca</p>
+          </div>
+          <div class="vehicle" id="selector_construcciones">
+            <img src="https://finanmotors.com/wp-content/uploads/2025/11/construccion.jpg" alt="Construcciones" />
+            <p>Construcción</p>
           </div>
         </div>
 
@@ -1219,12 +1223,145 @@
                     SIN ENTRADA
                     <div class="tooltip">Financiamiento completo de la propiedad</div>
                   </button>
-                  <button class="opcion-financiacion" id="justo-tiempo-inmob">
-                    JUSTO A TIEMPO
-                    <div class="tooltip">Planifica tu inversión inmobiliaria</div>
-                  </button>
                 </div>
               </div>
+              
+              <!-- Formulario CON ENTRADA INMOBILIARIO (inicialmente oculto) -->
+              <div class="opciones-con-entrada hidden" id="opciones-con-entrada-inmob">
+                <p class="titulo_marca_modelo">
+                  Estás a un paso de planificar tu propiedad
+                  <span id="marca_modelo_inmob"></span>
+                </p>
+                <input type="text" id="precio-vehiculo-con-entrada-inmob" style="display: none" />
+                
+                <select id="montoSelectInmob">
+                  <option value="">Selecciona el monto que deseas:</option>
+                  <option value="15000">$ 15.000</option>
+                  <option value="20000">$ 20.000</option>
+                  <option value="25000">$ 25.000</option>
+                  <option value="30000">$ 30.000</option>
+                  <option value="35000">$ 35.000</option>
+                  <option value="40000">$ 40.000</option>
+                  <option value="45000">$ 45.000</option>
+                  <option value="50000">$ 50.000</option>
+                  <option value="60000">$ 60.000</option>
+                  <option value="70000">$ 70.000</option>
+                  <option value="80000">$ 80.000</option>
+                  <option value="90000">$ 90.000</option>
+                  <option value="100000">$ 100.000</option>
+                  <option value="120000">$ 120.000</option>
+                  <option value="150000">$ 150.000</option>
+                  <option value="180000">$ 180.000</option>
+                  <option value="200000">$ 200.000</option>
+                  <option value="250000">$ 250.000</option>
+                  <option value="300000">$ 300.000</option>
+                  <option value="350000">$ 350.000</option>
+                  <option value="400000">$ 400.000</option>
+                  <option value="450000">$ 450.000</option>
+                  <option value="500000">$ 500.000</option>
+                </select>
+                
+                <select id="porcentaje_inmob" name="porcentaje">
+                  <option value="">¿Qué porcentaje de entrada abonas?:</option>
+                  <option value="10">10%</option>
+                  <option value="15">15%</option>
+                  <option value="20">20%</option>
+                  <option value="25">25%</option>
+                  <option value="30">30%</option>
+                  <option value="35">35%</option>
+                  <option value="40">40%</option>
+                  <option value="50">50%</option>
+                </select>
+                
+                <select id="mesesSelectInmob">
+                  <option value="">¿Por cuántos meses deseas pagar?:</option>
+                  <option value="36_MESES">36 Meses</option>
+                  <option value="48_MESES">48 Meses</option>
+                  <option value="60_MESES">60 Meses</option>
+                  <option value="72_MESES">72 Meses</option>
+                  <option value="84_MESES">84 Meses</option>
+                  <option value="96_MESES">96 Meses</option>
+                  <option value="120_MESES">120 Meses</option>
+                  <option value="144_MESES">144 Meses</option>
+                  <option value="180_MESES">180 Meses</option>
+                  <option value="240_MESES">240 Meses</option>
+                </select>
+                
+                <div>
+                  <p class="precio_mensual">
+                    Precio mensual: $ <span id="resultadoPrecioInmob">0</span>
+                  </p>
+                  <p class="inscripcion">
+                    Inscripción: $ <span id="resultadoInscripcionInmob">0</span>
+                  </p>
+                </div>
+                
+                <button id="continuar-con-entrada-inmob">CONTINUAR</button>
+                <button id="volver-opciones-inmob">VOLVER A OPCIONES</button>
+              </div>
+              
+              <!-- Formulario SIN ENTRADA INMOBILIARIO (inicialmente oculto) -->
+              <div class="opciones-con-entrada hidden" id="opciones-sin-entrada-inmob">
+                <p class="titulo_marca_modelo">
+                  Estás a un paso de planificar tu propiedad
+                  <span id="marca_modelo_sin_entrada_inmob"></span>
+                </p>
+                <input type="text" id="precio-vehiculo-sin-entrada-inmob" style="display: none" />
+                
+                <select id="montoSelectSinEntradaInmob">
+                  <option value="">Selecciona el monto que deseas:</option>
+                  <option value="15000">$ 15.000</option>
+                  <option value="20000">$ 20.000</option>
+                  <option value="25000">$ 25.000</option>
+                  <option value="30000">$ 30.000</option>
+                  <option value="35000">$ 35.000</option>
+                  <option value="40000">$ 40.000</option>
+                  <option value="45000">$ 45.000</option>
+                  <option value="50000">$ 50.000</option>
+                  <option value="60000">$ 60.000</option>
+                  <option value="70000">$ 70.000</option>
+                  <option value="80000">$ 80.000</option>
+                  <option value="90000">$ 90.000</option>
+                  <option value="100000">$ 100.000</option>
+                  <option value="120000">$ 120.000</option>
+                  <option value="150000">$ 150.000</option>
+                  <option value="180000">$ 180.000</option>
+                  <option value="200000">$ 200.000</option>
+                  <option value="250000">$ 250.000</option>
+                  <option value="300000">$ 300.000</option>
+                  <option value="350000">$ 350.000</option>
+                  <option value="400000">$ 400.000</option>
+                  <option value="450000">$ 450.000</option>
+                  <option value="500000">$ 500.000</option>
+                </select>
+                
+                <select id="mesesSelectSinEntradaInmob">
+                  <option value="">¿Por cuántos meses deseas pagar?:</option>
+                  <option value="36_MESES">36 Meses</option>
+                  <option value="48_MESES">48 Meses</option>
+                  <option value="60_MESES">60 Meses</option>
+                  <option value="72_MESES">72 Meses</option>
+                  <option value="84_MESES">84 Meses</option>
+                  <option value="96_MESES">96 Meses</option>
+                  <option value="120_MESES">120 Meses</option>
+                  <option value="144_MESES">144 Meses</option>
+                  <option value="180_MESES">180 Meses</option>
+                  <option value="240_MESES">240 Meses</option>
+                </select>
+                
+                <div>
+                  <p class="precio_mensual">
+                    Precio mensual: $ <span id="resultadoPrecioSinEntradaInmob">0</span>
+                  </p>
+                  <p class="inscripcion">
+                    Inscripción: $ <span id="resultadoInscripcionSinEntradaInmob">0</span>
+                  </p>
+                </div>
+                
+                <button id="continuar-sin-entrada-inmob">CONTINUAR</button>
+                <button id="volver-opciones-sin-entrada-inmob">VOLVER A OPCIONES</button>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -1898,10 +2035,6 @@
         // Inicializar sección inmobiliaria
         function inicializarInmobiliario() {
           // Selectores de propiedades
-          document.getElementById("selector_casas").addEventListener("click", () => {
-            seleccionarPropiedad("casas", "Casa", "https://via.placeholder.com/400x300/667eea/ffffff?text=Casa");
-          });
-
           document.getElementById("selector_terrenos").addEventListener("click", () => {
             seleccionarPropiedad("terrenos", "Terreno", "https://via.placeholder.com/400x300/667eea/ffffff?text=Terreno");
           });
@@ -1910,10 +2043,127 @@
             seleccionarPropiedad("departamentos", "Departamento", "https://via.placeholder.com/400x300/667eea/ffffff?text=Departamento");
           });
 
-          // Botón continuar propiedad
-          document.getElementById("continuar-propiedad").addEventListener("click", () => {
-            document.getElementById("selectores-propiedad").classList.add("hidden");
+          document.getElementById("selector_fincas").addEventListener("click", () => {
+            seleccionarPropiedad("fincas", "Finca", "https://via.placeholder.com/400x300/667eea/ffffff?text=Finca");
+          });
+
+          document.getElementById("selector_construcciones").addEventListener("click", () => {
+            seleccionarPropiedad("construcciones", "Construcción", "https://via.placeholder.com/400x300/667eea/ffffff?text=Construccion");
+          });
+
+          // Event listeners para opciones de financiación inmobiliaria
+          document.getElementById("con-entrada-inmob").addEventListener("click", () => {
+            planSeleccionado = "PLAN ADELANTADO INMOBILIARIO";
+            document.getElementById("opciones-financiacion-inmob").classList.add("hidden");
+            document.getElementById("opciones-con-entrada-inmob").classList.remove("hidden");
+            
+            // Actualizar información de la propiedad
+            document.getElementById("precio-vehiculo-con-entrada-inmob").value = "AVALUO $" + avaluoActual;
+            const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
+            document.getElementById("marca_modelo_inmob").textContent = propiedadNombre;
+            
+            // Inicializar cálculos para inmobiliario
+            cargarDatosYActualizarResultadosInmobiliario(
+              "montoSelectInmob",
+              "mesesSelectInmob",
+              "resultadoPrecioInmob",
+              "resultadoInscripcionInmob",
+              "porcentaje_inmob"
+            );
+          });
+
+          document.getElementById("sin-entrada-inmob").addEventListener("click", () => {
+            planSeleccionado = "PLAN PUNTUACIÓN INMOBILIARIO";
+            document.getElementById("opciones-financiacion-inmob").classList.add("hidden");
+            document.getElementById("opciones-sin-entrada-inmob").classList.remove("hidden");
+            
+            // Actualizar información de la propiedad
+            document.getElementById("precio-vehiculo-sin-entrada-inmob").value = "AVALUO $" + avaluoActual;
+            const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
+            document.getElementById("marca_modelo_sin_entrada_inmob").textContent = propiedadNombre;
+            
+            // Inicializar cálculos para SIN ENTRADA inmobiliario
+            cargarDatosYActualizarResultadosInmobiliario(
+              "montoSelectSinEntradaInmob",
+              "mesesSelectSinEntradaInmob", 
+              "resultadoPrecioSinEntradaInmob",
+              "resultadoInscripcionSinEntradaInmob",
+              null,
+              "SIN_ENTRADA"
+            );
+          });
+          
+          // Botones volver a opciones inmobiliario
+          document.getElementById("volver-opciones-inmob").addEventListener("click", () => {
+            document.getElementById("opciones-con-entrada-inmob").classList.add("hidden");
             document.getElementById("opciones-financiacion-inmob").classList.remove("hidden");
+          });
+          
+          document.getElementById("volver-opciones-sin-entrada-inmob").addEventListener("click", () => {
+            document.getElementById("opciones-sin-entrada-inmob").classList.add("hidden");
+            document.getElementById("opciones-financiacion-inmob").classList.remove("hidden");
+          });
+          
+          // Botones continuar inmobiliario
+          document.getElementById("continuar-con-entrada-inmob").addEventListener("click", () => {
+            const montoSelect = document.getElementById("montoSelectInmob");
+            const mesesSelect = document.getElementById("mesesSelectInmob");
+            const porcentajeSelect = document.getElementById("porcentaje_inmob");
+            
+            if (avaluoActual > 0 && montoSelect.value && mesesSelect.value && porcentajeSelect.value) {
+              // Preparar datos para el popup
+              const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
+              const resultadoPrecio = document.getElementById("resultadoPrecioInmob").textContent;
+              const resultadoInscripcion = document.getElementById("resultadoInscripcionInmob").textContent;
+              
+              // Configurar popup
+              document.getElementById("imagen-carro").src = imagenSeleccionada;
+              document.getElementById("usuario").textContent = "";
+              
+              // Mostrar popup
+              document.getElementById("popup").classList.remove("hidden");
+              
+              console.log("Abriendo popup CON ENTRADA INMOBILIARIO con datos:", {
+                propiedad: propiedadNombre,
+                precio: avaluoActual,
+                cuotaMensual: resultadoPrecio,
+                inscripcion: resultadoInscripcion,
+                imagen: imagenSeleccionada,
+                plan: planSeleccionado
+              });
+            } else {
+              alert("Por favor completa todos los campos antes de continuar.");
+            }
+          });
+          
+          document.getElementById("continuar-sin-entrada-inmob").addEventListener("click", () => {
+            const montoSelect = document.getElementById("montoSelectSinEntradaInmob");
+            const mesesSelect = document.getElementById("mesesSelectSinEntradaInmob");
+            
+            if (avaluoActual > 0 && montoSelect.value && mesesSelect.value) {
+              // Preparar datos para el popup
+              const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
+              const resultadoPrecio = document.getElementById("resultadoPrecioSinEntradaInmob").textContent;
+              const resultadoInscripcion = document.getElementById("resultadoInscripcionSinEntradaInmob").textContent;
+              
+              // Configurar popup
+              document.getElementById("imagen-carro").src = imagenSeleccionada;
+              document.getElementById("usuario").textContent = "";
+              
+              // Mostrar popup
+              document.getElementById("popup").classList.remove("hidden");
+              
+              console.log("Abriendo popup SIN ENTRADA INMOBILIARIO con datos:", {
+                propiedad: propiedadNombre,
+                precio: avaluoActual,
+                cuotaMensual: resultadoPrecio,
+                inscripcion: resultadoInscripcion,
+                imagen: imagenSeleccionada,
+                plan: planSeleccionado
+              });
+            } else {
+              alert("Por favor completa todos los campos antes de continuar.");
+            }
           });
 
           // Cargar datos inmobiliarios
@@ -1971,11 +2221,12 @@
           document.getElementById("propiedad-nombre").textContent = nombre;
           detallePropiedad.classList.remove("hidden");
           
-          // Reset selectores
-          document.getElementById("selectores-propiedad").classList.remove("hidden");
-          document.getElementById("opciones-financiacion-inmob").classList.add("hidden");
+          // Ocultar selectores de zona/tipo y mostrar directamente las opciones de financiación
+          document.getElementById("selectores-propiedad").classList.add("hidden");
+          document.getElementById("opciones-financiacion-inmob").classList.remove("hidden");
           
           imagenSeleccionada = imagen;
+          avaluoActual = 50000; // Valor por defecto para inmobiliario
         }
 
         // Cargar datos de vehículos desde la API real
@@ -2126,6 +2377,65 @@
               avaluoActual = Math.floor(Math.random() * 200000) + 50000; // Precio simulado
             }
           });
+        }
+
+        // Función específica para cálculos inmobiliarios
+        function cargarDatosYActualizarResultadosInmobiliario(montoSelectId, mesesSelectId, resultadoPrecioId, resultadoInscripcionId, porcentajeSelectId = null, tipoEntrada = "CON_ENTRADA") {
+          const montoSelect = document.getElementById(montoSelectId);
+          const mesesSelect = document.getElementById(mesesSelectId);
+          const resultadoPrecio = document.getElementById(resultadoPrecioId);
+          const resultadoInscripcion = document.getElementById(resultadoInscripcionId);
+          const porcentajeSelect = porcentajeSelectId ? document.getElementById(porcentajeSelectId) : null;
+          
+          console.log("Inicializando cálculos inmobiliarios", { tipoEntrada, montoSelectId, mesesSelectId });
+
+          // Event listeners
+          montoSelect.addEventListener("change", calcularInmobiliario);
+          mesesSelect.addEventListener("change", calcularInmobiliario);
+          if (porcentajeSelect) {
+            porcentajeSelect.addEventListener("change", calcularInmobiliario);
+          }
+
+          function calcularInmobiliario() {
+            const montoSeleccionado = parseFloat(montoSelect.value || 0);
+            const mesesSeleccionado = parseInt((mesesSelect.value || "36_MESES").replace("_MESES", ""));
+            const porcentajeEntrada = porcentajeSelect ? parseFloat(porcentajeSelect.value || 0) : 0;
+            
+            console.log("Calculando inmobiliario:", { montoSeleccionado, mesesSeleccionado, porcentajeEntrada, tipoEntrada });
+
+            if (montoSeleccionado > 0 && mesesSeleccionado > 0) {
+              let montoAFinanciar = montoSeleccionado;
+              let tasaInteres = 0.08; // 8% anual para inmobiliario
+              let inscripcion = Math.round(montoSeleccionado * 0.03); // 3% del monto
+              
+              // Si tiene entrada, reducir el monto a financiar
+              if (tipoEntrada === "CON_ENTRADA" && porcentajeEntrada > 0) {
+                const montoEntrada = montoSeleccionado * (porcentajeEntrada / 100);
+                montoAFinanciar = montoSeleccionado - montoEntrada;
+                console.log("Con entrada:", { montoEntrada, montoAFinanciar });
+              }
+              
+              // Cálculo de cuota mensual con interés compuesto
+              const tasaMensual = tasaInteres / 12;
+              const factorInteres = Math.pow(1 + tasaMensual, mesesSeleccionado);
+              const cuotaMensual = Math.round((montoAFinanciar * tasaMensual * factorInteres) / (factorInteres - 1));
+              
+              // Mostrar resultados
+              resultadoPrecio.innerText = cuotaMensual.toLocaleString();
+              resultadoInscripcion.innerText = inscripcion.toLocaleString();
+              
+              // Actualizar variables globales
+              monthlyPrice = cuotaMensual;
+              selectedMonths = mesesSelect.value;
+              montoEstimado = montoSeleccionado;
+              porcentajeGlobal = porcentajeEntrada;
+              
+              console.log("Resultado inmobiliario:", { cuotaMensual, inscripcion, montoAFinanciar });
+            } else {
+              resultadoPrecio.innerText = "0";
+              resultadoInscripcion.innerText = "0";
+            }
+          }
         }
 
         // Agregar navegación con tecla Escape para volver
