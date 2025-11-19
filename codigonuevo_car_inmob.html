@@ -1121,7 +1121,15 @@
                 <!-- Resultado de selección -->
                 <div id="resultado-justo-tiempo" style="margin: 20px 0; padding: 15px; background: #f0f4ff; border-radius: 8px; border-left: 4px solid #072386;">
                   <p id="texto-resultado" style="margin: 0; font-weight: bold; color: #072386;">
-                    Selecciona un monto y mes de entrega para ver el resultado.
+                    <div style="text-align: center;">
+                      <h4 style="margin: 0 0 10px 0; color: #072386; font-size: 1.2rem;">🚗 Plan Justo a Tiempo</h4>
+                      <p style="margin: 0 0 8px 0; color: #666; font-size: 1rem;">Planifica tu vehículo para el momento exacto que lo necesitas</p>
+                      <div style="background: #e3f2fd; padding: 10px; border-radius: 6px; margin-top: 12px;">
+                        <p style="margin: 0; color: #1976d2; font-size: 0.9rem;">
+                          📝 Completa el monto y mes de entrega para ver tus <strong>Opciones de Pago personalizadas</strong>
+                        </p>
+                      </div>
+                    </div>
                   </p>
                 </div>
                 
@@ -1129,151 +1137,9 @@
                 <button id="volver-opciones-justo-tiempo">VOLVER A OPCIONES</button>
               </div>
               
-              <!-- Formulario JUSTO A TIEMPO (inicialmente oculto) -->
-              <div class="opciones-con-entrada hidden" id="opciones-justo-tiempo">
-                <p class="titulo_marca_modelo">
-                  Estás a un paso de planificar tu auto
-                  <span id="marca_modelo_justo_tiempo"></span>
-                </p>
-                <input type="text" id="precio-vehiculo-justo-tiempo" style="display: none" />
-                
-                <select id="montoSelectJustoTiempo">
-                  <option value="">Selecciona el monto que deseas:</option>
-                  <option value="8000">$ 8.000</option>
-                  <option value="8500">$ 8.500</option>
-                  <option value="9000">$ 9.000</option>
-                  <option value="9500">$ 9.500</option>
-                  <option value="10000">$ 10.000</option>
-                  <option value="10500">$ 10.500</option>
-                  <option value="11000">$ 11.000</option>
-                  <option value="11500">$ 11.500</option>
-                  <option value="12000">$ 12.000</option>
-                  <option value="12500">$ 12.500</option>
-                  <option value="13000">$ 13.000</option>
-                  <option value="13500">$ 13.500</option>
-                  <option value="14000">$ 14.000</option>
-                  <option value="14500">$ 14.500</option>
-                  <option value="15000">$ 15.000</option>
-                  <option value="15500">$ 15.500</option>
-                  <option value="16000">$ 16.000</option>
-                  <option value="16500">$ 16.500</option>
-                  <option value="17000">$ 17.000</option>
-                  <option value="17500">$ 17.500</option>
-                  <option value="18000">$ 18.000</option>
-                  <option value="18500">$ 18.500</option>
-                  <option value="19000">$ 19.000</option>
-                  <option value="19500">$ 19.500</option>
-                  <option value="20000">$ 20.000</option>
-                  <option value="20500">$ 20.500</option>
-                  <option value="21000">$ 21.000</option>
-                  <option value="21500">$ 21.500</option>
-                  <option value="22000">$ 22.000</option>
-                  <option value="22500">$ 22.500</option>
-                  <option value="23000">$ 23.000</option>
-                  <option value="23500">$ 23.500</option>
-                  <option value="24000">$ 24.000</option>
-                  <option value="24500">$ 24.500</option>
-                  <option value="25000">$ 25.000</option>
-                  <option value="25500">$ 25.500</option>
-                  <option value="26000">$ 26.000</option>
-                  <option value="26500">$ 26.500</option>
-                  <option value="27000">$ 27.000</option>
-                  <option value="27500">$ 27.500</option>
-                  <option value="28000">$ 28.000</option>
-                  <option value="28500">$ 28.500</option>
-                  <option value="29000">$ 29.000</option>
-                  <option value="29500">$ 29.500</option>
-                  <option value="30000">$ 30.000</option>
-                  <option value="30500">$ 30.500</option>
-                  <option value="31000">$ 31.000</option>
-                  <option value="31500">$ 31.500</option>
-                  <option value="32000">$ 32.000</option>
-                  <option value="32500">$ 32.500</option>
-                  <option value="33000">$ 33.000</option>
-                  <option value="33500">$ 33.500</option>
-                  <option value="34000">$ 34.000</option>
-                  <option value="34500">$ 34.500</option>
-                  <option value="35000">$ 35.000</option>
-                  <option value="35500">$ 35.500</option>
-                  <option value="36000">$ 36.000</option>
-                  <option value="36500">$ 36.500</option>
-                  <option value="37000">$ 37.000</option>
-                  <option value="37500">$ 37.500</option>
-                  <option value="38000">$ 38.000</option>
-                  <option value="38500">$ 38.500</option>
-                  <option value="39000">$ 39.000</option>
-                  <option value="39500">$ 39.500</option>
-                  <option value="40000">$ 40000</option>
-                  <option value="40500">$ 40.500</option>
-                  <option value="41000">$ 41.000</option>
-                  <option value="41500">$ 41.500</option>
-                  <option value="42000">$ 42.000</option>
-                  <option value="42500">$ 42.500</option>
-                  <option value="43000">$ 43.000</option>
-                  <option value="43500">$ 43.500</option>
-                  <option value="44000">$ 44.000</option>
-                  <option value="44500">$ 44.500</option>
-                  <option value="45000">$ 45.000</option>
-                  <option value="45500">$ 45.500</option>
-                  <option value="46000">$ 46.000</option>
-                  <option value="46500">$ 46.500</option>
-                  <option value="47000">$ 47.000</option>
-                  <option value="47500">$ 47.500</option>
-                  <option value="48000">$ 48.000</option>
-                  <option value="48500">$ 48.500</option>
-                  <option value="49000">$ 49.000</option>
-                  <option value="49500">$ 49.500</option>
-                  <option value="50000">$ 50.000</option>
-                </select>
-                
-                <select id="mesEntregaSelect">
-                  <option value="">Selecciona el mes de entrega:</option>
-                  <option value="3">3 Meses</option>
-                  <option value="4">4 Meses</option>
-                  <option value="5">5 Meses</option>
-                  <option value="6">6 Meses</option>
-                  <option value="7">7 Meses</option>
-                  <option value="8">8 Meses</option>
-                  <option value="9">9 Meses</option>
-                  <option value="10">10 Meses</option>
-                  <option value="11">11 Meses</option>
-                  <option value="12">12 Meses</option>
-                  <option value="13">13 Meses</option>
-                  <option value="14">14 Meses</option>
-                  <option value="15">15 Meses</option>
-                  <option value="18">18 Meses</option>
-                  <option value="21">21 Meses</option>
-                </select>
-                
-                <!-- Tabla de Plazos y Porcentajes -->
-                <div id="tabla-justo-tiempo" style="margin: 20px 0;">
-                  <h4 style="text-align: center; color: #072386; margin-bottom: 15px;">📊 Tabla de Plazos y Porcentajes</h4>
-                  <table id="tabla-plazos" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
-                    <thead>
-                      <tr style="background: #072386; color: white;">
-                        <th style="padding: 8px; border: 1px solid #ddd;">Plazo (Meses)</th>
-                        <th style="padding: 8px; border: 1px solid #ddd;">30%</th>
-                        <th style="padding: 8px; border: 1px solid #ddd;">35%</th>
-                        <th style="padding: 8px; border: 1px solid #ddd;">40%</th>
-                        <th style="padding: 8px; border: 1px solid #ddd;">45%</th>
-                        <th style="padding: 8px; border: 1px solid #ddd;">50%</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tabla-plazos-body">
-                      <!-- Las filas se generarán dinámicamente -->
-                    </tbody>
-                  </table>
-                </div>
-                
-                <!-- Resultado de selección -->
-                <div id="resultado-justo-tiempo" style="margin: 20px 0; padding: 15px; background: #f0f4ff; border-radius: 8px; border-left: 4px solid #072386;">
-                  <p id="texto-resultado" style="margin: 0; font-weight: bold; color: #072386;">
-                    Selecciona un monto y mes de entrega para ver el resultado.
-                  </p>
-                </div>
-                
-                <button id="continuar-justo-tiempo-2">CONTINUAR</button>
-                <button id="volver-opciones-justo-tiempo-2">VOLVER A OPCIONES</button>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- Sección Inmobiliaria -->
@@ -1843,12 +1709,6 @@
               document.getElementById("opciones-financiacion-container").classList.remove("hidden");
             });
             
-            // Botón volver a opciones JUSTO A TIEMPO (segundo)
-            document.getElementById("volver-opciones-justo-tiempo-2").addEventListener("click", () => {
-              document.getElementById("opciones-justo-tiempo").classList.add("hidden");
-              document.getElementById("opciones-financiacion-container").classList.remove("hidden");
-            });
-            
             // Botón continuar JUSTO A TIEMPO - abrir popup
             document.getElementById("continuar-justo-tiempo").addEventListener("click", () => {
               if (avaluoActual > 0) {
@@ -1903,34 +1763,6 @@
               }
             });
             
-            // Botón continuar JUSTO A TIEMPO (segundo) - abrir popup
-            document.getElementById("continuar-justo-tiempo-2").addEventListener("click", () => {
-              const montoSelect = document.getElementById("montoSelectJustoTiempo");
-              const mesSelect = document.getElementById("mesEntregaSelect");
-              
-              if (avaluoActual > 0 && montoSelect.value && mesSelect.value) {
-                // Preparar datos para el popup
-                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
-                const textoResultado = document.getElementById("texto-resultado").innerHTML;
-                
-                // Configurar popup
-                document.getElementById("imagen-carro").src = imagenSeleccionada;
-                document.getElementById("usuario").textContent = "";
-                
-                // Mostrar popup
-                document.getElementById("popup").classList.remove("hidden");
-                
-                console.log("Abriendo popup JUSTO A TIEMPO (2) con datos:", {
-                  vehiculo: marcaModelo,
-                  precio: avaluoActual,
-                  resultado: textoResultado,
-                  imagen: imagenSeleccionada,
-                  plan: "PLAN JUSTO A TIEMPO"
-                });
-              } else {
-                alert("Por favor completa todos los campos antes de continuar.");
-              }
-            });
             function cargarDatosYActualizarResultados(montoSelectId, mesesSelectId, resultadoPrecioId, resultadoInscripcionId, tipoEntrada = "CON_ENTRADA") {
               fetch("https://finanmotors.com/vehicular_M.json")
                 .then((response) => response.json())
@@ -2419,7 +2251,11 @@
           // Botón descargar PDF
           document.getElementById("btn-quote").addEventListener("click", () => {
             console.log('🖱️ Botón DESCARGAR PDF clickeado');
-            generarPDF();
+            if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
+              generarPDFJustoTiempo();
+            } else {
+              generarPDF();
+            }
           });
           
           // Botón cotizar otro
@@ -2463,26 +2299,42 @@
           document.getElementById("thankYouMessage").textContent = `🎉 ¡Gracias por cotizar, ${nombre}!`;
           document.getElementById("auto-pdf").src = imagenSeleccionada;
           
-          // Llenar datos del formulario
-          // document.getElementById("precio-vehiculo-pdf").value = `$${avaluoActual.toLocaleString()}`; // COMENTADO - Monto Planificado
-          document.getElementById("meses-F").value = selectedMonths.replace("_MESES", " Meses");
-          document.getElementById("porcentaje-F").value = `${porcentajeGlobal}%`;
-          document.getElementById("cuota-F").value = `$${monthlyPrice}`;
-          document.getElementById("monto-estimado-F").value = `$${montoEstimado.toLocaleString()}`;
-          
-          // Calcular tasa administrativa según meses
-          const tasas = {
-            "24_MESES": "5.5%",
-            "36_MESES": "5.84%", 
-            "48_MESES": "4.38%",
-            "60_MESES": "3.5%",
-            "72_MESES": "2.92%",
-            "84_MESES": "2.92%"
-          };
-          document.getElementById("tasa-F").value = tasas[selectedMonths] || "2.92%";
-          
-          // Generar tabla completa de opciones
-          generarTablaCompletaOpciones();
+          // Verificar si es PLAN JUSTO A TIEMPO
+          if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
+            // Ocultar contenido estándar y mostrar contenido específico de JUSTO A TIEMPO
+            document.getElementById("formfinal").style.display = "none";
+            document.getElementById("tabla-completa-opciones").style.display = "none";
+            
+            // Mostrar contenido específico de JUSTO A TIEMPO
+            mostrarContenidoJustoTiempoPDF();
+          } else {
+            // Contenido estándar para otros planes
+            document.getElementById("formfinal").style.display = "grid";
+            document.getElementById("tabla-completa-opciones").style.display = "block";
+            
+            // Llenar datos del formulario estándar
+            document.getElementById("meses-F").value = selectedMonths.replace("_MESES", " Meses");
+            document.getElementById("porcentaje-F").value = `${porcentajeGlobal}%`;
+            document.getElementById("cuota-F").value = `$${monthlyPrice}`;
+            document.getElementById("monto-estimado-F").value = `$${montoEstimado.toLocaleString()}`;
+            
+            // Calcular tasa administrativa según meses
+            const tasas = {
+              "24_MESES": "5.5%",
+              "36_MESES": "5.84%", 
+              "48_MESES": "4.38%",
+              "60_MESES": "3.5%",
+              "72_MESES": "2.92%",
+              "84_MESES": "2.92%"
+            };
+            document.getElementById("tasa-F").value = tasas[selectedMonths] || "2.92%";
+            
+            // Generar tabla completa de opciones
+            generarTablaCompletaOpciones();
+            
+            // Cambiar texto del botón PDF para planes estándar
+            document.getElementById("btn-quote").textContent = "DESCARGAR COTIZACIÓN PDF";
+          }
         }
         
         function resetearFormularioCompleto() {
@@ -2549,6 +2401,19 @@
           document.getElementById("ventana-autorizacion").classList.add("hidden");
           document.getElementById("pdf").classList.add("hidden");
           
+          // Limpiar contenido específico de JUSTO A TIEMPO si existe
+          const contenidoJustoTiempo = document.getElementById("contenido-justo-tiempo-pdf");
+          if (contenidoJustoTiempo) {
+            contenidoJustoTiempo.remove();
+          }
+          
+          // Restaurar elementos estándar
+          document.getElementById("formfinal").style.display = "grid";
+          document.getElementById("tabla-completa-opciones").style.display = "block";
+          
+          // Restaurar texto del botón PDF
+          document.getElementById("btn-quote").textContent = "DESCARGAR COTIZACIÓN PDF";
+          
           // Ocultar formularios de opciones
           document.getElementById("opciones-con-entrada").classList.add("hidden");
           document.getElementById("opciones-sin-entrada").classList.add("hidden");
@@ -2558,6 +2423,129 @@
           const mensajeError = document.getElementById("mensaje-error-global");
           mensajeError.textContent = "";
           mensajeError.style.color = "";
+        }
+        
+        function mostrarContenidoJustoTiempoPDF() {
+          // Crear contenido específico para PLAN JUSTO A TIEMPO
+          const mesSeleccionado = document.getElementById("mesEntregaSelect").value;
+          const montoSeleccionado = document.getElementById("montoSelectJustoTiempo").value;
+          
+          // Obtener opciones de pago del resultado mostrado
+          const textoResultado = document.getElementById("texto-resultado").innerHTML;
+          
+          // Crear nueva sección para JUSTO A TIEMPO
+          let contenidoHTML = `
+            <div id="contenido-justo-tiempo-pdf" style="margin: 20px 0; background: #f8f9fa; border-radius: 10px; padding: 20px;">
+              <h3 style="text-align: center; color: #072386; margin-bottom: 20px; font-size: 1.4rem;">📅 Plan Justo a Tiempo - Opciones de Pago</h3>
+              
+              <div style="background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #072386;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center;">
+                  <div>
+                    <p style="margin: 0; font-weight: bold; color: #072386; font-size: 1.1rem;">💰 Monto Planificado</p>
+                    <p style="margin: 5px 0 0 0; font-size: 1.3rem; color: #072386;">$${parseFloat(montoSeleccionado).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p style="margin: 0; font-weight: bold; color: #072386; font-size: 1.1rem;">📅 Mes de Entrega</p>
+                    <p style="margin: 5px 0 0 0; font-size: 1.3rem; color: #072386;">Mes ${mesSeleccionado}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div id="opciones-pago-container"></div>
+            </div>
+          `;
+          
+          // Insertar el contenido en el PDF
+          const pdfContainer = document.getElementById("form-container-pdf");
+          const autoImage = document.getElementById("auto-pdf");
+          autoImage.insertAdjacentHTML('afterend', contenidoHTML);
+          
+          // Generar las opciones de pago
+          generarOpcionesPagoPDF(montoSeleccionado, mesSeleccionado);
+          
+          // Cambiar texto del botón PDF para JUSTO A TIEMPO
+          document.getElementById("btn-quote").textContent = "DESCARGAR OPCIONES DE PAGO PDF";
+        }
+        
+        function generarOpcionesPagoPDF(monto, mesEntrega) {
+          // Datos de la tabla (mismo que en la función principal)
+          const datosTabla = {
+            24: { 30: 7, 35: 6, 40: 5, 45: 4, 50: 3 },
+            36: { 30: 11, 35: 9, 40: 8, 45: 6, 50: 5 },
+            48: { 30: 14, 35: 12, 40: 10, 45: 8, 50: 6 },
+            60: { 30: 18, 35: 15, 40: 13, 45: 10, 50: 8 },
+            72: { 30: 21, 35: 18, 40: 15, 45: 12, 50: 9 }
+          };
+          
+          // Buscar opciones disponibles
+          const opcionesPago = [];
+          const montoNumerico = parseFloat(monto);
+          
+          Object.keys(datosTabla).forEach(plazoMeses => {
+            Object.keys(datosTabla[plazoMeses]).forEach(porcentaje => {
+              const valorCelda = datosTabla[plazoMeses][porcentaje];
+              if (valorCelda.toString() === mesEntrega) {
+                const montoPorcentaje = montoNumerico * (parseInt(porcentaje) / 100);
+                opcionesPago.push({
+                  plazo: plazoMeses,
+                  porcentaje: porcentaje,
+                  montoAPagar: Math.round(montoPorcentaje)
+                });
+              }
+            });
+          });
+          
+          // Generar HTML de opciones
+          let opcionesHTML = '';
+          
+          if (opcionesPago.length > 0) {
+            opcionesPago.forEach((opcion, index) => {
+              opcionesHTML += `
+                <div style="background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%); margin: 15px 0; padding: 20px; border-radius: 10px; border: 2px solid #e3f2fd; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
+                  <h4 style="margin: 0 0 15px 0; color: #072386; font-size: 1.2rem; display: flex; align-items: center;">
+                    <span style="background: #072386; color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: bold;">${index + 1}</span>
+                    Opción ${index + 1}: Plan de ${opcion.plazo} Meses
+                  </h4>
+                  
+                  <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                      <div style="text-align: center;">
+                        <p style="margin: 0 0 5px 0; font-weight: bold; color: #666; font-size: 0.9rem;">📊 PORCENTAJE A PAGAR</p>
+                        <p style="margin: 0; background: #072386; color: white; padding: 8px; border-radius: 6px; font-size: 1.1rem; font-weight: bold;">${opcion.porcentaje}%</p>
+                      </div>
+                      <div style="text-align: center;">
+                        <p style="margin: 0 0 5px 0; font-weight: bold; color: #666; font-size: 0.9rem;">💰 MONTO A PAGAR</p>
+                        <p style="margin: 0; background: #4CAF50; color: white; padding: 8px; border-radius: 6px; font-size: 1.1rem; font-weight: bold;">$${opcion.montoAPagar.toLocaleString()}</p>
+                      </div>
+                    </div>
+                    
+                    <div style="background: #e3f2fd; padding: 12px; border-radius: 6px; text-align: center;">
+                      <p style="margin: 0; color: #1976d2; font-size: 1rem;">🧮 <strong>Cálculo:</strong> $${montoNumerico.toLocaleString()} × ${opcion.porcentaje}% = <strong>$${opcion.montoAPagar.toLocaleString()}</strong></p>
+                      <p style="margin: 8px 0 0 0; color: #1976d2; font-size: 1rem; font-weight: bold;">📅 Pagas $${opcion.montoAPagar.toLocaleString()} en el mes ${mesEntrega}</p>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+            
+            // Agregar nota final
+            opcionesHTML += `
+              <div style="background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%); padding: 15px; border-radius: 10px; margin-top: 20px; border: 2px solid #4CAF50; text-align: center;">
+                <p style="margin: 0; color: #2e7d32; font-size: 1.1rem; font-weight: bold;">✅ Total de opciones disponibles: ${opcionesPago.length}</p>
+                <p style="margin: 8px 0 0 0; color: #2e7d32; font-size: 1rem;">Elige la opción que mejor se adapte a tu planificación financiera</p>
+              </div>
+            `;
+          } else {
+            opcionesHTML = `
+              <div style="background: #fff3cd; padding: 20px; border-radius: 10px; border: 2px solid #ffc107; text-align: center;">
+                <h4 style="margin: 0 0 10px 0; color: #856404;">⚠️ No hay opciones disponibles</h4>
+                <p style="margin: 0; color: #856404;">El mes ${mesEntrega} no está disponible con el monto seleccionado.</p>
+              </div>
+            `;
+          }
+          
+          // Insertar opciones en el contenedor
+          document.getElementById("opciones-pago-container").innerHTML = opcionesHTML;
         }
         
         function generarTablaCompletaOpciones() {
@@ -2637,6 +2625,217 @@
           document.getElementById("contenedor-tabla-opciones").innerHTML = tablaHTML;
           
           console.log("Tabla completa generada exitosamente");
+        }
+        
+        function generarPDFJustoTiempo() {
+          console.log('🚀 Iniciando generación de PDF para PLAN JUSTO A TIEMPO...');
+          
+          const { jsPDF } = window.jsPDF;
+          console.log('📋 jsPDF cargado:', !!jsPDF);
+          
+          if (!jsPDF) {
+            console.error('❌ jsPDF no está disponible');
+            alert('Error: No se pudo cargar la librería de PDF. Por favor, recarga la página e intenta nuevamente.');
+            return;
+          }
+          
+          const pdf = new jsPDF();
+          console.log('📄 PDF inicializado correctamente');
+          
+          // Obtener dimensiones de la página
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          
+          // Línea horizontal azul marino al inicio
+          pdf.setDrawColor(7, 35, 134);
+          pdf.setLineWidth(4);
+          pdf.line(10, 10, pageWidth - 10, 10);
+          
+          // Título principal específico para JUSTO A TIEMPO
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(16);
+          pdf.setTextColor(7, 35, 134);
+          pdf.text("PROFORMA VEHICULAR - PLAN JUSTO A TIEMPO", pageWidth / 2, 25, { align: 'center' });
+          
+          // Subtítulo
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(12);
+          pdf.setTextColor(102, 126, 234);
+          pdf.text("Opciones de Pago Personalizadas", pageWidth / 2, 35, { align: 'center' });
+          
+          // Línea decorativa
+          pdf.setDrawColor(102, 126, 234);
+          pdf.setLineWidth(1);
+          pdf.line(20, 42, pageWidth - 20, 42);
+          
+          // Datos del cliente
+          let yPos = 50;
+          pdf.setFillColor(240, 244, 255);
+          pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
+          
+          const nombre = document.getElementById("nombre").value;
+          const telefono = document.getElementById("telefono").value;
+          const correo = document.getElementById("correo").value;
+          const cedula = document.getElementById("cedula").value;
+          const ciudad = document.getElementById("ciudad").value;
+          
+          pdf.setFontSize(10);
+          pdf.setFont("helvetica", "bold");
+          pdf.setTextColor(7, 35, 134);
+          pdf.text("INFORMACIÓN DEL CLIENTE", 20, yPos + 3);
+          
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(8);
+          pdf.setTextColor(0, 0, 0);
+          pdf.text(`Cliente: ${nombre}`, 20, yPos + 12);
+          pdf.text(`Cédula: ${cedula}`, 20, yPos + 18);
+          pdf.text(`Teléfono: ${telefono}`, 20, yPos + 24);
+          pdf.text(`Email: ${correo}`, 110, yPos + 18);
+          pdf.text(`Ciudad: ${ciudad}`, 110, yPos + 24);
+          
+          // Información del vehículo y plan
+          yPos += 40;
+          pdf.setFillColor(7, 35, 134);
+          pdf.rect(15, yPos - 3, pageWidth - 30, 25, 'F');
+          
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(10);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text("DETALLES DEL PLAN", 20, yPos + 3);
+          
+          const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
+          const montoSeleccionado = document.getElementById("montoSelectJustoTiempo").value;
+          const mesSeleccionado = document.getElementById("mesEntregaSelect").value;
+          
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(8);
+          
+          pdf.text(`Vehículo: ${vehiculoNombre}`, 20, yPos + 12);
+          pdf.text(`Monto planificado: $${parseFloat(montoSeleccionado).toLocaleString()}`, 20, yPos + 18);
+          pdf.text(`Mes de entrega: Mes ${mesSeleccionado}`, pageWidth / 2 + 10, yPos + 12);
+          pdf.text(`Plan: JUSTO A TIEMPO`, pageWidth / 2 + 10, yPos + 18);
+          
+          // Generar opciones de pago
+          yPos += 30;
+          
+          // Datos de la tabla
+          const datosTabla = {
+            24: { 30: 7, 35: 6, 40: 5, 45: 4, 50: 3 },
+            36: { 30: 11, 35: 9, 40: 8, 45: 6, 50: 5 },
+            48: { 30: 14, 35: 12, 40: 10, 45: 8, 50: 6 },
+            60: { 30: 18, 35: 15, 40: 13, 45: 10, 50: 8 },
+            72: { 30: 21, 35: 18, 40: 15, 45: 12, 50: 9 }
+          };
+          
+          // Calcular opciones
+          const opcionesPago = [];
+          const montoNumerico = parseFloat(montoSeleccionado);
+          
+          Object.keys(datosTabla).forEach(plazoMeses => {
+            Object.keys(datosTabla[plazoMeses]).forEach(porcentaje => {
+              const valorCelda = datosTabla[plazoMeses][porcentaje];
+              if (valorCelda.toString() === mesSeleccionado) {
+                const montoPorcentaje = montoNumerico * (parseInt(porcentaje) / 100);
+                opcionesPago.push({
+                  plazo: plazoMeses,
+                  porcentaje: porcentaje,
+                  montoAPagar: Math.round(montoPorcentaje)
+                });
+              }
+            });
+          });
+          
+          // Título de opciones de pago
+          pdf.setFillColor(7, 35, 134);
+          pdf.rect(15, yPos - 3, pageWidth - 30, 15, 'F');
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(12);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(`💳 OPCIONES DE PAGO PARA EL MES ${mesSeleccionado}`, pageWidth / 2, yPos + 5, { align: 'center' });
+          
+          yPos += 20;
+          
+          if (opcionesPago.length > 0) {
+            // Encabezados de tabla de opciones
+            pdf.setFillColor(102, 126, 234);
+            pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(9);
+            pdf.setTextColor(255, 255, 255);
+            
+            pdf.text("OPCIÓN", 25, yPos + 6);
+            pdf.text("PLAZO", 65, yPos + 6);
+            pdf.text("PORCENTAJE", 100, yPos + 6);
+            pdf.text("CÁLCULO", 140, yPos + 6);
+            pdf.text("MONTO A PAGAR", 170, yPos + 6);
+            
+            yPos += 15;
+            
+            // Datos de opciones
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(8);
+            
+            opcionesPago.forEach((opcion, index) => {
+              // Alternar color de fondo
+              if (index % 2 === 0) {
+                pdf.setFillColor(249, 249, 249);
+                pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+              }
+              
+              pdf.setTextColor(0, 0, 0);
+              pdf.text(`${index + 1}`, 30, yPos + 6);
+              pdf.text(`${opcion.plazo} meses`, 65, yPos + 6);
+              pdf.text(`${opcion.porcentaje}%`, 105, yPos + 6);
+              pdf.text(`$${montoNumerico.toLocaleString()} × ${opcion.porcentaje}%`, 135, yPos + 6);
+              
+              // Destacar el monto a pagar
+              pdf.setFont("helvetica", "bold");
+              pdf.setTextColor(7, 35, 134);
+              pdf.text(`$${opcion.montoAPagar.toLocaleString()}`, 175, yPos + 6);
+              pdf.setFont("helvetica", "normal");
+              pdf.setTextColor(0, 0, 0);
+              
+              yPos += 12;
+            });
+            
+            // Nota explicativa
+            yPos += 5;
+            pdf.setFont("helvetica", "italic");
+            pdf.setFontSize(7);
+            pdf.setTextColor(153, 153, 153);
+            pdf.text(`* Estas son las ${opcionesPago.length} opciones disponibles para pagar en el mes ${mesSeleccionado}`, 20, yPos);
+            pdf.text("* Elige la opción que mejor se adapte a tu planificación financiera", 20, yPos + 8);
+            
+          } else {
+            // Sin opciones disponibles
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(12);
+            pdf.setTextColor(255, 152, 0);
+            pdf.text("⚠️ No hay opciones disponibles para este mes", pageWidth / 2, yPos + 20, { align: 'center' });
+          }
+          
+          // Pie de página
+          pdf.setFillColor(102, 126, 234);
+          pdf.rect(0, pageHeight - 25, pageWidth, 25, 'F');
+          
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(10);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text("FINANMOTORS - Plan Justo a Tiempo", pageWidth / 2, pageHeight - 12, { align: 'center' });
+          pdf.setFontSize(8);
+          pdf.text("www.finanmotors.com | Tu vehículo en el momento exacto que lo necesitas", pageWidth / 2, pageHeight - 4, { align: 'center' });
+          
+          // Descargar
+          const nombreArchivo = `Cotizacion_Justo_A_Tiempo_${nombre.replace(/\s+/g, '_')}_Mes${mesSeleccionado}.pdf`;
+          console.log('💾 Intentando descargar PDF con nombre:', nombreArchivo);
+          
+          try {
+            pdf.save(nombreArchivo);
+            console.log('✅ PDF JUSTO A TIEMPO descargado exitosamente');
+          } catch (error) {
+            console.error('❌ Error al descargar PDF:', error);
+            alert('Error al generar el PDF. Revisa la consola para más detalles.');
+          }
         }
         
         function generarPDF() {
@@ -3020,19 +3219,27 @@
                 
                 // Mostrar resultados
                 if (opcionesPago.length > 0) {
-                  let textoOpciones = `<div style="background: #f0f8ff; padding: 15px; border-radius: 8px; border-left: 4px solid #072386;">`;
-                  textoOpciones += `<h4 style="margin: 0 0 10px 0; color: #072386;">🎯 Opciones de Pago para el Mes ${mesEntregaValue}</h4>`;
-                  textoOpciones += `<p style="margin: 0 0 15px 0; font-size: 0.9rem; color: #666;"><strong>Monto Base:</strong> $${monto.toLocaleString()}</p>`;
+                  let textoOpciones = `<div style="background: linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%); padding: 20px; border-radius: 12px; border-left: 6px solid #072386; box-shadow: 0 4px 12px rgba(7, 35, 134, 0.1);">`;
+                  textoOpciones += `<h3 style="margin: 0 0 15px 0; color: #072386; text-align: center; font-size: 1.4rem;">💳 Opciones de Pago para el Mes ${mesEntregaValue}</h3>`;
+                  textoOpciones += `<div style="background: #fff; padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center; border: 2px solid #072386;"><strong style="color: #072386; font-size: 1.1rem;">Monto Planificado: $${monto.toLocaleString()}</strong></div>`;
                   
                   opcionesPago.forEach((opcion, index) => {
                     textoOpciones += `
-                      <div style="background: white; margin: 8px 0; padding: 12px; border-radius: 6px; border: 1px solid #ddd;">
-                        <h5 style="margin: 0 0 8px 0; color: #072386;">📋 Opción ${index + 1}: Plan de ${opcion.plazo} meses</h5>
-                        <p style="margin: 0; font-size: 0.95rem;">
-                          📊 <strong>Porcentaje:</strong> ${opcion.porcentaje}% del monto base<br>
-                          💰 <strong>Cálculo:</strong> $${monto.toLocaleString()} × ${opcion.porcentaje}% = <span style="color: #072386; font-weight: bold;">$${Math.round(opcion.montoAPagar).toLocaleString()}</span><br>
-                          📅 <strong>Debes pagar:</strong> $${Math.round(opcion.montoAPagar).toLocaleString()} en el mes ${mesEntregaValue}
-                        </p>
+                      <div style="background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%); margin: 12px 0; padding: 18px; border-radius: 10px; border: 2px solid #e3f2fd; box-shadow: 0 3px 8px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                        <h4 style="margin: 0 0 12px 0; color: #072386; display: flex; align-items: center; font-size: 1.2rem;">
+                          <span style="background: #072386; color: white; border-radius: 50%; width: 25px; height: 25px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 0.9rem;">${index + 1}</span>
+                          Plan de ${opcion.plazo} Meses
+                        </h4>
+                        <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin: 8px 0;">
+                          <p style="margin: 0 0 8px 0; font-size: 1rem; line-height: 1.5;">
+                            📊 <strong style="color: #072386;">Porcentaje a Pagar:</strong> ${opcion.porcentaje}% del monto planificado<br>
+                            🧮 <strong style="color: #072386;">Cálculo:</strong> $${monto.toLocaleString()} × ${opcion.porcentaje}% = <span style="background: #072386; color: white; padding: 3px 8px; border-radius: 4px; font-weight: bold;">$${Math.round(opcion.montoAPagar).toLocaleString()}</span><br>
+                            📅 <strong style="color: #072386;">Monto a Pagar en el Mes ${mesEntregaValue}:</strong> 
+                            <div style="background: #4CAF50; color: white; padding: 8px; border-radius: 6px; margin-top: 8px; text-align: center; font-size: 1.1rem; font-weight: bold;">
+                              💰 $${Math.round(opcion.montoAPagar).toLocaleString()}
+                            </div>
+                          </p>
+                        </div>
                       </div>
                     `;
                     
@@ -3049,6 +3256,12 @@
                     }
                   });
                   
+                  textoOpciones += `
+                    <div style="background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%); padding: 15px; border-radius: 10px; margin-top: 15px; border: 2px solid #4CAF50;">
+                      <h4 style="margin: 0 0 8px 0; color: #2e7d32; text-align: center;">✅ ¡Perfecto! Tienes ${opcionesPago.length} opción${opcionesPago.length > 1 ? 'es' : ''} disponible${opcionesPago.length > 1 ? 's' : ''}</h4>
+                      <p style="margin: 0; text-align: center; color: #2e7d32; font-size: 0.95rem;">Selecciona la opción que mejor se adapte a tu planificación financiera y presiona <strong>CONTINUAR</strong> para proceder con la cotización.</p>
+                    </div>
+                  `;
                   textoOpciones += `</div>`;
                   textoResultado.innerHTML = textoOpciones;
                   
@@ -3060,22 +3273,38 @@
                   
                 } else {
                   textoResultado.innerHTML = `
-                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
-                      <h4 style="margin: 0; color: #856404;">⚠️ No hay opciones disponibles</h4>
-                      <p style="margin: 8px 0 0 0; color: #856404;">El mes ${mesEntregaValue} no está disponible en la tabla de plazos con el monto actual.</p>
+                    <div style="background: linear-gradient(135deg, #fff8e1 0%, #fffbf0 100%); padding: 18px; border-radius: 12px; border-left: 6px solid #ffc107; box-shadow: 0 3px 10px rgba(255, 193, 7, 0.2);">
+                      <h4 style="margin: 0 0 8px 0; color: #f57f17; text-align: center; font-size: 1.2rem;">⚠️ No hay opciones disponibles</h4>
+                      <p style="margin: 8px 0 0 0; color: #f57f17; text-align: center; font-size: 1rem;">El mes <strong>${mesEntregaValue}</strong> no está disponible en la tabla de plazos con el monto seleccionado <strong>$${monto.toLocaleString()}</strong>.</p>
+                      <p style="margin: 8px 0 0 0; color: #ef6c00; text-align: center; font-size: 0.9rem; font-style: italic;">💡 Prueba seleccionando otro mes de entrega que aparezca resaltado en amarillo en la tabla.</p>
                     </div>
                   `;
                 }
               } else {
                 textoResultado.innerHTML = `
-                  <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
-                    <h4 style="margin: 0 0 8px 0; color: #1976d2;">📝 Mes ${mesEntregaValue} seleccionado</h4>
-                    <p style="margin: 0; color: #1976d2;">Selecciona un monto para ver las opciones de pago disponibles para este mes.</p>
+                  <div style="background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); padding: 18px; border-radius: 12px; border-left: 6px solid #2196f3; box-shadow: 0 3px 10px rgba(33, 150, 243, 0.1);">
+                    <h4 style="margin: 0 0 10px 0; color: #1976d2; text-align: center; font-size: 1.2rem;">📅 Mes ${mesEntregaValue} seleccionado</h4>
+                    <p style="margin: 0 0 8px 0; color: #1976d2; text-align: center; font-size: 1rem;">Ahora selecciona un <strong>monto</strong> para ver las opciones de pago disponibles para este mes.</p>
+                    <div style="background: #bbdefb; padding: 10px; border-radius: 6px; margin-top: 12px;">
+                      <p style="margin: 0; color: #0d47a1; text-align: center; font-size: 0.9rem; font-weight: 500;">💡 Los números resaltados en amarillo en la tabla superior muestran todas las celdas correspondientes al mes ${mesEntregaValue}</p>
+                    </div>
                   </div>
                 `;
               }
             } else {
-              textoResultado.textContent = "Selecciona un monto y mes a pagar para ver el resultado.";
+              textoResultado.innerHTML = `
+                <div style="background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%); padding: 18px; border-radius: 12px; border-left: 6px solid #9e9e9e; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                  <h4 style="margin: 0 0 10px 0; color: #424242; text-align: center; font-size: 1.2rem;">📋 Plan Justo a Tiempo</h4>
+                  <p style="margin: 0 0 8px 0; color: #666; text-align: center; font-size: 1rem;">Selecciona un <strong>monto a planificar</strong> y el <strong>mes de entrega</strong> para ver tus opciones de pago personalizadas.</p>
+                  <div style="background: #e0e0e0; padding: 12px; border-radius: 6px; margin-top: 12px;">
+                    <p style="margin: 0; color: #424242; text-align: center; font-size: 0.9rem;">
+                      🔢 <strong>Paso 1:</strong> Elige tu monto deseado<br>
+                      📅 <strong>Paso 2:</strong> Selecciona el mes en que quieres recibir tu vehículo<br>
+                      💳 <strong>Paso 3:</strong> Ve tus opciones de pago calculadas automáticamente
+                    </p>
+                  </div>
+                </div>
+              `;
             }
           }
           
