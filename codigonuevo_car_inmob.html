@@ -1272,12 +1272,8 @@
                   </p>
                 </div>
                 
-                <button id="continuar-justo-tiempo">CONTINUAR</button>
-                <button id="volver-opciones-justo-tiempo">VOLVER A OPCIONES</button>
-              </div>
-            </div>
-          </div>
-        </div>
+                <button id="continuar-justo-tiempo-2">CONTINUAR</button>
+                <button id="volver-opciones-justo-tiempo-2">VOLVER A OPCIONES</button>
       </section>
 
       <!-- Sección Inmobiliaria -->
@@ -1780,6 +1776,43 @@
               );
             });
             
+            // Botón continuar SIN ENTRADA - abrir popup
+            document.getElementById("continuar-sin-entrada").addEventListener("click", () => {
+              const montoSelect = document.getElementById("montoSelectSinEntrada");
+              const mesesSelect = document.getElementById("mesesSelectSinEntrada");
+              
+              if (avaluoActual > 0 && montoSelect.value && mesesSelect.value) {
+                // Preparar datos para el popup
+                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                const resultadoPrecio = document.getElementById("resultadoPrecioSinEntrada").textContent;
+                const resultadoInscripcion = document.getElementById("resultadoInscripcionSinEntrada").textContent;
+                
+                // Configurar popup
+                document.getElementById("imagen-carro").src = imagenSeleccionada;
+                document.getElementById("usuario").textContent = "";
+                
+                // Mostrar popup
+                document.getElementById("popup").classList.remove("hidden");
+                
+                console.log("Abriendo popup SIN ENTRADA con datos:", {
+                  vehiculo: marcaModelo,
+                  precio: avaluoActual,
+                  cuotaMensual: resultadoPrecio,
+                  inscripcion: resultadoInscripcion,
+                  imagen: imagenSeleccionada,
+                  plan: "PLAN PUNTUACION"
+                });
+              } else {
+                alert("Por favor completa todos los campos antes de continuar.");
+              }
+            });
+            
+            // Botón volver a opciones CON ENTRADA
+            document.getElementById("volver-opciones").addEventListener("click", () => {
+              document.getElementById("opciones-con-entrada").classList.add("hidden");
+              document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+            });
+            
             // Botón volver a opciones SIN ENTRADA
             document.getElementById("volver-opciones-sin-entrada").addEventListener("click", () => {
               document.getElementById("opciones-sin-entrada").classList.add("hidden");
@@ -1806,6 +1839,12 @@
             
             // Botón volver a opciones JUSTO A TIEMPO
             document.getElementById("volver-opciones-justo-tiempo").addEventListener("click", () => {
+              document.getElementById("opciones-justo-tiempo").classList.add("hidden");
+              document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+            });
+            
+            // Botón volver a opciones JUSTO A TIEMPO (segundo)
+            document.getElementById("volver-opciones-justo-tiempo-2").addEventListener("click", () => {
               document.getElementById("opciones-justo-tiempo").classList.add("hidden");
               document.getElementById("opciones-financiacion-container").classList.remove("hidden");
             });
@@ -1858,6 +1897,35 @@
                   cuota: precioMensualTexto,
                   inscripcion: inscripcionTexto,
                   imagen: imagenSeleccionada
+                });
+              } else {
+                alert("Por favor completa todos los campos antes de continuar.");
+              }
+            });
+            
+            // Botón continuar JUSTO A TIEMPO (segundo) - abrir popup
+            document.getElementById("continuar-justo-tiempo-2").addEventListener("click", () => {
+              const montoSelect = document.getElementById("montoSelectJustoTiempo");
+              const mesSelect = document.getElementById("mesEntregaSelect");
+              
+              if (avaluoActual > 0 && montoSelect.value && mesSelect.value) {
+                // Preparar datos para el popup
+                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                const textoResultado = document.getElementById("texto-resultado").innerHTML;
+                
+                // Configurar popup
+                document.getElementById("imagen-carro").src = imagenSeleccionada;
+                document.getElementById("usuario").textContent = "";
+                
+                // Mostrar popup
+                document.getElementById("popup").classList.remove("hidden");
+                
+                console.log("Abriendo popup JUSTO A TIEMPO (2) con datos:", {
+                  vehiculo: marcaModelo,
+                  precio: avaluoActual,
+                  resultado: textoResultado,
+                  imagen: imagenSeleccionada,
+                  plan: "PLAN JUSTO A TIEMPO"
                 });
               } else {
                 alert("Por favor completa todos los campos antes de continuar.");
