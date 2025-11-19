@@ -4,9 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Backup jsPDF en caso de fallo -->
+    <script>
+      // Verificar que jsPDF se cargó correctamente
+      window.addEventListener('load', function() {
+        if (!window.jspdf && !window.jsPDF) {
+          console.warn('⚠️ jsPDF no se cargó desde CDN principal, intentando cargar versión alternativa...');
+          const script = document.createElement('script');
+          script.src = 'https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js';
+          script.onload = () => console.log('✅ jsPDF cargado desde fuente alternativa');
+          script.onerror = () => console.error('❌ Error al cargar jsPDF desde fuente alternativa');
+          document.head.appendChild(script);
+        } else {
+          console.log('✅ jsPDF cargado correctamente');
+        }
+      });
+    </script>
 
     <title>COTIZADOR VEHICULAR E INMOBILIARIO</title>
     <style>
@@ -1423,6 +1440,12 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // Verificar que las librerías estén cargadas
+        console.log('🔍 Verificando librerías al cargar la página...');
+        console.log('jsPDF disponible:', !!(window.jspdf || window.jsPDF || (typeof jspdf !== 'undefined')));
+        console.log('jQuery disponible:', !!window.jQuery);
+        console.log('html2canvas disponible:', !!window.html2canvas);
+        
         // Variables globales
         let tipoSeleccionado = ''; // 'vehicular' o 'inmobiliario'
         let categoriaSeleccionada = ''; // tipo específico seleccionado
@@ -2251,9 +2274,37 @@
           // Botón descargar PDF
           document.getElementById("btn-quote").addEventListener("click", () => {
             console.log('🖱️ Botón DESCARGAR PDF clickeado');
+            
+            // Validar que tenemos todos los datos necesarios
             if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
+              const montoJusto = document.getElementById("montoSelectJustoTiempo").value;
+              const mesJusto = document.getElementById("mesEntregaSelect").value;
+              const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
+              
+              if (!montoJusto || !mesJusto || !vehiculoNombre) {
+                alert('⚠️ Faltan datos para generar el PDF:\n\n' + 
+                      (!montoJusto ? '• Monto seleccionado\n' : '') +
+                      (!mesJusto ? '• Mes de entrega\n' : '') +
+                      (!vehiculoNombre ? '• Vehículo seleccionado\n' : '') +
+                      '\nPor favor, completa todos los campos del formulario.');
+                return;
+              }
+              
+              console.log('✅ Datos JUSTO A TIEMPO validados:', {
+                monto: montoJusto,
+                mes: mesJusto,
+                vehiculo: vehiculoNombre,
+                plan: planSeleccionado
+              });
+              
               generarPDFJustoTiempo();
             } else {
+              // Validar datos para planes estándar
+              if (!monthlyPrice || !selectedMonths || !montoEstimado) {
+                alert('⚠️ Faltan datos para generar el PDF. Por favor, completa todos los campos del formulario.');
+                return;
+              }
+              
               generarPDF();
             }
           });
@@ -2630,95 +2681,129 @@
         function generarPDFJustoTiempo() {
           console.log('🚀 Iniciando generación de PDF para PLAN JUSTO A TIEMPO...');
           
-          const { jsPDF } = window.jsPDF;
-          console.log('📋 jsPDF cargado:', !!jsPDF);
+          // Pequeño delay para asegurar que jsPDF esté completamente cargado
+          setTimeout(() => {
+            ejecutarGeneracionPDFJustoTiempo();
+          }, 100);
+        }
+        
+        function ejecutarGeneracionPDFJustoTiempo() {
+          // Obtener datos del formulario
+          const nombre = document.getElementById("nombre").value || "Cliente";
+          const telefono = document.getElementById("telefono").value || "N/A";
+          const correo = document.getElementById("correo").value || "N/A";
+          const cedula = document.getElementById("cedula").value || "N/A";
+          const ciudad = document.getElementById("ciudad").value || "N/A";
+          const provincia = document.getElementById("provincia").value || "N/A";
+          const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent || "Vehículo";
+          const montoSeleccionado = document.getElementById("montoSelectJustoTiempo").value;
+          const mesSeleccionado = document.getElementById("mesEntregaSelect").value;
           
-          if (!jsPDF) {
-            console.error('❌ jsPDF no está disponible');
-            alert('Error: No se pudo cargar la librería de PDF. Por favor, recarga la página e intenta nuevamente.');
+          console.log('📋 Datos obtenidos:', {
+            nombre, telefono, correo, cedula, ciudad, provincia,
+            vehiculo: vehiculoNombre, monto: montoSeleccionado, mes: mesSeleccionado
+          });
+          
+          // Verificar múltiples formas de acceso a jsPDF
+          let jsPDF;
+          
+          if (window.jspdf && window.jspdf.jsPDF) {
+            jsPDF = window.jspdf.jsPDF;
+            console.log('✅ jsPDF encontrado en window.jspdf.jsPDF');
+          } else if (window.jsPDF) {
+            jsPDF = window.jsPDF;
+            console.log('✅ jsPDF encontrado en window.jsPDF');
+          } else if (typeof jspdf !== 'undefined' && jspdf.jsPDF) {
+            jsPDF = jspdf.jsPDF;
+            console.log('✅ jsPDF encontrado en jspdf.jsPDF');
+          } else {
+            console.error('❌ jsPDF no está disponible en ninguna forma');
+            console.log('Verificando window.jspdf:', window.jspdf);
+            console.log('Verificando window.jsPDF:', window.jsPDF);
+            alert('❌ Error: No se pudo cargar la librería de PDF.\n\nPor favor:\n1. Recarga la página\n2. Verifica tu conexión a internet\n3. Intenta nuevamente');
             return;
           }
           
           const pdf = new jsPDF();
-          console.log('📄 PDF inicializado correctamente');
-          
-          // Obtener dimensiones de la página
           const pageHeight = pdf.internal.pageSize.getHeight();
           const pageWidth = pdf.internal.pageSize.getWidth();
           
-          // Línea horizontal azul marino al inicio
+          // ====== ENCABEZADO ======
+          // Línea superior azul
           pdf.setDrawColor(7, 35, 134);
-          pdf.setLineWidth(4);
-          pdf.line(10, 10, pageWidth - 10, 10);
+          pdf.setLineWidth(5);
+          pdf.line(10, 15, pageWidth - 10, 15);
           
-          // Título principal específico para JUSTO A TIEMPO
+          // Logo/Título principal
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(16);
+          pdf.setFontSize(18);
           pdf.setTextColor(7, 35, 134);
-          pdf.text("PROFORMA VEHICULAR - PLAN JUSTO A TIEMPO", pageWidth / 2, 25, { align: 'center' });
+          pdf.text("FINANMOTORS", pageWidth / 2, 30, { align: 'center' });
           
-          // Subtítulo
-          pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(12);
+          pdf.setFontSize(14);
+          pdf.text("PROFORMA VEHICULAR - PLAN JUSTO A TIEMPO", pageWidth / 2, 40, { align: 'center' });
+          
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(10);
           pdf.setTextColor(102, 126, 234);
-          pdf.text("Opciones de Pago Personalizadas", pageWidth / 2, 35, { align: 'center' });
+          pdf.text("Opciones de Pago Personalizadas", pageWidth / 2, 48, { align: 'center' });
           
           // Línea decorativa
           pdf.setDrawColor(102, 126, 234);
           pdf.setLineWidth(1);
-          pdf.line(20, 42, pageWidth - 20, 42);
+          pdf.line(20, 53, pageWidth - 20, 53);
           
-          // Datos del cliente
-          let yPos = 50;
-          pdf.setFillColor(240, 244, 255);
-          pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
+          let yPos = 60;
           
-          const nombre = document.getElementById("nombre").value;
-          const telefono = document.getElementById("telefono").value;
-          const correo = document.getElementById("correo").value;
-          const cedula = document.getElementById("cedula").value;
-          const ciudad = document.getElementById("ciudad").value;
+          // ====== INFORMACIÓN DEL CLIENTE ======
+          pdf.setFillColor(240, 248, 255); // Azul muy claro
+          pdf.rect(15, yPos, pageWidth - 30, 45, 'F');
+          pdf.setDrawColor(7, 35, 134);
+          pdf.setLineWidth(1);
+          pdf.rect(15, yPos, pageWidth - 30, 45);
           
-          pdf.setFontSize(10);
           pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(12);
           pdf.setTextColor(7, 35, 134);
-          pdf.text("INFORMACIÓN DEL CLIENTE", 20, yPos + 3);
+          pdf.text("👤 INFORMACIÓN DEL CLIENTE", 20, yPos + 8);
           
           pdf.setFont("helvetica", "normal");
-          pdf.setFontSize(8);
+          pdf.setFontSize(9);
           pdf.setTextColor(0, 0, 0);
-          pdf.text(`Cliente: ${nombre}`, 20, yPos + 12);
-          pdf.text(`Cédula: ${cedula}`, 20, yPos + 18);
-          pdf.text(`Teléfono: ${telefono}`, 20, yPos + 24);
-          pdf.text(`Email: ${correo}`, 110, yPos + 18);
-          pdf.text(`Ciudad: ${ciudad}`, 110, yPos + 24);
           
-          // Información del vehículo y plan
-          yPos += 40;
+          // Columna izquierda
+          pdf.text(`Nombre: ${nombre}`, 20, yPos + 18);
+          pdf.text(`Cédula: ${cedula}`, 20, yPos + 26);
+          pdf.text(`Teléfono: ${telefono}`, 20, yPos + 34);
+          
+          // Columna derecha
+          pdf.text(`Email: ${correo}`, 115, yPos + 18);
+          pdf.text(`Ciudad: ${ciudad}`, 115, yPos + 26);
+          pdf.text(`Provincia: ${provincia}`, 115, yPos + 34);
+          
+          yPos += 55;
+          
+          // ====== INFORMACIÓN DEL VEHÍCULO Y PLAN ======
           pdf.setFillColor(7, 35, 134);
-          pdf.rect(15, yPos - 3, pageWidth - 30, 25, 'F');
+          pdf.rect(15, yPos, pageWidth - 30, 35, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(10);
+          pdf.setFontSize(12);
           pdf.setTextColor(255, 255, 255);
-          pdf.text("DETALLES DEL PLAN", 20, yPos + 3);
-          
-          const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
-          const montoSeleccionado = document.getElementById("montoSelectJustoTiempo").value;
-          const mesSeleccionado = document.getElementById("mesEntregaSelect").value;
+          pdf.text("🚗 DETALLES DEL PLAN", 20, yPos + 8);
           
           pdf.setFont("helvetica", "normal");
-          pdf.setFontSize(8);
+          pdf.setFontSize(9);
           
-          pdf.text(`Vehículo: ${vehiculoNombre}`, 20, yPos + 12);
-          pdf.text(`Monto planificado: $${parseFloat(montoSeleccionado).toLocaleString()}`, 20, yPos + 18);
-          pdf.text(`Mes de entrega: Mes ${mesSeleccionado}`, pageWidth / 2 + 10, yPos + 12);
-          pdf.text(`Plan: JUSTO A TIEMPO`, pageWidth / 2 + 10, yPos + 18);
+          const montoNumerico = parseFloat(montoSeleccionado);
+          pdf.text(`Vehículo seleccionado: ${vehiculoNombre}`, 20, yPos + 18);
+          pdf.text(`Monto planificado: $${montoNumerico.toLocaleString()}`, 20, yPos + 26);
+          pdf.text(`Mes de entrega deseado: Mes ${mesSeleccionado}`, 115, yPos + 18);
+          pdf.text(`Plan: JUSTO A TIEMPO`, 115, yPos + 26);
           
-          // Generar opciones de pago
-          yPos += 30;
+          yPos += 45;
           
-          // Datos de la tabla
+          // ====== CALCULAR OPCIONES DE PAGO ======
           const datosTabla = {
             24: { 30: 7, 35: 6, 40: 5, 45: 4, 50: 3 },
             36: { 30: 11, 35: 9, 40: 8, 45: 6, 50: 5 },
@@ -2727,10 +2812,7 @@
             72: { 30: 21, 35: 18, 40: 15, 45: 12, 50: 9 }
           };
           
-          // Calcular opciones
           const opcionesPago = [];
-          const montoNumerico = parseFloat(montoSeleccionado);
-          
           Object.keys(datosTabla).forEach(plazoMeses => {
             Object.keys(datosTabla[plazoMeses]).forEach(porcentaje => {
               const valorCelda = datosTabla[plazoMeses][porcentaje];
@@ -2745,96 +2827,130 @@
             });
           });
           
-          // Título de opciones de pago
-          pdf.setFillColor(7, 35, 134);
-          pdf.rect(15, yPos - 3, pageWidth - 30, 15, 'F');
-          pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(12);
-          pdf.setTextColor(255, 255, 255);
-          pdf.text(`💳 OPCIONES DE PAGO PARA EL MES ${mesSeleccionado}`, pageWidth / 2, yPos + 5, { align: 'center' });
+          console.log('💳 Opciones de pago encontradas:', opcionesPago);
           
-          yPos += 20;
+          // ====== TÍTULO DE OPCIONES DE PAGO ======
+          pdf.setFillColor(76, 175, 80); // Verde
+          pdf.rect(15, yPos, pageWidth - 30, 18, 'F');
+          
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(13);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(`💳 OPCIONES DE PAGO PARA EL MES ${mesSeleccionado}`, pageWidth / 2, yPos + 8, { align: 'center' });
+          
+          pdf.setFontSize(10);
+          pdf.text(`Monto base: $${montoNumerico.toLocaleString()}`, pageWidth / 2, yPos + 15, { align: 'center' });
+          
+          yPos += 25;
           
           if (opcionesPago.length > 0) {
-            // Encabezados de tabla de opciones
+            // ====== TABLA DE OPCIONES ======
+            // Encabezados
             pdf.setFillColor(102, 126, 234);
-            pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+            pdf.rect(15, yPos, pageWidth - 30, 12, 'F');
+            
             pdf.setFont("helvetica", "bold");
             pdf.setFontSize(9);
             pdf.setTextColor(255, 255, 255);
             
-            pdf.text("OPCIÓN", 25, yPos + 6);
-            pdf.text("PLAZO", 65, yPos + 6);
-            pdf.text("PORCENTAJE", 100, yPos + 6);
-            pdf.text("CÁLCULO", 140, yPos + 6);
-            pdf.text("MONTO A PAGAR", 170, yPos + 6);
+            pdf.text("OPCIÓN", 22, yPos + 7);
+            pdf.text("PLAZO", 55, yPos + 7);
+            pdf.text("PORCENTAJE", 85, yPos + 7);
+            pdf.text("CÁLCULO", 125, yPos + 7);
+            pdf.text("MONTO A PAGAR", 165, yPos + 7);
             
             yPos += 15;
             
-            // Datos de opciones
+            // Filas de datos
             pdf.setFont("helvetica", "normal");
             pdf.setFontSize(8);
             
             opcionesPago.forEach((opcion, index) => {
               // Alternar color de fondo
               if (index % 2 === 0) {
-                pdf.setFillColor(249, 249, 249);
-                pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+                pdf.setFillColor(248, 249, 250);
+                pdf.rect(15, yPos - 2, pageWidth - 30, 14, 'F');
               }
               
               pdf.setTextColor(0, 0, 0);
-              pdf.text(`${index + 1}`, 30, yPos + 6);
-              pdf.text(`${opcion.plazo} meses`, 65, yPos + 6);
-              pdf.text(`${opcion.porcentaje}%`, 105, yPos + 6);
-              pdf.text(`$${montoNumerico.toLocaleString()} × ${opcion.porcentaje}%`, 135, yPos + 6);
               
-              // Destacar el monto a pagar
+              // Contenido de la fila
               pdf.setFont("helvetica", "bold");
-              pdf.setTextColor(7, 35, 134);
-              pdf.text(`$${opcion.montoAPagar.toLocaleString()}`, 175, yPos + 6);
+              pdf.text(`${index + 1}`, 25, yPos + 7);
               pdf.setFont("helvetica", "normal");
-              pdf.setTextColor(0, 0, 0);
               
-              yPos += 12;
+              pdf.text(`${opcion.plazo} meses`, 55, yPos + 7);
+              pdf.text(`${opcion.porcentaje}%`, 92, yPos + 7);
+              pdf.text(`$${montoNumerico.toLocaleString()} × ${opcion.porcentaje}%`, 115, yPos + 7);
+              
+              // Destacar el monto final
+              pdf.setFont("helvetica", "bold");
+              pdf.setTextColor(76, 175, 80); // Verde
+              pdf.text(`$${opcion.montoAPagar.toLocaleString()}`, 170, yPos + 7);
+              
+              yPos += 14;
             });
             
-            // Nota explicativa
-            yPos += 5;
-            pdf.setFont("helvetica", "italic");
-            pdf.setFontSize(7);
-            pdf.setTextColor(153, 153, 153);
-            pdf.text(`* Estas son las ${opcionesPago.length} opciones disponibles para pagar en el mes ${mesSeleccionado}`, 20, yPos);
-            pdf.text("* Elige la opción que mejor se adapte a tu planificación financiera", 20, yPos + 8);
+            // ====== RESUMEN FINAL ======
+            yPos += 10;
+            pdf.setFillColor(232, 245, 233); // Verde claro
+            pdf.rect(15, yPos, pageWidth - 30, 25, 'F');
+            pdf.setDrawColor(76, 175, 80);
+            pdf.setLineWidth(2);
+            pdf.rect(15, yPos, pageWidth - 30, 25);
+            
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(11);
+            pdf.setTextColor(46, 125, 50); // Verde oscuro
+            pdf.text("✅ RESUMEN DE TUS OPCIONES", 20, yPos + 8);
+            
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(9);
+            pdf.text(`• Tienes ${opcionesPago.length} opción${opcionesPago.length > 1 ? 'es' : ''} disponible${opcionesPago.length > 1 ? 's' : ''} para el mes ${mesSeleccionado}`, 20, yPos + 16);
+            pdf.text(`• Elige la opción que mejor se adapte a tu capacidad de pago`, 20, yPos + 22);
             
           } else {
-            // Sin opciones disponibles
+            // ====== SIN OPCIONES DISPONIBLES ======
+            pdf.setFillColor(255, 243, 205); // Amarillo claro
+            pdf.rect(15, yPos, pageWidth - 30, 25, 'F');
+            pdf.setDrawColor(255, 193, 7);
+            pdf.setLineWidth(2);
+            pdf.rect(15, yPos, pageWidth - 30, 25);
+            
             pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(12);
-            pdf.setTextColor(255, 152, 0);
-            pdf.text("⚠️ No hay opciones disponibles para este mes", pageWidth / 2, yPos + 20, { align: 'center' });
+            pdf.setFontSize(11);
+            pdf.setTextColor(245, 124, 0); // Naranja
+            pdf.text("⚠️ NO HAY OPCIONES DISPONIBLES", pageWidth / 2, yPos + 10, { align: 'center' });
+            
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(9);
+            pdf.text(`El mes ${mesSeleccionado} no está disponible con el monto de $${montoNumerico.toLocaleString()}`, pageWidth / 2, yPos + 18, { align: 'center' });
           }
           
-          // Pie de página
-          pdf.setFillColor(102, 126, 234);
-          pdf.rect(0, pageHeight - 25, pageWidth, 25, 'F');
+          // ====== PIE DE PÁGINA ======
+          pdf.setFillColor(7, 35, 134);
+          pdf.rect(0, pageHeight - 30, pageWidth, 30, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(10);
+          pdf.setFontSize(12);
           pdf.setTextColor(255, 255, 255);
-          pdf.text("FINANMOTORS - Plan Justo a Tiempo", pageWidth / 2, pageHeight - 12, { align: 'center' });
-          pdf.setFontSize(8);
-          pdf.text("www.finanmotors.com | Tu vehículo en el momento exacto que lo necesitas", pageWidth / 2, pageHeight - 4, { align: 'center' });
+          pdf.text("FINANMOTORS", pageWidth / 2, pageHeight - 18, { align: 'center' });
           
-          // Descargar
-          const nombreArchivo = `Cotizacion_Justo_A_Tiempo_${nombre.replace(/\s+/g, '_')}_Mes${mesSeleccionado}.pdf`;
-          console.log('💾 Intentando descargar PDF con nombre:', nombreArchivo);
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(8);
+          pdf.text("Plan Justo a Tiempo - Tu vehículo en el momento exacto que lo necesitas", pageWidth / 2, pageHeight - 12, { align: 'center' });
+          pdf.text("www.finanmotors.com | contacto@finanmotors.com", pageWidth / 2, pageHeight - 6, { align: 'center' });
+          
+          // ====== DESCARGAR PDF ======
+          const nombreArchivo = `Opciones_Pago_${nombre.replace(/\s+/g, '_')}_${vehiculoNombre.replace(/\s+/g, '_')}_Mes${mesSeleccionado}.pdf`;
           
           try {
             pdf.save(nombreArchivo);
-            console.log('✅ PDF JUSTO A TIEMPO descargado exitosamente');
+            console.log('✅ PDF de Opciones de Pago descargado exitosamente:', nombreArchivo);
+            alert('🎉 ¡PDF generado exitosamente!\n\n📋 Contenido incluido:\n• Información del cliente\n• Detalles del vehículo\n• Opciones de pago para el mes ' + mesSeleccionado);
           } catch (error) {
             console.error('❌ Error al descargar PDF:', error);
-            alert('Error al generar el PDF. Revisa la consola para más detalles.');
+            alert('❌ Error al generar el PDF. Por favor, intenta nuevamente.');
           }
         }
         
@@ -2852,12 +2968,23 @@
             montoEstimado
           });
           
-          const { jsPDF } = window.jspdf;
-          console.log('📋 jsPDF cargado:', !!jsPDF);
+          // Verificar múltiples formas de acceso a jsPDF
+          let jsPDF;
           
-          if (!jsPDF) {
-            console.error('❌ jsPDF no está disponible');
-            alert('Error: No se pudo cargar la librería de PDF. Por favor, recarga la página e intenta nuevamente.');
+          if (window.jspdf && window.jspdf.jsPDF) {
+            jsPDF = window.jspdf.jsPDF;
+            console.log('✅ jsPDF encontrado en window.jspdf.jsPDF');
+          } else if (window.jsPDF) {
+            jsPDF = window.jsPDF;
+            console.log('✅ jsPDF encontrado en window.jsPDF');
+          } else if (typeof jspdf !== 'undefined' && jspdf.jsPDF) {
+            jsPDF = jspdf.jsPDF;
+            console.log('✅ jsPDF encontrado en jspdf.jsPDF');
+          } else {
+            console.error('❌ jsPDF no está disponible en ninguna forma');
+            console.log('Verificando window.jspdf:', window.jspdf);
+            console.log('Verificando window.jsPDF:', window.jsPDF);
+            alert('❌ Error: No se pudo cargar la librería de PDF.\n\nPor favor:\n1. Recarga la página\n2. Verifica tu conexión a internet\n3. Intenta nuevamente');
             return;
           }
           
