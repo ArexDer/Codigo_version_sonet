@@ -23,9 +23,10 @@ try:
     sheet_name = excel_file.sheet_names[0]
     print(f"🎯 Usando la hoja: '{sheet_name}'")
     
-    # Cargar el archivo Excel saltando las primeras 2 filas
+    # Cargar el archivo Excel desde el inicio (sin saltar filas)
     print("📊 Cargando datos...")
-    df = pd.read_excel(file_path, sheet_name=sheet_name, skiprows=2)
+    df = pd.read_excel(file_path, sheet_name=sheet_name)
+    #df = pd.read_excel(file_path, sheet_name=sheet_name, skiprows=2)
     
     # Imprimir información del DataFrame
     print("✅ Archivo cargado exitosamente!")
@@ -43,7 +44,7 @@ try:
         df = df.iloc[:, :9]
         
         # Renombrar las columnas
-        df.columns = ['COD', 'MONTO', '24_MESES', '36_MESES', '48_MESES', '60_MESES', '72_MESES', '84_MESES', 'INSCRIPCION']
+        df.columns = ['COD', 'MONTO', '60_MESES', '72_MESES', '84_MESES', '96_MESES', '108_MESES', '120_MESES', 'INSCRIPCION']
         print("\n✅ Columnas renombradas exitosamente:")
         for col in df.columns:
             print(f"  - {col}")
@@ -53,7 +54,7 @@ try:
         
         # Limpiar datos numéricos - manejar formato con comas decimales
         print("\n🧹 Limpiando formato de números...")
-        numeric_columns = ['MONTO', '24_MESES', '36_MESES', '48_MESES', '60_MESES', '72_MESES', '84_MESES', 'INSCRIPCION']
+        numeric_columns = ['MONTO', '60_MESES', '72_MESES', '84_MESES', '96_MESES', '108_MESES', '120_MESES', 'INSCRIPCION']
         
         for col in numeric_columns:
             if col in df_clean.columns:
