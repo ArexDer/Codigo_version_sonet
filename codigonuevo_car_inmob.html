@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -1533,12 +1534,15 @@
             <div class="form-container-pdf" id="form-container-pdf">
               <h2 id="thankYouMessage" class="thankYouMessage">Gracias por cotizar!</h2>
 
-              <div class="car-image">
+              <div class="car-image" style="display: none">
                 <img id="auto-pdf" src="" alt="Auto Seleccionado" style="max-width: 300px; width: 100%; border-radius: 10px;" />
               </div>
 
-              <div class="form-row" id="formfinal">
-                <!-- MONTO PLANIFICADO - COMENTADO PARA USO FUTURO
+              
+
+              <div class="form-row hidden" id="formfinal">
+                <!--
+                MONTO PLANIFICADO - COMENTADO PARA USO FUTURO
                 <p class="title">Monto Planificado ($):</p>
                 <input class="precio-vehiculo-pdf" type="text" id="precio-vehiculo-pdf" disabled value="" />
                 -->
@@ -1559,29 +1563,29 @@
                 <input type="text" id="monto-estimado-F" disabled value="" />
               </div>
               
+              
               <!-- TABLA COMPLETA DE OPCIONES -->
               <div id="tabla-completa-opciones" style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 10px;">
                 <h3 style="text-align: center; color: #072386; margin-bottom: 20px; font-size: 1.3rem;">📋 Tabla Completa de Opciones de Financiamiento</h3>
-                <p style="text-align: center; color: #666; margin-bottom: 15px;">Monto seleccionado: <strong id="monto-tabla-titulo">$0</strong> | Inscripción: <strong id="inscripcion-tabla-titulo">$0</strong></p>
+                <p style="text-align: center; color: #666; margin-bottom: 15px;">Monto seleccionado: <strong id="monto-tabla-titulo">$0</strong> | Inscripción: <strong id="inscripcion-tabla-titulo">$0</strong> | Porcentaje de Entrada: <strong id="porcentaje-tabla-titulo">0%</strong></p>
+            
                 <div id="contenedor-tabla-opciones" style="overflow-x: auto;">
                   <!-- La tabla se generará dinámicamente con JavaScript -->
                 </div>
-                <p style="text-align: center; color: #999; font-size: 0.9rem; margin-top: 10px; font-style: italic;">
+                <p style="display: none; text-align: center; color: #999; font-size: 0.9rem; margin-top: 10px; font-style: italic;">
                   * La opción seleccionada está marcada en <span style="color: #072386; font-weight: bold;">azul</span>
                 </p>
               </div>
               
-              <div>
-                <button class="btn-quote" id="btn-quote">DESCARGAR COTIZACIÓN PDF</button>
-              </div>
-              
-              <div style="margin-top: 20px;">
-                <button class="cotizar-otro" id="cotizar-otro">🚗 COTIZAR OTRO VEHÍCULO</button>
+              <!-- Botones en una fila con dos columnas -->
+              <div style="display: flex; gap: 20px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+                <button class="btn-quote" id="btn-quote" style="flex: 1; min-width: 200px;">DESCARGAR COTIZACIÓN PDF</button>
+                <button class="cotizar-otro" id="cotizar-otro" style="flex: 1; min-width: 200px;">🚗 COTIZAR OTRO VEHÍCULO</button>
               </div>
               
               <div>
                 <p class="frase_adjudicacion">
-                  <em>* La adjudicación de tu vehículo dependerá del plan que elijas.</em>
+                  <em>* La entrega de tu vehículo dependerá del plan que elijas.</em>
                 </p>
               </div>
             </div>
@@ -3171,6 +3175,7 @@
           // Actualizar títulos
           document.getElementById("monto-tabla-titulo").textContent = `$${montoSeleccionadoGlobal.toLocaleString()}`;
           document.getElementById("inscripcion-tabla-titulo").textContent = `$${registroMonto.INSCRIPCION || 'N/A'}`;
+          document.getElementById("porcentaje-tabla-titulo").textContent = `${porcentajeGlobal}%`;
           
           // Opciones de meses disponibles
           const opcionesMeses = [

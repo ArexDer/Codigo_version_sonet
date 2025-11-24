@@ -508,7 +508,7 @@ button:hover {
     align-items: center;
     
     width: 100%; /* Ajuste al 100% del contenedor padre */
-    max-width: 100%; /* Limitar el ancho para evitar desbordamiento */
+    max-width: 1200px; /* Aumentar ancho máximo para la tabla */
 }
 
 /* Ajustes para el formulario */
@@ -573,6 +573,55 @@ button:hover {
 
 .precio-vehiculo-pdf{
     text-align: left;
+}
+
+/* Estilos para la tabla completa de opciones */
+.tabla-opciones-completa {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.9rem;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.tabla-opciones-completa thead {
+    background: linear-gradient(135deg, #072386, #0d47a1);
+    color: white;
+}
+
+.tabla-opciones-completa th {
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
+.tabla-opciones-completa td {
+    padding: 10px 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.tabla-opciones-completa tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla-opciones-completa tr:hover {
+    background-color: #f0f4ff;
+    transition: background-color 0.3s ease;
+}
+
+.tabla-opciones-completa .opcion-seleccionada {
+    background-color: #e3f2fd !important;
+    border-left: 4px solid #072386;
+    font-weight: bold;
+}
+
+.tabla-opciones-completa .opcion-seleccionada td {
+    color: #072386;
 }
 
 
