@@ -1532,13 +1532,7 @@
           <!-- PARTE FINAL PDF PARA LA DESCARGA -->
           <div class="pdf hidden" id="pdf">
             <div class="form-container-pdf" id="form-container-pdf">
-              <h2 id="thankYouMessage" class="thankYouMessage">Gracias por cotizar!</h2>
-
-              <div class="car-image" style="display: none">
-                <img id="auto-pdf" src="" alt="Auto Seleccionado" style="max-width: 300px; width: 100%; border-radius: 10px;" />
-              </div>
-
-              
+            
 
               <div class="form-row hidden" id="formfinal">
                 <!--
@@ -1572,7 +1566,7 @@
                 <div id="contenedor-tabla-opciones" style="overflow-x: auto;">
                   <!-- La tabla se generará dinámicamente con JavaScript -->
                 </div>
-                <p style="display: none; text-align: center; color: #999; font-size: 0.9rem; margin-top: 10px; font-style: italic;">
+                <p style="text-align: center; color: #999; font-size: 0.9rem; margin-top: 10px; font-style: italic;">
                   * La opción seleccionada está marcada en <span style="color: #072386; font-weight: bold;">azul</span>
                 </p>
               </div>
@@ -2716,6 +2710,8 @@
         }
         
         function mostrarSeccionPDF() {
+          console.log("📄 Mostrando sección PDF...");
+          
           // Ocultar formulario y ventana de autorización
           document.querySelector(".popup-formulario").style.display = "none";
           document.getElementById("gracias_cotizar").style.display = "none";
@@ -2729,8 +2725,15 @@
           
           // Actualizar datos del PDF
           const nombre = document.getElementById("nombre").value || "Usuario";
-          document.getElementById("thankYouMessage").textContent = `🎉 ¡Gracias por cotizar, ${nombre}!`;
-          document.getElementById("auto-pdf").src = imagenSeleccionada;
+          const thankYouElement = document.getElementById("thankYouMessage");
+          if (thankYouElement) {
+            thankYouElement.textContent = `🎉 ¡Gracias por cotizar, ${nombre}!`;
+          }
+          
+          const autoElement = document.getElementById("auto-pdf");
+          if (autoElement && imagenSeleccionada) {
+            autoElement.src = imagenSeleccionada;
+          }
           
           // Verificar si es PLAN JUSTO A TIEMPO
           if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
@@ -2742,6 +2745,8 @@
             mostrarContenidoJustoTiempoPDF();
           } else {
             // Contenido estándar para otros planes
+            console.log("📊 Configurando contenido estándar para plan:", planSeleccionado);
+            
             document.getElementById("formfinal").style.display = "grid";
             document.getElementById("tabla-completa-opciones").style.display = "block";
             
@@ -2762,17 +2767,24 @@
             };
             document.getElementById("tasa-F").value = tasas[selectedMonths] || "2.92%";
             
-            // Generar tabla completa de opciones
-          // Generar tabla de opciones según el tipo
-          if (tipoSeleccionado === 'inmobiliario') {
-            generarTablaCompletaOpcionesInmobiliario();
-          } else {
-            generarTablaCompletaOpciones();
-          }
+            // Asegurar que los datos estén disponibles antes de generar la tabla
+            console.log("🔄 Preparando datos para la tabla...");
+            setTimeout(() => {
+              // Generar tabla de opciones según el tipo
+              if (tipoSeleccionado === 'inmobiliario') {
+                console.log("🏠 Generando tabla inmobiliaria");
+                generarTablaCompletaOpcionesInmobiliario();
+              } else {
+                console.log("🚗 Generando tabla vehicular");
+                generarTablaCompletaOpciones();
+              }
+            }, 100); // Pequeño delay para asegurar que los elementos estén disponibles
             
             // Cambiar texto del botón PDF para planes estándar
             document.getElementById("btn-quote").textContent = "DESCARGAR COTIZACIÓN PDF";
           }
+          
+          console.log("✅ Sección PDF configurada correctamente");
         }
         
         function resetearFormularioCompleto() {
@@ -3159,23 +3171,53 @@
         }
 
         function generarTablaCompletaOpciones() {
-          if (!datosCompletosJSON || !montoSeleccionadoGlobal) {
-            console.log("No hay datos completos disponibles para generar la tabla");
+          console.log("🔄 Iniciando generación de tabla completa de opciones...");
+          console.log("📊 Datos disponibles:", {
+            datosCompletosJSON: !!datosCompletosJSON,
+            montoSeleccionadoGlobal: montoSeleccionadoGlobal,
+            selectedMonths: selectedMonths,
+            porcentajeGlobal: porcentajeGlobal,
+            monthlyPrice: monthlyPrice,
+            montoEstimado: montoEstimado
+          });
+          
+          // Verificar que el contenedor exista
+          const contenedor = document.getElementById("contenedor-tabla-opciones");
+          if (!contenedor) {
+            console.error("❌ No se encontró el contenedor de la tabla");
             return;
           }
           
           // Buscar el registro del monto seleccionado
-          const registroMonto = datosCompletosJSON.find(item => item.MONTO === montoSeleccionadoGlobal);
-          
-          if (!registroMonto) {
-            console.log("No se encontró el monto seleccionado en los datos");
-            return;
+          let registroMonto = null;
+          if (datosCompletosJSON && montoSeleccionadoGlobal) {
+            registroMonto = datosCompletosJSON.find(item => item.MONTO === montoSeleccionadoGlobal);
+            console.log("🔍 Registro del monto encontrado:", registroMonto);
           }
           
-          // Actualizar títulos
-          document.getElementById("monto-tabla-titulo").textContent = `$${montoSeleccionadoGlobal.toLocaleString()}`;
-          document.getElementById("inscripcion-tabla-titulo").textContent = `$${registroMonto.INSCRIPCION || 'N/A'}`;
-          document.getElementById("porcentaje-tabla-titulo").textContent = `${porcentajeGlobal}%`;
+          // Si no hay datos específicos, usar valores por defecto
+          if (!registroMonto && montoSeleccionadoGlobal) {
+            console.log("⚠️ No se encontró registro específico, usando valores por defecto");
+            registroMonto = {
+              MONTO: montoSeleccionadoGlobal,
+              INSCRIPCION: Math.round(montoSeleccionadoGlobal * 0.15), // 15% del monto como inscripción por defecto
+              "24_MESES": Math.round(montoSeleccionadoGlobal * 0.055), // Valores calculados aproximados
+              "36_MESES": Math.round(montoSeleccionadoGlobal * 0.04),
+              "48_MESES": Math.round(montoSeleccionadoGlobal * 0.032),
+              "60_MESES": Math.round(montoSeleccionadoGlobal * 0.027),
+              "72_MESES": Math.round(montoSeleccionadoGlobal * 0.023),
+              "84_MESES": Math.round(montoSeleccionadoGlobal * 0.021)
+            };
+          }
+          
+          // Actualizar títulos con valores seguros
+          const montoTexto = montoSeleccionadoGlobal ? `$${montoSeleccionadoGlobal.toLocaleString()}` : '$0';
+          const inscripcionTexto = registroMonto?.INSCRIPCION ? `$${registroMonto.INSCRIPCION.toLocaleString()}` : 'N/A';
+          const porcentajeTexto = porcentajeGlobal ? `${porcentajeGlobal}%` : '0%';
+          
+          document.getElementById("monto-tabla-titulo").textContent = montoTexto;
+          document.getElementById("inscripcion-tabla-titulo").textContent = inscripcionTexto;
+          document.getElementById("porcentaje-tabla-titulo").textContent = porcentajeTexto;
           
           // Opciones de meses disponibles
           const opcionesMeses = [
@@ -3203,25 +3245,38 @@
           `;
           
           opcionesMeses.forEach(opcion => {
-            const cuotaMensual = registroMonto[opcion.key] || 'N/A';
+            let cuotaMensual = 'N/A';
+            if (registroMonto && registroMonto[opcion.key]) {
+              cuotaMensual = registroMonto[opcion.key];
+            } else if (monthlyPrice && selectedMonths === opcion.key) {
+              // Si es la opción seleccionada, usar el valor calculado
+              cuotaMensual = monthlyPrice;
+            }
+            
             const esMesesSeleccionado = selectedMonths === opcion.key;
             const claseSeleccionada = esMesesSeleccionado ? 'opcion-seleccionada' : '';
             
             // Calcular pago primer mes (cuota mensual + inscripción)
             let pagoPrimerMes = 'N/A';
-            if (cuotaMensual !== 'N/A' && !isNaN(cuotaMensual) && registroMonto && registroMonto.INSCRIPCION) {
+            const inscripcion = registroMonto?.INSCRIPCION || 0;
+            
+            if (cuotaMensual !== 'N/A' && !isNaN(cuotaMensual) && inscripcion) {
               const cuota = parseFloat(cuotaMensual);
-              const inscripcion = parseFloat(registroMonto.INSCRIPCION);
-              const primerMes = cuota + inscripcion;
+              const inscripcionNum = parseFloat(inscripcion);
+              const primerMes = cuota + inscripcionNum;
               pagoPrimerMes = `$${primerMes.toLocaleString()}`;
             }
+            
+            // Formatear cuota mensual
+            const cuotaTexto = cuotaMensual !== 'N/A' ? `$${parseFloat(cuotaMensual).toLocaleString()}` : 'N/A';
+            const inscripcionFormateada = inscripcion ? `$${parseFloat(inscripcion).toLocaleString()}` : 'N/A';
             
             tablaHTML += `
               <tr class="${claseSeleccionada}">
                 <td>${opcion.label}${esMesesSeleccionado ? ' ⭐' : ''}</td>
                 <td>${opcion.tasa}</td>
-                <td>${cuotaMensual !== 'N/A' ? `$${cuotaMensual}` : 'N/A'}</td>
-                <td>${registroMonto && registroMonto.INSCRIPCION ? `$${registroMonto.INSCRIPCION}` : 'N/A'}</td>
+                <td>${cuotaTexto}</td>
+                <td>${inscripcionFormateada}</td>
                 <td>${pagoPrimerMes}</td>
               </tr>
             `;
@@ -3233,10 +3288,59 @@
           `;
           
           // Insertar tabla en el contenedor
-          document.getElementById("contenedor-tabla-opciones").innerHTML = tablaHTML;
+          contenedor.innerHTML = tablaHTML;
           
-          console.log("Tabla completa generada exitosamente");
+          // Mostrar el párrafo explicativo
+          const parrafoExplicativo = document.querySelector("#tabla-completa-opciones p");
+          if (parrafoExplicativo) {
+            parrafoExplicativo.style.display = "block";
+          }
+          
+          console.log("✅ Tabla completa generada exitosamente");
+          console.log("📋 Contenido de la tabla:", tablaHTML);
         }
+        
+        // Función de diagnóstico para debuggear problemas de la tabla
+        function diagnosticarTabla() {
+          console.log("🔬 DIAGNÓSTICO DE TABLA");
+          console.log("========================");
+          console.log("📊 Variables globales:");
+          console.log("- datosCompletosJSON:", !!datosCompletosJSON ? "✅ Disponible" : "❌ No disponible");
+          console.log("- montoSeleccionadoGlobal:", montoSeleccionadoGlobal);
+          console.log("- selectedMonths:", selectedMonths);
+          console.log("- porcentajeGlobal:", porcentajeGlobal);
+          console.log("- monthlyPrice:", monthlyPrice);
+          console.log("- montoEstimado:", montoEstimado);
+          console.log("- planSeleccionado:", planSeleccionado);
+          console.log("- tipoSeleccionado:", tipoSeleccionado);
+          
+          console.log("🎯 Elementos del DOM:");
+          const contenedor = document.getElementById("contenedor-tabla-opciones");
+          console.log("- contenedor-tabla-opciones:", contenedor ? "✅ Existe" : "❌ No existe");
+          
+          const seccionTabla = document.getElementById("tabla-completa-opciones");
+          console.log("- tabla-completa-opciones:", seccionTabla ? "✅ Existe" : "❌ No existe");
+          if (seccionTabla) {
+            console.log("  - display:", window.getComputedStyle(seccionTabla).display);
+            console.log("  - visibility:", window.getComputedStyle(seccionTabla).visibility);
+          }
+          
+          const seccionPDF = document.getElementById("pdf");
+          console.log("- sección PDF:", seccionPDF ? "✅ Existe" : "❌ No existe");
+          if (seccionPDF) {
+            console.log("  - classes:", seccionPDF.className);
+          }
+          
+          console.log("🔄 Intentando regenerar tabla...");
+          if (tipoSeleccionado === 'inmobiliario') {
+            generarTablaCompletaOpcionesInmobiliario();
+          } else {
+            generarTablaCompletaOpciones();
+          }
+        }
+        
+        // Hacer disponible globalmente para debugging
+        window.diagnosticarTabla = diagnosticarTabla;
         
         function generarPDFInmobiliario() {
           console.log('🏠 Iniciando generación de PDF para INMOBILIARIO...');

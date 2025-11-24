@@ -585,6 +585,7 @@ button:hover {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    min-height: 200px; /* Asegurar altura mínima */
 }
 
 .tabla-opciones-completa thead {
@@ -597,12 +598,15 @@ button:hover {
     text-align: center;
     font-weight: bold;
     border: 1px solid #ddd;
+    background-color: #072386;
+    color: white;
 }
 
 .tabla-opciones-completa td {
     padding: 10px 8px;
     text-align: center;
     border: 1px solid #ddd;
+    background-color: white;
 }
 
 .tabla-opciones-completa tr:nth-child(even) {
@@ -622,6 +626,24 @@ button:hover {
 
 .tabla-opciones-completa .opcion-seleccionada td {
     color: #072386;
+    background-color: #e3f2fd !important;
+}
+
+/* Estilos para el contenedor de la tabla */
+#contenedor-tabla-opciones {
+    min-height: 200px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Asegurar que la sección de tabla sea visible */
+#tabla-completa-opciones {
+    display: block !important;
+    visibility: visible !important;
+    margin: 30px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
 }
 
 
