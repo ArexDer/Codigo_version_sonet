@@ -1,45 +1,23 @@
-/*
+/* ESTILOS CONSOLIDADOS - COTIZADOR VEHICULAR E INMOBILIARIO */
+
+/* ========== ESTILOS GENERALES ========== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
-
-*/
-
-
 body {
-    background-color: #54595F;
-    font-family: mont;
-   
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
 }
 
-p{
-    text-align: center;
-    font-size: 12px;
-     
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
-
-.inscripcion, .precio_mensual,.marca,.modelo{
-    color: #54595F;
-    text-align: left;
-    font-size: 12px;
-    font-family: Mont;
-    
-
-}
-.entrada_opciones{
-    color: #54595F
-    
-}
-
-.texto-vehicular{
-    font-size: 16px;
-   
-}
-
 
 .cotizador {
     margin: 0px auto;
@@ -50,199 +28,241 @@ h1 {
     color: #54595F;
 }
 
-.titulo_marca_modelo{
-    font-size: 16px;
-    font-family: Mont;
-    color: #54595F;
-    margin-bottom: 18px;
+p {
+    text-align: center;
+    font-size: 12px;
 }
-
 
 .highlight {
     color: orange;
     font-weight: bold;
-   
 }
 
+.hidden {
+    display: none !important;
+}
+
+/* ========== SECCIÓN INICIAL ========== */
+.seccion-inicial {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #00205C 0%, #1a2a5c 100%);
+    color: white;
+    margin-bottom: 40px;
+}
+
+.seccion-inicial h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.seccion-inicial p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.botones-principales {
+    display: grid;
+    grid-template-columns: 280px 280px;
+    grid-template-rows: 280px;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.boton-principal {
+    background: #00205C;
+    color: white;
+    border: 3px solid #FEDE6E;
+    border-radius: 15px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0,32,92,0.4);
+    width: 280px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.5px;
+}
+
+.boton-principal:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(0,32,92,0.6);
+    background: #FEDE6E;
+    color: #00205C;
+    border: 3px solid #00205C;
+}
+
+/* ========== TIPOS DE VEHÍCULOS/PROPIEDADES ========== */
 .vehicle-types {
     display: flex;
     justify-content: center;
-   
-    gap: 80px;
-    margin-top: 50px;
-    flex-wrap: wrap; /* Permite que los elementos se ajusten a nuevas líneas en pantallas pequeñas */
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 40px 0;
 }
-
-@media (max-width: 1024px) {
-    .vehicle-types {
-        gap: 30px; /* Reducir el espacio entre los elementos en pantallas medianas */
-        margin-top: 20px; /* Reducir el margen superior */
-    }
-}
-
-@media (max-width: 768px) {
-    .vehicle-types {
-        display: grid;
-        grid-template-columns: 50% 50%; 
-        grid-template-rows: auto auto; /* Dos filas */
-        gap: 10px; /* Espacio entre elementos */
-        justify-content: center; /* Centrar los elementos horizontalmente */
-        margin-top: 10px; /* Ajustar el margen superior */
-    }
-}
-
-
-
-@media (max-width: 480px) {
-    .vehicle-types {
-        gap: 0px; /* Reducir el espacio aún más en pantallas muy pequeñas */
-        margin-top: 0px; /* Ajustar el margen superior */
-    }
-}
-
 
 .vehicle {
     text-align: center;
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    min-width: 150px;
+}
+
+.vehicle:hover {
+    border-color: #00205C;
+    background-color: #f8f9fa;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,32,92,0.3);
 }
 
 .vehicle img {
     width: 120px;
     height: auto;
     border-radius: 1px;
-    transition: transform 2s ease; /* Transición suave de 2 segundos */
+    transition: transform 0.3s ease;
+    object-fit: contain;
 }
 
-
 .vehicle:hover img {
-    transform: scale(1.3); /* Aumenta el tamaño al 120% */
+    transform: scale(1.1);
 }
 
 .vehicle p {
-    margin-top: 0px;
+    margin: 10px 0 0 0;
     font-size: 15px;
-    color: #54595F;
-}
-
-
-.vehicle {
-    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+    color: #2C3E50;
+    font-weight: bold;
 }
 
 .vehicle.selected {
-    opacity: 1; /* Asegura que el vehículo seleccionado tenga opacidad total */
+    border-color: #00205C;
+    background: #FEDE6E;
+    opacity: 1;
+    box-shadow: 0 8px 20px rgba(254,222,110,0.4);
 }
 
-/* LINEA HORIZAONTAL */
-
-
-/* ---------- VEHICULOS     ---------- */
-
+/* ========== DETALLE DE VEHÍCULO/PROPIEDAD ========== */
 .detalle-vehiculo {
-    margin-top: 60px;
+    margin: 40px 0;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    /*background-color: cadetblue;*/
-    
-}
-
-
-
-.detalle-vehiculo-suvs{
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(117, 119, 219);
-
-}
-
-.detalle-vehiculo-camionetas{
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(89, 204, 114);
-}
-.detalle-vehiculo-camiones{
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(207, 81, 211);
-
+    min-height: 450px;
+    max-height: 600px;
 }
 
 .vehiculo-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vehiculo-imagen {
     display: flex;
-    gap: 140px;
-    margin: 10px;
-    width: 100%; /* Usamos 100% para que ocupe todo el espacio disponible */
-    max-width: 1000px; /* Limita el ancho máximo a 1000px */
-    margin-left: auto; /* Centra el contenedor en pantallas grandes */
-    margin-right: auto; /* Centra el contenedor en pantallas grandes */
-    
-    
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 350px;
 }
-
-
-
-@media (max-width: 1024px) {
-    .vehiculo-container {
-        gap: 80px; /* Reducir el espacio entre elementos en pantallas medianas */
-    }
-}
-
-@media (max-width: 768px) {
-    .vehiculo-container {
-        gap: 30px; /* Reducir aún más el espacio entre elementos */
-        flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
-        align-items: center; /* Centrar los elementos cuando están en columna */
-    }
-}
-
-@media (max-width: 480px) {
-    .vehiculo-container {
-        gap: 20px; /* Reducir el espacio aún más en pantallas muy pequeñas */
-        margin: 10px; /* Reducir el margen */
-    }
-}
-
 
 .vehiculo-imagen img {
-    width: 500px;
+    width: 100%;
+    max-width: 400px;
+    max-height: 300px;
     height: auto;
-    border-radius: 0px;
-   
-}
-
-#auto-precio, #suv-precio, #camioneta-precio, #camion-precio{
-    font-size: 15px;
-    font-family: Mont;
-    color: #54595F;
-    border-bottom: 0.5px solid orange;
-    
+    object-fit: contain;
+    border-radius: 10px;
 }
 
 .vehiculo-selectores-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 300px; /* Ancho fijo para mantener consistencia */
-     /*gap:20px*/
-    
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
 }
-
 
 .vehiculo-selectores {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-
-    
+    min-height: 200px;
+    border: 2px solid #e9ecef;
 }
 
+.vehiculo-selectores label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
 
+.vehiculo-selectores select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    background: white;
+}
 
+.vehiculo-selectores button {
+    background: #00205C;
+    color: white;
+    padding: 12px 25px;
+    border: 2px solid #FEDE6E;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    min-height: 48px;
+    letter-spacing: 0.3px;
+}
+
+.vehiculo-selectores button:hover {
+    background: #FEDE6E;
+    color: #00205C;
+    border: 2px solid #00205C;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(254,222,110,0.3);
+}
+
+/* ========== ESTILOS GENERALES PARA SELECT Y BUTTONS ========== */
 select {
     padding: 10px;
     font-size: 15px;
@@ -251,213 +271,368 @@ select {
     border: none;
     border-bottom: 3px solid #FFA400;
     background: #F7F7F7;
-    
-
 }
 
-option{
+option {
     background: #F7F7F7;
 }
 
+button {
+    margin-top: 8px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: white;
+    font-weight: 600;
+    background-color: #00205C;
+    border: 2px solid #FEDE6E;
+    border-radius: 10px;
+    cursor: pointer;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
 
-.precio-vehiculo{
+button:hover {
+    color: #00205C;
+    background-color: #FEDE6E;
+    border: 2px solid #00205C;
+    font-weight: 600;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(254,222,110,0.3);
+}
+
+#continuar {
+    font-size: 1.1rem;
+    background: #FEDE6E;
+    color: #00205C;
+    border: 2px solid #00205C;
+    font-weight: 700;
+    min-height: 55px;
+}
+
+/* ========== OPCIONES DE FINANCIACIÓN ========== */
+.opciones-financiacion {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 15px;
+    margin: 20px auto;
+    align-items: stretch;
+    max-width: 400px;
+}
+
+.opcion-financiacion {
+    position: relative;
+    background: #00205C;
+    color: white;
+    padding: 18px 20px;
+    border: 2px solid #FEDE6E;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 75px;
+    max-width: 380px;
+    margin: 0 auto;
+    box-shadow: 0 4px 15px rgba(0,32,92,0.3);
+    letter-spacing: 0.3px;
+}
+
+.opcion-financiacion:hover {
+    background: #FEDE6E;
+    color: #00205C;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(254,222,110,0.4);
+    border: 2px solid #00205C;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0,0,0,0.9);
+}
+
+.opcion-financiacion:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ========== FORMULARIOS CON/SIN ENTRADA ========== */
+.opciones-con-entrada {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    max-height: 600px;
+    border: 2px solid #e9ecef;
+}
+
+.titulo_marca_modelo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    font-family: Mont;
+}
+
+.opciones-con-entrada select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    background: white;
+}
+
+.opciones-con-entrada button {
+    background: #00205C;
+    color: white;
+    padding: 15px 30px;
+    border: 2px solid #FEDE6E;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 20px auto 0 auto;
+    transition: all 0.3s ease;
+    min-height: 52px;
+    max-width: 300px;
+    letter-spacing: 0.3px;
+}
+
+.opciones-con-entrada button:hover {
+    background: #FEDE6E;
+    color: #00205C;
+    border: 2px solid #00205C;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(254,222,110,0.3);
+}
+
+.precio_mensual, .inscripcion {
+    background: #00205C;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-weight: bold;
+    font-family: 'Mont';
+    text-align: left;
+    font-size: 15px;
+    border: 2px solid #FEDE6E;
+}
+
+.precio-vehiculo {
     border: none;
-    color: #54595F;
+    color: #2C3E50;
     background-color: #F7F7F7;
     font-size: 16px;
     margin-top: 15px;
 }
 
-.precio_mensual, .inscripcion{
-    padding: 10px;
-    font-family: 'Mont';
-    font-weight: 500; 
-    border-radius: 8px;
-    background-color: #54595F;
-    color: #FFA400;
-    border-bottom: 1px solid #FFA400;
-    margin-top: 20px; 
-    margin-bottom: 15px; 
-}
-
-
-/* BOTON DE CONTINUAR */
-#continuar{
-    font-size: 15px;
-    background: #FFA400;
-    font-weight: 500; 
-}  
-
-button {
-    margin-top: 5px;
-    padding: 10px ;
-    font-size: 15px;
-    color: white;
-    font-weight: 500; 
-    background-color: rgb(35, 161, 56);
-    border: none;
-    border-radius: 11px;
-    cursor: pointer;
-    justify-content: center;
-    width: 100%; /*ajustado al tamaño de la parte derecha */
-}
-
-
-button:hover {
-    color: white;
-    background-color: #FFA400;
-    font-weight: 500; 
-}
-
-/* Botones de opciones (inicialmente ocultos) */
-.opciones-botones  {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    justify-content: space-between;
-}
-
-.opciones-con-entrada{
-    display: flex;
-    flex-direction: column;
-   
-}
-
-#precio-vehiculo-con-entrada, #estimado{
+#precio-vehiculo-con-entrada, #estimado {
     border-radius: 7px;
 }
 
-#marca_modelo, #marca_modelo_Suv, #marca_modelo_Camioneta,#marca_modelo_Camion{
-     font-weight: bold;
-     color: #FFA400;
+#marca_modelo, #marca_modelo_Suv, #marca_modelo_Camioneta, #marca_modelo_Camion {
+    font-weight: bold;
+    color: #FEDE6E;
 }
 
-/* --- pdf */
-/* POPUP */
+.marca, .modelo {
+    color: #2C3E50;
+    text-align: left;
+    font-size: 12px;
+    font-family: Mont;
+}
+
+.entrada_opciones {
+    color: #2C3E50;
+}
+
+.texto-vehicular {
+    font-size: 16px;
+}
+
+#auto-precio, #suv-precio, #camioneta-precio, #camion-precio {
+    font-size: 15px;
+    font-family: Mont;
+    color: #2C3E50;
+    border-bottom: 0.5px solid #FEDE6E;
+}
+
+/* ========== POPUP ========== */
+/* Animación efecto neon */
+@keyframes neonGlow {
+    from {
+        box-shadow: 0 0 20px rgba(0, 32, 92, 0.6), 0 0 40px rgba(0, 32, 92, 0.3), 0 0 60px rgba(0, 32, 92, 0.1);
+    }
+    to {
+        box-shadow: 0 0 30px rgba(0, 32, 92, 0.8), 0 0 60px rgba(0, 32, 92, 0.5), 0 0 90px rgba(0, 32, 92, 0.3);
+    }
+}
+
 .popup {
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 32, 92, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Asegura que esté encima de todos los elementos */
 }
 
 .popup-contenido {
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 50%;
-    max-width: 600px; /* Establece un tamaño máximo para evitar que se haga muy grande */
-    max-height: 90%; /* Para asegurarte de que el contenido no exceda la pantalla */
-    overflow-y: auto; /* Permitir scroll si el contenido es más grande que el popup */
+    padding: 25px;
+    border-radius: 20px;
+    border: 3px solid #00205C;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
     text-align: center;
+    box-shadow: 0 0 30px rgba(0, 32, 92, 0.8), 0 0 60px rgba(0, 32, 92, 0.4), 0 0 90px rgba(0, 32, 92, 0.2);
+    animation: neonGlow 2s ease-in-out infinite alternate;
 }
 
-/* Responsividad para pantallas medianas y pequeñas */
-@media (max-width: 1024px) {
-    .popup-contenido {
-        width: 60%; /* Reducir el ancho para pantallas medianas */
-        max-width: 500px; /* Reducir el tamaño máximo */
-    }
+.cerrar {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: #00205C;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+    transition: all 0.3s ease;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(254, 222, 110, 0.1);
 }
 
-@media (max-width: 768px) {
-    .popup-contenido {
-        width: 80%; /* Aumentar el ancho para pantallas más pequeñas */
-        max-width: 400px; /* Reducir el tamaño máximo */
-        padding: 15px; /* Reducir el padding */
-    }
+.cerrar:hover {
+    color: white;
+    background: #00205C;
+    transform: scale(1.1);
 }
 
-@media (max-width: 480px) {
-    .popup-contenido {
-        width: 90%; /* Hacer el popup más grande en pantallas muy pequeñas */
-        max-width: 350px; /* Limitar el tamaño máximo */
-        padding: 10px; /* Ajustar el padding */
-    }
+.gracias_cotizar {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #00205C;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: linear-gradient(135deg, #FEDE6E, #f5d659);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(254, 222, 110, 0.3);
 }
 
+.imagen-precio {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    border: 2px solid #00205C;
+    box-shadow: 0 4px 12px rgba(0, 32, 92, 0.1);
+}
 
-
+.imagen-carro {
+    max-width: 230px;
+    width: 230px;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px auto;
+    display: block;
+    object-fit: contain;
+}
 
 .precio-vehiculo-pop, .precio-vehiculo-popSN {
-    display: block; /* Para que se comporte como un bloque y se pueda centrar */
-    margin: auto auto; /* Centra horizontalmente el input */
-    width: 80%; /* Ajusta el ancho del input */
-    text-align: center; /* Centra el texto dentro del input */
-    border: none;
-    
-    color: #F9B651;
-    font-size: 14px;
-   
+    width: 300px;
+    max-width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    margin-top: 10px;
+    background: #f0f4ff;
+    display: block;
+    margin: auto auto;
 }
-#precio-vehiculo-pop, #precio-vehiculo-popSN{
+
+#precio-vehiculo-pop, #precio-vehiculo-popSN {
     border-radius: 8px;
     font-size: 16px;
     font-weight: bold;
     color: #F9B651;
-    
-}
-
-.gracias_cotizar{
-    color: #54595F;
-    font-size: 16px;
-    font-weight: bold
-}
-
-.cerrar {
-    float: right;
-    font-size: 16px;
-    cursor: pointer;
-    color: #54595F;
-   
-}
-.pop-input{
-    font-size: 12px;
-    
-    
-}
-
-.imagen-carro {
-    width: 450px;
-    height: auto;
-    margin: 20px auto;
-   
 }
 
 .popup-formulario {
-    display: grid;
-    grid-template-columns: 50% 50%; /* Dos columnas iguales */
-    gap: 10px; /* Espacio entre columnas */
-    margin-top: 0px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    grid-template-columns: 50% 50%;
     padding: 10px 20px;
 }
 
-.columna-izquierda, .columna-derecha {
-    background: #f0f0f0; /* Solo para visualizar */
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-
-.check-terminos {
-    grid-column: span 2; /* Ocupa las dos columnas */
-    text-align: center; /* Alinea el contenido al centro */
-    margin-top: 10px;
-}
-
 .columna {
+    flex: 1;
+    min-width: 250px;
     width: 98%;
 }
 
 .columna label {
     display: block;
-    /*margin-top: 1px;*/
-    text-align: left; /* Alinear los labels a la izquierda */
+    text-align: left;
 }
 
 .columna input,
@@ -465,38 +640,115 @@ button:hover {
     width: 100%;
     padding: 6px;
     margin-top: 8px;
-    text-align: left; /* Asegurarte de que el texto dentro del input esté alineado a la izquierda */
+    text-align: left;
     color: #A4A4A4;
-   border-radius: 8px;
-   border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    border: 1px solid #EEEEEE;
 }
 
-.check-terminos{
+.columna-izquierda, .columna-derecha {
+    background: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.pop-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.pop-input.error {
+    border-color: #f44336;
+}
+
+.pop-input.success {
+    border-color: #4CAF50;
+}
+
+.check-terminos {
+    display: flex;
+    align-items: center;
     gap: 10px;
+    margin: 20px 0;
+    grid-column: span 2;
+    text-align: center;
     justify-content: center;
 }
+
 .checkbox-group {
     display: grid;
     grid-row: 1;
     justify-content: left;
-
-    gap: 10px; /* Ajusta el espacio entre el checkbox y el texto */
+    gap: 10px;
 }
-.terminos{
+
+.terminos {
     font-size: 10px;
 }
 
+.boton-cotizar {
+    background: #072386;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background 0.3s ease;
+}
 
+.boton-cotizar:hover {
+    background: #0a2d99;
+}
 
-/* Ajustes para el contenedor de .pdf */
+.btn-quote, .cotizar-otro {
+    background: #4CAF50;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+    transition: background 0.3s ease;
+}
+
+.btn-quote:hover, .cotizar-otro:hover {
+    background: #45a049;
+}
+
+.cotizar-otro {
+    background: #667eea;
+}
+
+.cotizar-otro:hover {
+    background: #5a6fd8;
+}
+
+#mensaje-error-global {
+    color: #f44336;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ========== SECCIÓN PDF ========== */
 .pdf {
+    text-align: center;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
-   /* border: 4px solid rgb(206, 17, 17); */
-    width: 100%; /* Asegurarte de que no exceda el ancho del popup */
-    height: auto; /* Ajusta la altura automáticamente según el contenido */
-    max-height: 100%; /* Respetar el tamaño del popup */
+    width: 100%;
+    height: auto;
+    max-height: 100%;
     padding: 30px;
     box-sizing: border-box;
 }
@@ -506,76 +758,155 @@ button:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
-    width: 100%; /* Ajuste al 100% del contenedor padre */
-    max-width: 1200px; /* Aumentar ancho máximo para la tabla */
+    width: 100%;
+    max-width: 1200px;
 }
 
-/* Ajustes para el formulario */
-#formfinal {
-    display: grid;
-    justify-content: left;
-    align-items: center;
-    
-    grid-template-columns: 60% 30%;
-    gap: 2px;
-    
-    background-color: white;
-    
-    border-radius: 4px;
-    
-    max-width: 100%; /* Limita el ancho máximo para que respete el popup */
-    box-sizing: border-box; /* Asegurar que el padding no expanda más allá del contenedor */
-    
-}
-#formfinal p{
-  
-    text-align: left;
-}
-#formfinal input{
-    border-radius: 8px;
-    width: 130px;
-    height: 25px;
-    margin: 5px 0px;
-    border: none;
-    background: #F7F7F7;
-    
+.thankYouMessage {
+    color: #072386 !important;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background: none !important;
+    background-color: transparent !important;
 }
 
-/* Ajustes para el botón */
-.frase_adjudicacion {
-    margin-top: 20px;
-    font-family: 'Mont';
-    font-size: 13px;
-    
-}
-
-
-#thankYouMessage{
+#thankYouMessage {
     font-size: 10px;
     color: black;
     background: green;
     padding: 10px;
 }
 
-#auto-sin-entrada-pdf{
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+    text-align: left;
+    justify-content: left;
+    align-items: center;
+    grid-template-columns: 60% 30%;
+    gap: 2px;
+    background-color: white;
+    border-radius: 4px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#formfinal {
+    display: grid;
+    justify-content: left;
+    align-items: center;
+    grid-template-columns: 60% 30%;
+    gap: 2px;
+    background-color: white;
+    border-radius: 4px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#formfinal p {
+    text-align: left;
+}
+
+#formfinal input {
+    border-radius: 8px;
+    width: 130px;
+    height: 25px;
+    margin: 5px 0px;
+    border: none;
+    background: #F7F7F7;
+}
+
+.form-row .title {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-row input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f9f9f9;
+}
+
+.frase_adjudicacion {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 20px;
+    font-family: 'Mont';
+    font-size: 13px;
+}
+
+.precio-vehiculo-pdf {
+    text-align: left;
+}
+
+#auto-sin-entrada-pdf {
     width: 350px;
     height: auto;
     margin: 5px auto;
 }
 
-
-.precio_mensual, .inscripcion {
-  font-family: Mont;
-  font-weight: #54595f;
-  font-size: 15px;
+/* ========== VENTANA DE AUTORIZACIÓN ========== */
+.ventana-autorizacion {
+    background: #f8f9fa;
+    border: 2px solid #667eea;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    text-align: center;
 }
 
-.precio-vehiculo-pdf{
-    text-align: left;
+.mensaje-autorizacion {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    font-weight: bold;
 }
 
-/* Estilos para la tabla completa de opciones */
+.botones-autorizacion {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-autorizar {
+    background: #4CAF50;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-autorizar:hover {
+    background: #45a049;
+}
+
+.btn-cancelar {
+    background: #f44336;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-cancelar:hover {
+    background: #d32f2f;
+}
+
+/* ========== TABLA COMPLETA DE OPCIONES ========== */
 .tabla-opciones-completa {
     width: 100%;
     border-collapse: collapse;
@@ -585,11 +916,11 @@ button:hover {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    min-height: 200px; /* Asegurar altura mínima */
+    min-height: 200px;
 }
 
 .tabla-opciones-completa thead {
-    background: linear-gradient(135deg, #072386, #0d47a1);
+    background: linear-gradient(135deg, #00205C, #2C3E50);
     color: white;
 }
 
@@ -598,8 +929,9 @@ button:hover {
     text-align: center;
     font-weight: bold;
     border: 1px solid #ddd;
-    background-color: #072386;
+    background-color: #00205C;
     color: white;
+    font-size: 0.9rem;
 }
 
 .tabla-opciones-completa td {
@@ -607,6 +939,7 @@ button:hover {
     text-align: center;
     border: 1px solid #ddd;
     background-color: white;
+    font-size: 0.85rem;
 }
 
 .tabla-opciones-completa tr:nth-child(even) {
@@ -614,29 +947,31 @@ button:hover {
 }
 
 .tabla-opciones-completa tr:hover {
-    background-color: #f0f4ff;
+    background-color: #FEDE6E;
+    color: #00205C;
     transition: background-color 0.3s ease;
 }
 
 .tabla-opciones-completa .opcion-seleccionada {
-    background-color: #e3f2fd !important;
-    border-left: 4px solid #072386;
+    background-color: #FEDE6E !important;
+    border-left: 4px solid #00205C;
     font-weight: bold;
+    color: #00205C;
+    box-shadow: inset 0 0 0 2px #00205C;
 }
 
 .tabla-opciones-completa .opcion-seleccionada td {
-    color: #072386;
-    background-color: #e3f2fd !important;
+    color: #00205C;
+    background-color: #FEDE6E !important;
+    font-weight: bold;
 }
 
-/* Estilos para el contenedor de la tabla */
 #contenedor-tabla-opciones {
     min-height: 200px;
     width: 100%;
     overflow-x: auto;
 }
 
-/* Asegurar que la sección de tabla sea visible */
 #tabla-completa-opciones {
     display: block !important;
     visibility: visible !important;
@@ -644,6 +979,135 @@ button:hover {
     padding: 20px;
     background: #f8f9fa;
     border-radius: 10px;
+}
+
+/* ========== MEDIA QUERIES RESPONSIVE ========== */
+@media (max-width: 1024px) {
+    .vehicle-types {
+        gap: 30px;
+        margin-top: 20px;
+    }
+    
+    .vehiculo-container {
+        gap: 30px;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .popup-contenido {
+        width: 60%;
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .seccion-inicial h1 {
+        font-size: 2rem;
+    }
+    
+    .botones-principales {
+        grid-template-columns: 240px;
+        grid-template-rows: 240px 240px;
+        gap: 25px;
+    }
+    
+    .boton-principal {
+        width: 240px;
+        height: 240px;
+        font-size: 1.2rem;
+    }
+    
+    .vehicle-types {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: auto auto;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .vehiculo-container {
+        gap: 20px;
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+    
+    .opciones-financiacion {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 10px;
+    }
+    
+    .popup-contenido {
+        width: 80%;
+        max-width: 400px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vehicle-types {
+        gap: 0px;
+        margin-top: 0px;
+    }
+    
+    .vehiculo-container {
+        gap: 15px;
+        grid-template-columns: 1fr;
+        margin: 10px;
+    }
+    
+    .vehiculo-imagen, .vehiculo-selectores-container {
+        padding: 10px;
+    }
+    
+    .popup-contenido {
+        width: 90%;
+        max-width: 350px;
+        padding: 10px;
+    }
+    
+    .opciones-financiacion {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .opcion-financiacion {
+        font-size: 0.9rem;
+        padding: 12px 15px;
+        min-height: 60px;
+    }
+}
+
+/* ========== ESTILOS LEGACY ADICIONALES ========== */
+.detalle-vehiculo-suvs {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(117, 119, 219);
+}
+
+.detalle-vehiculo-camionetas {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(89, 204, 114);
+}
+
+.detalle-vehiculo-camiones {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(207, 81, 211);
+}
+
+.opciones-botones {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: space-between;
 }
 
 

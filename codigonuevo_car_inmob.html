@@ -26,648 +26,11 @@
       });
     </script>
 
+    
+    <!-- Referencia al archivo de estilos CSS externo -->
+    <link rel="stylesheet" href="estilos.css">
+    
     <title>COTIZADOR VEHICULAR E INMOBILIARIO</title>
-    <style>
-      /* Estilos generales */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      
-      body {
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
-        color: #333;
-      }
-      
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-
-      /* Estilos para la sección inicial de selección */
-      .seccion-inicial {
-        text-align: center;
-        padding: 60px 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        margin-bottom: 40px;
-      }
-      
-      .seccion-inicial h1 {
-        font-size: 3rem;
-        margin-bottom: 20px;
-        font-weight: bold;
-      }
-      
-      .seccion-inicial p {
-        font-size: 1.2rem;
-        margin-bottom: 40px;
-        opacity: 0.9;
-      }
-      
-      .botones-principales {
-        display: grid;
-        grid-template-columns: 300px 300px;
-        grid-template-rows: 300px;
-        gap: 40px;
-        justify-content: center;
-        align-items: center;
-      }
-      
-      .boton-principal {
-        background: #072386;
-        color: white;
-        border: none;
-        border-radius: 15px;
-        font-size: 1.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        width: 300px;
-        height: 300px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .boton-principal:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        background: #0a2d99;
-      }
-
-      /* Estilos para los vehículos */
-      .vehicle-types {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin: 40px 0;
-      }
-      
-      .vehicle {
-        text-align: center;
-        padding: 20px;
-        border: 2px solid #ddd;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        background: white;
-        min-width: 150px;
-      }
-      
-      .vehicle:hover {
-        border-color: #667eea;
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      }
-      
-      .vehicle img {
-        width: 100px;
-        height: 80px;
-        object-fit: contain;
-      }
-      
-      .vehicle p {
-        margin: 10px 0 0 0;
-        font-weight: bold;
-        color: #333;
-      }
-      
-      .vehicle.selected {
-        border-color: #667eea;
-        background: #f0f4ff;
-      }
-
-      /* Estilos para la sección de detalle del vehículo */
-      .detalle-vehiculo {
-        margin: 40px 0;
-        padding: 20px;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      }
-      
-      .vehiculo-container {
-        display: flex;
-        gap: 40px;
-        align-items: flex-start;
-        flex-wrap: wrap;
-      }
-      
-      .vehiculo-imagen {
-        flex: 1;
-        text-align: center;
-        min-width: 300px;
-      }
-      
-      .vehiculo-imagen img {
-        width: 100%;
-        max-width: 400px;
-        height: auto;
-        object-fit: contain;
-        border-radius: 10px;
-      }
-      
-      .vehiculo-selectores-container {
-        flex: 1;
-        min-width: 300px;
-      }
-      
-      .vehiculo-selectores {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-      }
-      
-      .vehiculo-selectores label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: #333;
-      }
-      
-      .vehiculo-selectores select {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        font-size: 16px;
-      }
-      
-      .vehiculo-selectores button {
-        background: #667eea;
-        color: white;
-        padding: 12px 30px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      
-      .vehiculo-selectores button:hover {
-        background: #5a6fd8;
-      }
-
-      /* Estilos para las opciones de financiación */
-      .opciones-financiacion {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin: 20px 0;
-      }
-      
-      .opcion-financiacion {
-        position: relative;
-        background: #072386;
-        color: white;
-        padding: 20px 30px;
-        border: none;
-        border-radius: 10px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        min-width: 150px;
-        text-align: center;
-      }
-      
-      .opcion-financiacion:hover {
-        background: #0a2d99;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      }
-      
-      .tooltip {
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0,0,0,0.9);
-        color: white;
-        padding: 8px 12px;
-        border-radius: 5px;
-        font-size: 0.9rem;
-        white-space: nowrap;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        margin-bottom: 5px;
-      }
-      
-      .tooltip::after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 5px solid transparent;
-        border-top-color: rgba(0,0,0,0.9);
-      }
-      
-      .opcion-financiacion:hover .tooltip {
-        opacity: 1;
-        visibility: visible;
-      }
-
-      /* Estilos responsive */
-      @media (max-width: 768px) {
-        .seccion-inicial h1 {
-          font-size: 2rem;
-        }
-        
-        .botones-principales {
-          grid-template-columns: 250px;
-          grid-template-rows: 250px 250px;
-          gap: 20px;
-        }
-        
-        .boton-principal {
-          width: 250px;
-          height: 250px;
-          font-size: 1.2rem;
-        }
-        
-        .vehiculo-container {
-          flex-direction: column;
-        }
-        
-        .opciones-financiacion {
-          flex-direction: column;
-          align-items: center;
-        }
-      }
-
-      /* Estilos para ocultar secciones */
-      .hidden {
-        display: none !important;
-      }
-      
-      /* Estilos para el formulario CON ENTRADA */
-      .opciones-con-entrada {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 20px;
-        text-align: center;
-      }
-      
-      .titulo_marca_modelo {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 20px;
-      }
-      
-      .opciones-con-entrada select {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        font-size: 16px;
-        background: white;
-      }
-      
-      .precio_mensual, .inscripcion {
-        background: #667eea;
-        color: white;
-        padding: 10px;
-        border-radius: 8px;
-        margin: 10px 0;
-        font-weight: bold;
-      }
-      
-      .opciones-con-entrada button {
-        background: #072386;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 20px;
-        transition: background 0.3s ease;
-      }
-      
-      .opciones-con-entrada button:hover {
-        background: #0a2d99;
-      }
-      
-      /* Estilos para el popup */
-      .popup {
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      
-      .popup-contenido {
-        background-color: white;
-        padding: 20px;
-        border-radius: 15px;
-        width: 90%;
-        max-width: 800px;
-        max-height: 90vh;
-        overflow-y: auto;
-        position: relative;
-      }
-      
-      .cerrar {
-        position: absolute;
-        top: 15px;
-        right: 25px;
-        color: #aaa;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-      
-      .cerrar:hover {
-        color: #000;
-      }
-      
-      .gracias_cotizar {
-        text-align: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #072386;
-        margin-bottom: 20px;
-      }
-      
-      .imagen-precio {
-        text-align: center;
-        margin: 15px 0;
-      }
-      
-      .imagen-carro {
-        max-width: 180px;
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-        margin: 10px auto;
-        display: block;
-      }
-      
-      .precio-vehiculo-pop {
-        width: 300px;
-        max-width: 100%;
-        padding: 10px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        text-align: center;
-        border: 2px solid #667eea;
-        border-radius: 8px;
-        margin-top: 10px;
-        background: #f0f4ff;
-      }
-      
-      .popup-formulario {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin: 20px 0;
-      }
-      
-      .columna {
-        flex: 1;
-        min-width: 250px;
-      }
-      
-      .pop-input {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        font-size: 16px;
-      }
-      
-      .pop-input.error {
-        border-color: #f44336;
-      }
-      
-      .pop-input.success {
-        border-color: #4CAF50;
-      }
-      
-      .check-terminos {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 20px 0;
-      }
-      
-      .boton-cotizar {
-        background: #072386;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        margin: 0 10px;
-        transition: background 0.3s ease;
-      }
-      
-      .boton-cotizar:hover {
-        background: #0a2d99;
-      }
-      
-      .btn-quote, .cotizar-otro {
-        background: #4CAF50;
-        color: white;
-        padding: 15px 25px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        margin: 10px;
-        transition: background 0.3s ease;
-      }
-      
-      .btn-quote:hover, .cotizar-otro:hover {
-        background: #45a049;
-      }
-      
-      .cotizar-otro {
-        background: #667eea;
-      }
-      
-      .cotizar-otro:hover {
-        background: #5a6fd8;
-      }
-      
-      #mensaje-error-global {
-        color: #f44336;
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-        margin: 10px 0;
-      }
-      
-      .pdf {
-        text-align: center;
-      }
-      
-      .thankYouMessage {
-        color: #072386 !important;
-        font-size: 2.2rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-        background: none !important;
-        background-color: transparent !important;
-        /* Fondo verde removido completamente - override forzado */
-      }
-      
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin: 20px 0;
-        text-align: left;
-      }
-      
-      .form-row .title {
-        font-weight: bold;
-        color: #333;
-      }
-      
-      .form-row input {
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background: #f9f9f9;
-      }
-      
-      .frase_adjudicacion {
-        font-size: 0.9rem;
-        color: #666;
-        margin-top: 20px;
-      }
-      
-      /* Estilos para la ventana de autorización */
-      .ventana-autorizacion {
-        background: #f8f9fa;
-        border: 2px solid #667eea;
-        border-radius: 15px;
-        padding: 25px;
-        margin: 20px 0;
-        text-align: center;
-      }
-      
-      .mensaje-autorizacion {
-        font-size: 1.1rem;
-        color: #333;
-        margin-bottom: 20px;
-        line-height: 1.5;
-        font-weight: bold;
-      }
-      
-      .botones-autorizacion {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      
-      .btn-autorizar {
-        background: #4CAF50;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      
-      .btn-autorizar:hover {
-        background: #45a049;
-      }
-      
-      .btn-cancelar {
-        background: #f44336;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      
-      .btn-cancelar:hover {
-        background: #d32f2f;
-      }
-      
-      /* Estilos para la tabla completa de opciones */
-      .tabla-opciones-completa {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 15px 0;
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      }
-      
-      .tabla-opciones-completa th {
-        background: linear-gradient(135deg, #072386, #0a2d99);
-        color: white;
-        padding: 12px 8px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 0.9rem;
-      }
-      
-      .tabla-opciones-completa td {
-        padding: 10px 8px;
-        text-align: center;
-        border-bottom: 1px solid #eee;
-        font-size: 0.85rem;
-      }
-      
-      .tabla-opciones-completa tr:nth-child(even) {
-        background: #f9f9f9;
-      }
-      
-      .tabla-opciones-completa tr:hover {
-        background: #f0f4ff;
-      }
-      
-      .tabla-opciones-completa .opcion-seleccionada {
-        background: #e3f2fd !important;
-        color: #072386;
-        font-weight: bold;
-        box-shadow: inset 0 0 0 2px #072386;
-      }
-      
-      .tabla-opciones-completa .opcion-seleccionada td {
-        color: #072386;
-        font-weight: bold;
-      }
-    </style>
   </head>
 
   <body>
@@ -1566,15 +929,13 @@
                 <div id="contenedor-tabla-opciones" style="overflow-x: auto;">
                   <!-- La tabla se generará dinámicamente con JavaScript -->
                 </div>
-                <p style="text-align: center; color: #999; font-size: 0.9rem; margin-top: 10px; font-style: italic;">
-                  * La opción seleccionada está marcada en <span style="color: #072386; font-weight: bold;">azul</span>
-                </p>
+                
               </div>
               
               <!-- Botones en una fila con dos columnas -->
               <div style="display: flex; gap: 20px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
-                <button class="btn-quote" id="btn-quote" style="flex: 1; min-width: 200px;">DESCARGAR COTIZACIÓN PDF</button>
-                <button class="cotizar-otro" id="cotizar-otro" style="flex: 1; min-width: 200px;">🚗 COTIZAR OTRO VEHÍCULO</button>
+                <button class="btn-quote" id="btn-quote" style="flex: 1; min-width: 200px;">DESCARGAR PDF</button>
+                <button class="cotizar-otro" id="cotizar-otro" style="flex: 1; min-width: 200px;">COTIZAR OTRO</button>
               </div>
               
               <div>
@@ -2781,7 +2142,7 @@
             }, 100); // Pequeño delay para asegurar que los elementos estén disponibles
             
             // Cambiar texto del botón PDF para planes estándar
-            document.getElementById("btn-quote").textContent = "DESCARGAR COTIZACIÓN PDF";
+            document.getElementById("btn-quote").textContent = "DESCARGAR PDF";
           }
           
           console.log("✅ Sección PDF configurada correctamente");
@@ -2862,7 +2223,7 @@
           document.getElementById("tabla-completa-opciones").style.display = "block";
           
           // Restaurar texto del botón PDF
-          document.getElementById("btn-quote").textContent = "DESCARGAR COTIZACIÓN PDF";
+          document.getElementById("btn-quote").textContent = "DESCARGAR PDF";
           
           // Ocultar formularios de opciones
           document.getElementById("opciones-con-entrada").classList.add("hidden");
@@ -3058,7 +2419,7 @@
             
             tablaHTML += `
               <tr class="${claseSeleccionada}" style="${estiloSeleccionada}">
-                <td style="padding: 10px; border: 1px solid #ddd;">${opcion.label}${esMesesSeleccionado ? ' ⭐' : ''}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${opcion.label}${esMesesSeleccionado ? ' ' : ''}</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${opcion.tasa}</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right; font-weight: bold;">${cuotaMensual !== 'N/A' ? `$${parseFloat(cuotaMensual).toLocaleString()}` : 'N/A'}</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${registroMonto && registroMonto.INSCRIPCION ? `$${parseFloat(registroMonto.INSCRIPCION).toLocaleString()}` : 'N/A'}</td>
@@ -3144,7 +2505,7 @@
             
             tablaHTML += `
               <tr class="${claseSeleccionada}" style="${estiloSeleccionada}">
-                <td style="padding: 10px; border: 1px solid #ddd;">${opcion.label}${esMesesSeleccionado ? ' ⭐' : ''}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${opcion.label}${esMesesSeleccionado ? ' ' : ''}</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${opcion.tasa}</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right; font-weight: bold;">${cuotaMensual !== 'N/A' ? `$${parseFloat(cuotaMensual).toLocaleString()}` : 'N/A'}</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${registroMonto && registroMonto.INSCRIPCION ? `$${parseFloat(registroMonto.INSCRIPCION).toLocaleString()}` : 'N/A'}</td>
@@ -3273,7 +2634,7 @@
             
             tablaHTML += `
               <tr class="${claseSeleccionada}">
-                <td>${opcion.label}${esMesesSeleccionado ? ' ⭐' : ''}</td>
+                <td>${opcion.label}${esMesesSeleccionado ? ' ' : ''}</td>
                 <td>${opcion.tasa}</td>
                 <td>${cuotaTexto}</td>
                 <td>${inscripcionFormateada}</td>
@@ -3484,7 +2845,7 @@
                     pdf.setFont('helvetica', 'normal');
                   }
                   
-                  pdf.text(opcion.label + (esSeleccionado ? ' ⭐' : ''), colStarts[0] + 2, yPos);
+                  pdf.text(opcion.label + (esSeleccionado ? ' ' : ''), colStarts[0] + 2, yPos);
                   pdf.text(opcion.tasa, colStarts[1] + 2, yPos);
                   
                   if (cuota && !isNaN(cuota)) {
@@ -3812,7 +3173,7 @@
           pdf.setFont("helvetica", "normal");
           pdf.setFontSize(8);
           pdf.text("Plan Justo a Tiempo - Tu vehículo en el momento exacto que lo necesitas", pageWidth / 2, pageHeight - 12, { align: 'center' });
-          pdf.text("www.finanmotors.com | contacto@finanmotors.com", pageWidth / 2, pageHeight - 6, { align: 'center' });
+          pdf.text("www.finan.ec | contacto@finan.ec", pageWidth / 2, pageHeight - 6, { align: 'center' });
           
           // ====== DESCARGAR PDF ======
           const nombreArchivo = `Opciones_Pago_${nombre.replace(/\s+/g, '_')}_${vehiculoNombre.replace(/\s+/g, '_')}_Mes${mesSeleccionado}.pdf`;
@@ -3969,7 +3330,7 @@
                     pdf.setFont('helvetica', 'normal');
                   }
                   
-                  pdf.text(opcion.label + (esSeleccionado ? ' ⭐' : ''), colStarts[0] + 2, yPos);
+                  pdf.text(opcion.label + (esSeleccionado ? ' ' : ''), colStarts[0] + 2, yPos);
                   pdf.text(opcion.tasa, colStarts[1] + 2, yPos);
                   
                   if (cuota && !isNaN(cuota)) {
@@ -4021,7 +3382,7 @@
             pdf.setFont('helvetica', 'bold');
             pdf.text('FINAN MOTORS - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 12, { align: 'center' });
             pdf.setFontSize(8);
-            pdf.text('www.finanmotors.com | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 6, { align: 'center' });
+            pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 6, { align: 'center' });
             
             // Descargar PDF
             const fechaActual = new Date().toISOString().split('T')[0];
@@ -4181,7 +3542,7 @@
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(11);
           pdf.setTextColor(255, 255, 255);
-          pdf.text("📋 TABLA DE OPCIONES DE FINANCIAMIENTO", pageWidth / 2, yPos + 5, { align: 'center' });
+          pdf.text("TABLA DE OPCIONES DE FINANCIAMIENTO", pageWidth / 2, yPos + 5, { align: 'center' });
           
           yPos += 18;
           
@@ -4253,7 +3614,7 @@
               pagoPrimerMes = `$${primerMes.toLocaleString()}`;
             }
             
-            const plazoTexto = esMesesSeleccionado ? `${opcion.label} ⭐` : opcion.label;
+            const plazoTexto = esMesesSeleccionado ? `${opcion.label} ` : opcion.label;
             const cuotaTexto = cuotaMensual !== 'N/A' ? `$${cuotaMensual}` : 'N/A';
             const inscripcionTexto = inscripcionMonto !== 'N/A' ? `$${inscripcionMonto}` : 'N/A';
             
@@ -4271,7 +3632,7 @@
           pdf.setFont("helvetica", "italic");
           pdf.setFontSize(6);
           pdf.setTextColor(153, 153, 153);
-          pdf.text("* La opción seleccionada está marcada con ⭐ y resaltada en azul", 20, yPos);
+          pdf.text("La opción seleccionada está resaltada en azul", 20, yPos);
           
           // Pie de página con gradiente azul
           pdf.setFillColor(102, 126, 234);
@@ -4280,9 +3641,9 @@
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(10);
           pdf.setTextColor(255, 255, 255);
-          pdf.text("FINANMOTORS - Tu aliado en financiamiento vehicular", pageWidth / 2, pageHeight - 12, { align: 'center' });
+          pdf.text("FINAN - Lo hacemos posible", pageWidth / 2, pageHeight - 12, { align: 'center' });
           pdf.setFontSize(8);
-          pdf.text("www.finanmotors.com | contacto@finanmotors.com", pageWidth / 2, pageHeight - 4, { align: 'center' });
+          pdf.text("www.finan.ec | contacto@finan.ec", pageWidth / 2, pageHeight - 4, { align: 'center' });
           
           // Descargar
           const nombreArchivo = `Cotizacion_${planSeleccionado.replace(/\s+/g, '_')}_${nombre.replace(/\s+/g, '_')}.pdf`;
