@@ -274,6 +274,96 @@ require HELLO_THEME_PATH . '/theme.php';
 HelloTheme\Theme::instance();
 
 /**
+ * Configurar wp_mail para mejorar la entrega de correos
+ */
+function finanmotors_configure_wp_mail() {
+	// Configurar charset por defecto
+	if (!defined('FINANMOTORS_MAIL_CHARSET')) {
+		define('FINANMOTORS_MAIL_CHARSET', 'UTF-8');
+	}
+	
+	// Hook para modificar configuración de correo si es necesario
+	add_action('phpmailer_init', 'finanmotors_configure_phpmailer');
+}
+add_action('init', 'finanmotors_configure_wp_mail');
+
+/**
+ * Configuración adicional de PHPMailer
+ */
+function finanmotors_configure_phpmailer($phpmailer) {
+	// Solo aplicar a correos de cotizaciones
+	if (strpos($phpmailer->Subject, 'cotización') !== false || strpos($phpmailer->Subject, 'Cotización') !== false) {
+		// Configurar timeout más largo para PDFs grandes
+		$phpmailer->Timeout = 30;
+		$phpmailer->SMTPKeepAlive = true;
+		
+		// Configurar prioridad alta para correos de empresa
+		if (strpos($phpmailer->Subject, 'Nueva cotización registrada') !== false) {
+			$phpmailer->Priority = 1; // Alta prioridad
+		}
+	}
+}
+
+/**
+ * Test endpoint para verificar configuración de correo
+ * Endpoint: /wp-json/pdf/v1/test-email
+ */
+add_action('rest_api_init', function() {
+	register_rest_route('pdf/v1', '/test-email', [
+		'methods' => 'POST',
+		'callback' => 'finanmotors_test_email',
+		'permission_callback' => function() {
+			return current_user_can('manage_options'); // Solo administradores
+		}
+	]);
+});
+
+/**
+ * Función para probar el envío de correos
+ */
+function finanmotors_test_email(WP_REST_Request $request) {
+	$params = $request->get_json_params();
+	$test_email = isset($params['email']) ? sanitize_email($params['email']) : get_option('admin_email');
+	
+	if (!is_email($test_email)) {
+		return new WP_REST_Response([
+			'success' => false,
+			'message' => 'Email inválido'
+		], 400);
+	}
+	
+	// Configurar headers de prueba
+	$headers = [];
+	$headers[] = 'From: Finan Motors <wordpress@finanmotors.com>';
+	$headers[] = 'Content-Type: text/html; charset=UTF-8';
+	
+	$subject = 'Prueba de Configuración SMTP - Finan Motors';
+	$message = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">';
+	$message .= '<div style="background: #00205C; color: white; padding: 20px; text-align: center;">';
+	$message .= '<h2>✅ Test de Configuración SMTP</h2>';
+	$message .= '</div>';
+	$message .= '<div style="padding: 20px; background: #f8f9fa;">';
+	$message .= '<p>Si recibes este email, la configuración SMTP está funcionando correctamente.</p>';
+	$message .= '<p><strong>Detalles del test:</strong></p>';
+	$message .= '<ul>';
+	$message .= '<li>Fecha: ' . date('d/m/Y H:i:s') . '</li>';
+	$message .= '<li>Servidor: ' . $_SERVER['HTTP_HOST'] . '</li>';
+	$message .= '<li>WordPress: ' . get_bloginfo('version') . '</li>';
+	$message .= '</ul>';
+	$message .= '<p style="color: #00205C; font-weight: bold;">✨ ¡El sistema de cotizaciones está listo para enviar PDFs!</p>';
+	$message .= '</div></div>';
+	
+	$sent = wp_mail($test_email, $subject, $message, $headers);
+	
+	return new WP_REST_Response([
+		'success' => $sent,
+		'message' => $sent ? 'Email de prueba enviado correctamente' : 'Error al enviar email de prueba',
+		'email' => $test_email,
+		'timestamp' => date('Y-m-d H:i:s')
+	], $sent ? 200 : 500);
+}
+
+/**
  * Register REST endpoint to receive PDF and send emails.
  * Endpoint: /wp-json/pdf/v1/send
  */
@@ -455,6 +545,10 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 				$log( "Failed to write PDF to $file_path" );
 				return new WP_REST_Response( [ 'success' => false, 'message' => 'Unable to save PDF on server' ], 500 );
 			}
+			// Validate PDF was written correctly
+			if ( $written < 1024 ) { // PDF should be at least 1KB
+				$log( "Warning: PDF file seems too small: {$written} bytes" );
+			}
 			$log( "PDF saved to $file_path ({$written} bytes)" );
 		} else {
 			// received_via_file branch: ensure client email/name are present (extracted earlier)
@@ -473,19 +567,35 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 		$headers[] = 'From: ' . $from_name . ' <' . $from_email . '>';
 		$headers[] = 'Reply-To: ' . $from_name . ' <' . $from_email . '>';
 		$headers[] = 'Content-Type: text/html; charset=UTF-8';
+		$headers[] = 'X-Mailer: WordPress/' . get_bloginfo('version');
+		$headers[] = 'X-Priority: 1'; // High priority for company emails
 
 		$subject_company = "Nueva cotización registrada: $client_name";
-		$body_company = '<p>Se ha registrado una nueva cotización.</p>';
-		$body_company .= '<p><strong>Cliente:</strong> ' . esc_html( $client_name ) . ' &lt;' . esc_html( $client_email ) . '&gt;</p>';
+		$body_company = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">';
+		$body_company .= '<div style="background: #00205C; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">';
+		$body_company .= '<h2 style="margin: 0;">🚗 Nueva Cotización Registrada</h2>';
+		$body_company .= '</div>';
+		$body_company .= '<div style="padding: 20px; background: #f8f9fa; border-radius: 0 0 10px 10px;">';
+		$body_company .= '<p style="font-size: 16px; margin-bottom: 20px;">Se ha registrado una nueva cotización en el sistema.</p>';
+		$body_company .= '<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">';
+		$body_company .= '<tr style="background: #e3f2fd;"><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Cliente:</td><td style="padding: 10px; border: 1px solid #ddd;">' . esc_html( $client_name ) . '</td></tr>';
+		$body_company .= '<tr><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Email:</td><td style="padding: 10px; border: 1px solid #ddd;">' . esc_html( $client_email ) . '</td></tr>';
+		if ( $client_phone ) {
+			$body_company .= '<tr style="background: #e3f2fd;"><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Teléfono:</td><td style="padding: 10px; border: 1px solid #ddd;">' . esc_html( $client_phone ) . '</td></tr>';
+		}
 		if ( $marca || $modelo ) {
-			$body_company .= '<p><strong>Vehículo:</strong> ' . esc_html( $marca ) . ' - ' . esc_html( $modelo ) . '</p>';
+			$body_company .= '<tr><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Vehículo:</td><td style="padding: 10px; border: 1px solid #ddd;">' . esc_html( $marca . ' ' . $modelo ) . '</td></tr>';
 		}
 		if ( $precio ) {
-			$body_company .= '<p><strong>Precio referencia:</strong> ' . esc_html( $precio ) . '</p>';
+			$body_company .= '<tr style="background: #e3f2fd;"><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Precio referencia:</td><td style="padding: 10px; border: 1px solid #ddd;">' . esc_html( $precio ) . '</td></tr>';
 		}
-		$body_company .= '<p><strong>Tipo financiación:</strong> ' . esc_html( $tipo_financiacion ) . '</p>';
-		$body_company .= '<p><strong>Monto entrada:</strong> ' . esc_html( $monto_entrada ) . '</p>';
-		$body_company .= '<p><strong>Porcentaje entrada:</strong> ' . esc_html( $porcentaje_entrada ) . '</p>';
+		$body_company .= '<tr><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Tipo financiación:</td><td style="padding: 10px; border: 1px solid #ddd;">' . esc_html( $tipo_financiacion ) . '</td></tr>';
+		$body_company .= '<tr style="background: #e3f2fd;"><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Monto entrada:</td><td style="padding: 10px; border: 1px solid #ddd;">' . esc_html( $monto_entrada ) . '</td></tr>';
+		$body_company .= '<tr><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Porcentaje entrada:</td><td style="padding: 10px; border: 1px solid #ddd;">' . esc_html( $porcentaje_entrada ) . '</td></tr>';
+		$body_company .= '<tr style="background: #fff3e0;"><td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Fecha:</td><td style="padding: 10px; border: 1px solid #ddd;">' . date('d/m/Y H:i:s') . '</td></tr>';
+		$body_company .= '</table>';
+		$body_company .= '<p style="text-align: center; margin-top: 20px; font-size: 14px; color: #666;">📎 La cotización completa está adjunta en el PDF.</p>';
+		$body_company .= '</div></div>';
 
 		// Attachments (only include if file exists)
 		$attachments = [];
@@ -500,16 +610,39 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 
 		// Send to client
 		$subject_client = 'Tu cotización en Finan Motors';
-		$body_client = '<p>Hola ' . esc_html( $client_name ) . ',</p>';
-		$body_client .= '<p>Adjuntamos tu cotización. Un asesor se pondrá en contacto contigo pronto.</p>';
-		$body_client .= '<p><strong>Resumen:</strong></p>';
-		if ( $marca || $modelo ) {
-			$body_client .= '<p>' . esc_html( $marca ) . ' - ' . esc_html( $modelo ) . '</p>';
+		$body_client = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f8f9fa; border-radius: 10px; overflow: hidden;">';
+		$body_client .= '<div style="background: linear-gradient(135deg, #00205C 0%, #1a2a5c 100%); color: white; padding: 30px; text-align: center;">';
+		$body_client .= '<h1 style="margin: 0; font-size: 28px;">🎉 ¡Tu Cotización está Lista!</h1>';
+		$body_client .= '<p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Gracias por confiar en Finan Motors</p>';
+		$body_client .= '</div>';
+		$body_client .= '<div style="padding: 30px;">';
+		$body_client .= '<h2 style="color: #00205C; margin-bottom: 20px;">Hola ' . esc_html( $client_name ) . ',</h2>';
+		$body_client .= '<p style="font-size: 16px; line-height: 1.6; color: #333;">Hemos preparado tu cotización personalizada. Encontrarás todos los detalles en el archivo PDF adjunto.</p>';
+		if ( $marca || $modelo || $precio ) {
+			$body_client .= '<div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #00205C;">';
+			$body_client .= '<h3 style="color: #00205C; margin-top: 0;">📋 Resumen de tu Cotización:</h3>';
+			if ( $marca || $modelo ) {
+				$body_client .= '<p style="margin: 5px 0;"><strong>🚗 Vehículo:</strong> ' . esc_html( $marca . ' ' . $modelo ) . '</p>';
+			}
+			if ( $precio ) {
+				$body_client .= '<p style="margin: 5px 0;"><strong>💰 Precio referencia:</strong> ' . esc_html( $precio ) . '</p>';
+			}
+			if ( $tipo_financiacion ) {
+				$body_client .= '<p style="margin: 5px 0;"><strong>📊 Plan seleccionado:</strong> ' . esc_html( $tipo_financiacion ) . '</p>';
+			}
+			$body_client .= '</div>';
 		}
-		if ( $precio ) {
-			$body_client .= '<p><strong>Precio referencia:</strong> ' . esc_html( $precio ) . '</p>';
-		}
-		$body_client .= '<p>Saludos,<br/>Finan Motors</p>';
+		$body_client .= '<div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ff9800;">';
+		$body_client .= '<h3 style="color: #e65100; margin-top: 0;">📞 Próximos Pasos:</h3>';
+		$body_client .= '<p style="margin: 5px 0;">✅ Revisa tu cotización adjunta</p>';
+		$body_client .= '<p style="margin: 5px 0;">✅ Un asesor especializado te contactará pronto</p>';
+		$body_client .= '<p style="margin: 5px 0;">✅ Prepara tu documentación para agilizar el proceso</p>';
+		$body_client .= '</div>';
+		$body_client .= '<div style="text-align: center; margin-top: 30px; padding: 20px; background: #e8f5e8; border-radius: 10px;">';
+		$body_client .= '<p style="margin: 0; color: #2e7d32; font-size: 16px; font-weight: bold;">¡Estamos aquí para hacer realidad tu sueño!</p>';
+		$body_client .= '<p style="margin: 10px 0 0 0; color: #2e7d32;">Saludos cordiales,<br/><strong>El equipo de Finan Motors</strong></p>';
+		$body_client .= '</div>';
+		$body_client .= '</div></div>';
 
 		$log( "Sending email to client: $client_email" );
 		$sent_client = wp_mail( $client_email, $subject_client, $body_client, $headers, $attachments );
