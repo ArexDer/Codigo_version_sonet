@@ -1245,7 +1245,10 @@
             
             // Botón continuar JUSTO A TIEMPO - abrir popup
             document.getElementById("continuar-justo-tiempo").addEventListener("click", () => {
-              if (avaluoActual > 0) {
+              const montoJusto = document.getElementById("montoSelectJustoTiempo").value;
+              const mesJusto = document.getElementById("mesEntregaSelect").value;
+              
+              if (avaluoActual > 0 && montoJusto && mesJusto) {
                 // Preparar datos para el popup
                 const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
                 
@@ -1259,7 +1262,8 @@
                 console.log("Abriendo popup JUSTO A TIEMPO con datos:", {
                   vehiculo: marcaModelo,
                   precio: avaluoActual,
-                  resultado: textoResultado,
+                  monto: montoJusto,
+                  mes: mesJusto,
                   imagen: imagenSeleccionada,
                   plan: planSeleccionado
                 });
@@ -2063,9 +2067,16 @@
         }
         
         function mostrarVentanaAutorizacion() {
-          // Ocultar botón COTIZAR y mostrar ventana de autorización
-          document.getElementById("boton-cotizar").style.display = "none";
-          document.getElementById("ventana-autorizacion").classList.remove("hidden");
+          // Verificar si es PLAN JUSTO A TIEMPO para mostrar vista especial
+          if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
+            console.log("🎯 JUSTO A TIEMPO: Mostrando vista final con autorización y botones");
+            mostrarVistaFinalJustoTiempoConAutorizacion();
+          } else {
+            // Flujo normal para otros planes
+            // Ocultar botón COTIZAR y mostrar ventana de autorización
+            document.getElementById("boton-cotizar").style.display = "none";
+            document.getElementById("ventana-autorizacion").classList.remove("hidden");
+          }
         }
         
         function mostrarSeccionPDF() {
@@ -2096,12 +2107,28 @@
           
           // Verificar si es PLAN JUSTO A TIEMPO
           if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
-            // Ocultar contenido estándar y mostrar contenido específico de JUSTO A TIEMPO
-            document.getElementById("formfinal").style.display = "none";
-            document.getElementById("tabla-completa-opciones").style.display = "none";
+            console.log("🎯 JUSTO A TIEMPO: Configurando vista directa con botones finales");
             
-            // Mostrar contenido específico de JUSTO A TIEMPO
-            mostrarContenidoJustoTiempoPDF();
+            // OCULTACIÓN COMPLETA de elementos estándar
+            const elementosStandard = [
+              "formfinal",
+              "tabla-completa-opciones",
+              "contenedor-tabla-opciones"
+            ];
+            
+            elementosStandard.forEach(elementId => {
+              const elemento = document.getElementById(elementId);
+              if (elemento) {
+                elemento.style.display = "none";
+                elemento.style.visibility = "hidden";
+                elemento.style.height = "0px";
+                elemento.style.overflow = "hidden";
+              }
+            });
+            
+            // Crear contenido compacto de JUSTO A TIEMPO con botones directos
+            mostrarVistaFinalJustoTiempo();
+            
           } else {
             // Contenido estándar para otros planes
             console.log("📊 Configurando contenido estándar para plan:", planSeleccionado);
@@ -2128,9 +2155,11 @@
             
             // Asegurar que los datos estén disponibles antes de generar la tabla
             console.log("🔄 Preparando datos para la tabla...");
-            setTimeout(() => {
-              // Generar tabla de opciones según el tipo (solo si NO es JUSTO A TIEMPO)
-              if (planSeleccionado !== "PLAN JUSTO A TIEMPO") {
+            console.log("🎯 Plan actual:", planSeleccionado);
+            
+            // DOBLE VERIFICACIÓN: Solo generar tabla si NO es JUSTO A TIEMPO
+            if (planSeleccionado !== "PLAN JUSTO A TIEMPO") {
+              setTimeout(() => {
                 if (tipoSeleccionado === 'inmobiliario') {
                   console.log("🏠 Generando tabla inmobiliaria");
                   generarTablaCompletaOpcionesInmobiliario();
@@ -2138,16 +2167,445 @@
                   console.log("🚗 Generando tabla vehicular");
                   generarTablaCompletaOpciones();
                 }
-              } else {
-                console.log("🚀 PLAN JUSTO A TIEMPO: Tabla completa no necesaria, usando sección de opciones de pago");
-              }
-            }, 100); // Pequeño delay para asegurar que los elementos estén disponibles
+              }, 100); // Pequeño delay para asegurar que los elementos estén disponibles
+            }
             
             // Cambiar texto del botón PDF para planes estándar
             document.getElementById("btn-quote").textContent = "DESCARGAR PDF";
           }
           
           console.log("✅ Sección PDF configurada correctamente");
+        }
+        
+        function mostrarVistaFinalJustoTiempo() {
+          console.log("🎯 Configurando vista final directa para JUSTO A TIEMPO");
+          
+          // Obtener datos del formulario
+          const mesSeleccionado = document.getElementById("mesEntregaSelect").value;
+          const montoSeleccionado = document.getElementById("montoSelectJustoTiempo").value;
+          const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
+          
+          // Crear contenido final compacto con opciones de pago y botones
+          let contenidoFinalHTML = `
+            <div id="contenido-final-justo-tiempo" style="margin: 20px 0; text-align: center;">
+              <!-- Resumen de la selección -->
+              <div style="background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #072386;">
+                <h3 style="color: #072386; margin: 0 0 15px 0; font-size: 1.4rem;">📅 Plan Justo a Tiempo - Resumen</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: center;">
+                  <div>
+                    <p style="margin: 0; font-weight: bold; color: #072386;">🚗 Vehículo</p>
+                    <p style="margin: 5px 0; font-size: 1.1rem; color: #333;">${vehiculoNombre}</p>
+                  </div>
+                  <div>
+                    <p style="margin: 0; font-weight: bold; color: #072386;">💰 Monto Planificado</p>
+                    <p style="margin: 5px 0; font-size: 1.1rem; color: #333;">$${parseFloat(montoSeleccionado).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p style="margin: 0; font-weight: bold; color: #072386;">📅 Mes de Entrega</p>
+                    <p style="margin: 5px 0; font-size: 1.1rem; color: #333;">Mes ${mesSeleccionado}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Opciones de pago compactas -->
+              <div id="opciones-pago-final-container" style="margin-bottom: 30px;">
+                <h4 style="color: #072386; margin-bottom: 20px; font-size: 1.2rem;">💳 Tus Opciones de Pago</h4>
+                <div id="opciones-pago-grid"></div>
+              </div>
+              
+              <!-- Botones finales -->
+              <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <button id="btn-quote" onclick="generarPDFJustoTiempo()" style="
+                  background: linear-gradient(135deg, #072386 0%, #0a2d7a 100%);
+                  color: white;
+                  padding: 15px 30px;
+                  border: none;
+                  border-radius: 8px;
+                  font-size: 1.1rem;
+                  font-weight: bold;
+                  cursor: pointer;
+                  box-shadow: 0 4px 15px rgba(7, 35, 134, 0.3);
+                  transition: all 0.3s ease;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(7, 35, 134, 0.4)'" 
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(7, 35, 134, 0.3)'">
+                  📄 DESCARGAR OPCIONES DE PAGO PDF
+                </button>
+                
+                <button id="cotizar-otro" style="
+                  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                  color: white;
+                  padding: 15px 30px;
+                  border: none;
+                  border-radius: 8px;
+                  font-size: 1.1rem;
+                  font-weight: bold;
+                  cursor: pointer;
+                  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+                  transition: all 0.3s ease;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(40, 167, 69, 0.4)'" 
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(40, 167, 69, 0.3)'">
+                  🔄 COTIZAR OTRO
+                </button>
+              </div>
+            </div>
+          `;
+          
+          // Insertar el contenido en el PDF
+          const pdfContainer = document.getElementById("form-container-pdf");
+          const autoImage = document.getElementById("auto-pdf");
+          autoImage.insertAdjacentHTML('afterend', contenidoFinalHTML);
+          
+          // Generar las opciones de pago en el grid
+          generarOpcionesPagoFinales(montoSeleccionado, mesSeleccionado);
+          
+          console.log("✅ Vista final de JUSTO A TIEMPO configurada - Lista para descargar PDF o cotizar otro");
+        }
+        
+        function generarOpcionesPagoFinales(monto, mesEntrega) {
+          console.log("📋 Generando opciones de pago finales para vista directa");
+          
+          // Datos de la tabla
+          const datosTabla = {
+            24: { 30: 7, 35: 6, 40: 5, 45: 4, 50: 3 },
+            36: { 30: 11, 35: 9, 40: 8, 45: 6, 50: 5 },
+            48: { 30: 14, 35: 12, 40: 10, 45: 8, 50: 6 },
+            60: { 30: 18, 35: 15, 40: 13, 45: 10, 50: 8 },
+            72: { 30: 21, 35: 18, 40: 15, 45: 12, 50: 9 }
+          };
+          
+          // Buscar opciones disponibles
+          const opcionesPago = [];
+          const montoNumerico = parseFloat(monto);
+          
+          Object.keys(datosTabla).forEach(plazoMeses => {
+            Object.keys(datosTabla[plazoMeses]).forEach(porcentaje => {
+              const valorCelda = datosTabla[plazoMeses][porcentaje];
+              if (valorCelda.toString() === mesEntrega) {
+                const montoPorcentaje = montoNumerico * (parseInt(porcentaje) / 100);
+                opcionesPago.push({
+                  plazo: plazoMeses,
+                  porcentaje: porcentaje,
+                  montoAPagar: Math.round(montoPorcentaje)
+                });
+              }
+            });
+          });
+          
+          // Generar HTML de opciones
+          let opcionesHTML = '';
+          
+          if (opcionesPago.length > 0) {
+            opcionesHTML = `
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+            `;
+            
+            opcionesPago.forEach((opcion, index) => {
+              opcionesHTML += `
+                <div style="background: white; border: 2px solid #e3f2fd; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s ease;" 
+                     onmouseover="this.style.borderColor='#072386'; this.style.transform='translateY(-5px)'"
+                     onmouseout="this.style.borderColor='#e3f2fd'; this.style.transform='translateY(0)'">
+                  <h5 style="color: #072386; margin: 0 0 15px 0; font-size: 1.1rem; font-weight: bold;">Opción ${index + 1}</h5>
+                  <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Plazo de financiamiento</p>
+                    <p style="margin: 5px 0 0 0; color: #072386; font-weight: bold; font-size: 1.2rem;">${opcion.plazo} meses</p>
+                  </div>
+                  <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Porcentaje de entrada</p>
+                    <p style="margin: 5px 0 0 0; color: #28a745; font-weight: bold; font-size: 1.2rem;">${opcion.porcentaje}%</p>
+                  </div>
+                  <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Monto a pagar</p>
+                    <p style="margin: 5px 0 0 0; color: #856404; font-weight: bold; font-size: 1.3rem;">$${opcion.montoAPagar.toLocaleString()}</p>
+                  </div>
+                </div>
+              `;
+            });
+            
+            opcionesHTML += `</div>`;
+          } else {
+            opcionesHTML = `
+              <div style="background: #f8d7da; color: #721c24; padding: 20px; border-radius: 8px; text-align: center;">
+                <p style="margin: 0; font-weight: bold;">⚠️ No hay opciones disponibles para este mes</p>
+                <p style="margin: 10px 0 0 0; font-size: 0.9rem;">Por favor selecciona un mes diferente en el formulario</p>
+              </div>
+            `;
+          }
+          
+          // Insertar las opciones en el contenedor
+          const container = document.getElementById('opciones-pago-grid');
+          if (container) {
+            container.innerHTML = opcionesHTML;
+          }
+          
+          console.log(`✅ Se generaron ${opcionesPago.length} opciones de pago finales`);
+        }
+        
+        function mostrarVistaFinalJustoTiempoConAutorizacion() {
+          console.log("🎯 Mostrando vista final de JUSTO A TIEMPO con autorización y botones");
+          
+          // Ocultar botón COTIZAR original
+          document.getElementById("boton-cotizar").style.display = "none";
+          
+          // Obtener datos del formulario
+          const mesSeleccionado = document.getElementById("mesEntregaSelect").value;
+          const montoSeleccionado = document.getElementById("montoSelectJustoTiempo").value;
+          const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
+          const nombreUsuario = document.getElementById("nombre").value || "Usuario";
+          
+          // Crear contenido completo con autorización y botones
+          let contenidoCompleto = `
+            <div id="vista-final-justo-tiempo-completa" style="background: white; border-radius: 15px; padding: 25px; margin-top: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+              
+              <!-- Mensaje de agradecimiento -->
+              <div style="text-align: center; margin-bottom: 25px; padding: 20px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px;">
+                <h3 style="color: #072386; margin: 0 0 10px 0; font-size: 1.6rem;">🎉 ¡Gracias por cotizar, ${nombreUsuario}!</h3>
+                <p style="margin: 0; color: #666; font-size: 1.1rem;">Aquí tienes tu resumen del Plan Justo a Tiempo</p>
+              </div>
+              
+              <!-- Resumen de la selección -->
+              <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 2px solid #e3f2fd;">
+                <h4 style="color: #072386; margin: 0 0 20px 0; font-size: 1.3rem; text-align: center;">📋 Resumen de tu Cotización</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                  <div style="text-align: center; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="margin: 0 0 8px 0; font-weight: bold; color: #072386; font-size: 1rem;">🚗 Vehículo</p>
+                    <p style="margin: 0; font-size: 1.1rem; color: #333; font-weight: 600;">${vehiculoNombre}</p>
+                  </div>
+                  <div style="text-align: center; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="margin: 0 0 8px 0; font-weight: bold; color: #072386; font-size: 1rem;">💰 Monto Planificado</p>
+                    <p style="margin: 0; font-size: 1.1rem; color: #333; font-weight: 600;">$${parseFloat(montoSeleccionado).toLocaleString()}</p>
+                  </div>
+                  <div style="text-align: center; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="margin: 0 0 8px 0; font-weight: bold; color: #072386; font-size: 1rem;">📅 Mes de Entrega</p>
+                    <p style="margin: 0; font-size: 1.1rem; color: #333; font-weight: 600;">Mes ${mesSeleccionado}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Opciones de pago -->
+              <div style="margin-bottom: 30px;">
+                <h4 style="color: #072386; margin: 0 0 20px 0; font-size: 1.3rem; text-align: center;">💳 Tus Opciones de Pago</h4>
+                <div id="opciones-pago-autorizacion-grid"></div>
+              </div>
+              
+              <!-- Autorización y botones finales -->
+              <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; border: 2px solid #e3f2fd;">
+                <h4 style="color: #072386; margin: 0 0 20px 0; text-align: center; font-size: 1.2rem;">📝 Autorización y Descarga</h4>
+                
+                <!-- Texto de autorización -->
+                <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #072386;">
+                  <p style="margin: 0 0 15px 0; color: #333; line-height: 1.6; font-size: 1rem;">
+                    Al hacer clic en <strong>"SÍ, AUTORIZO"</strong>, confirmas que la información proporcionada es correcta y autorizas el procesamiento de tu cotización para el Plan Justo a Tiempo.
+                  </p>
+                  <p style="margin: 0; color: #666; font-size: 0.9rem; font-style: italic;">
+                    Una vez autorizado, podrás descargar inmediatamente tu PDF con las opciones de pago.
+                  </p>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                  
+                  <!-- Botón Autorizar -->
+                  <button onclick="autorizarJustoTiempo()" style="
+                    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                    color: white;
+                    padding: 15px 25px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+                    transition: all 0.3s ease;
+                  " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(40, 167, 69, 0.4)'" 
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(40, 167, 69, 0.3)'">
+                    ✅ SÍ, AUTORIZO
+                  </button>
+                  
+                  <!-- Botón Descargar PDF (inicialmente deshabilitado) -->
+                  <button id="btn-descargar-final" onclick="generarPDFJustoTiempo()" disabled style="
+                    background: #6c757d;
+                    color: white;
+                    padding: 15px 25px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    cursor: not-allowed;
+                    transition: all 0.3s ease;
+                    opacity: 0.6;
+                  ">
+                    📄 DESCARGAR PDF
+                  </button>
+                  
+                  <!-- Botón Cotizar Otro -->
+                  <button onclick="cotizarOtroDesdeJustoTiempo()" style="
+                    background: linear-gradient(135deg, #6f42c1 0%, #6610f2 100%);
+                    color: white;
+                    padding: 15px 25px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+                    transition: all 0.3s ease;
+                  " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(111, 66, 193, 0.4)'" 
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(111, 66, 193, 0.3)'">
+                    🔄 COTIZAR OTRO
+                  </button>
+                  
+                </div>
+                
+                <!-- Mensaje de estado -->
+                <div id="mensaje-autorizacion" style="margin-top: 20px; text-align: center; padding: 15px; border-radius: 8px; display: none;">
+                </div>
+                
+              </div>
+            </div>
+          `;
+          
+          // Insertar el contenido después del formulario
+          const popupFormulario = document.querySelector(".popup-formulario");
+          popupFormulario.insertAdjacentHTML('afterend', contenidoCompleto);
+          
+          // Ocultar formulario original
+          popupFormulario.style.display = "none";
+          document.getElementById("gracias_cotizar").style.display = "none";
+          document.getElementById("imagen-precio").style.display = "none";
+          document.querySelector(".check-terminos").style.display = "none";
+          
+          // Generar las opciones de pago en el grid
+          generarOpcionesPagoParaAutorizacion(montoSeleccionado, mesSeleccionado);
+          
+          console.log("✅ Vista final con autorización configurada para JUSTO A TIEMPO");
+        }
+        
+        function generarOpcionesPagoParaAutorizacion(monto, mesEntrega) {
+          // Reutilizar la lógica existente
+          console.log("📋 Generando opciones de pago para vista de autorización");
+          
+          const datosTabla = {
+            24: { 30: 7, 35: 6, 40: 5, 45: 4, 50: 3 },
+            36: { 30: 11, 35: 9, 40: 8, 45: 6, 50: 5 },
+            48: { 30: 14, 35: 12, 40: 10, 45: 8, 50: 6 },
+            60: { 30: 18, 35: 15, 40: 13, 45: 10, 50: 8 },
+            72: { 30: 21, 35: 18, 40: 15, 45: 12, 50: 9 }
+          };
+          
+          const opcionesPago = [];
+          const montoNumerico = parseFloat(monto);
+          
+          Object.keys(datosTabla).forEach(plazoMeses => {
+            Object.keys(datosTabla[plazoMeses]).forEach(porcentaje => {
+              const valorCelda = datosTabla[plazoMeses][porcentaje];
+              if (valorCelda.toString() === mesEntrega) {
+                const montoPorcentaje = montoNumerico * (parseInt(porcentaje) / 100);
+                opcionesPago.push({
+                  plazo: plazoMeses,
+                  porcentaje: porcentaje,
+                  montoAPagar: Math.round(montoPorcentaje)
+                });
+              }
+            });
+          });
+          
+          let opcionesHTML = '';
+          
+          if (opcionesPago.length > 0) {
+            opcionesHTML = `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">`;
+            
+            opcionesPago.forEach((opcion, index) => {
+              opcionesHTML += `
+                <div style="background: white; border: 2px solid #e3f2fd; border-radius: 12px; padding: 25px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.1); transition: all 0.3s ease;" 
+                     onmouseover="this.style.borderColor='#072386'; this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 25px rgba(0,0,0,0.15)'"
+                     onmouseout="this.style.borderColor='#e3f2fd'; this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.1)'">
+                  <h5 style="color: #072386; margin: 0 0 20px 0; font-size: 1.2rem; font-weight: bold;">💎 Opción ${index + 1}</h5>
+                  <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; margin-bottom: 15px;">
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Plazo de financiamiento</p>
+                    <p style="margin: 8px 0 0 0; color: #072386; font-weight: bold; font-size: 1.4rem;">${opcion.plazo} meses</p>
+                  </div>
+                  <div style="background: #e8f5e8; padding: 18px; border-radius: 10px; margin-bottom: 15px;">
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Porcentaje de entrada</p>
+                    <p style="margin: 8px 0 0 0; color: #28a745; font-weight: bold; font-size: 1.4rem;">${opcion.porcentaje}%</p>
+                  </div>
+                  <div style="background: #fff3cd; padding: 18px; border-radius: 10px;">
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Monto a pagar</p>
+                    <p style="margin: 8px 0 0 0; color: #856404; font-weight: bold; font-size: 1.5rem;">$${opcion.montoAPagar.toLocaleString()}</p>
+                  </div>
+                </div>
+              `;
+            });
+            
+            opcionesHTML += `</div>`;
+          } else {
+            opcionesHTML = `
+              <div style="background: #f8d7da; color: #721c24; padding: 25px; border-radius: 10px; text-align: center;">
+                <h4 style="margin: 0 0 15px 0; font-weight: bold;">⚠️ No hay opciones disponibles</h4>
+                <p style="margin: 0; font-size: 1rem;">Para el mes ${mesEntrega} seleccionado</p>
+              </div>
+            `;
+          }
+          
+          const container = document.getElementById('opciones-pago-autorizacion-grid');
+          if (container) {
+            container.innerHTML = opcionesHTML;
+          }
+        }
+        
+        function autorizarJustoTiempo() {
+          console.log("✅ Autorizando cotización de JUSTO A TIEMPO");
+          
+          // Habilitar botón de descarga
+          const btnDescargar = document.getElementById('btn-descargar-final');
+          btnDescargar.disabled = false;
+          btnDescargar.style.background = 'linear-gradient(135deg, #072386 0%, #0a2d7a 100%)';
+          btnDescargar.style.cursor = 'pointer';
+          btnDescargar.style.opacity = '1';
+          btnDescargar.onmouseover = function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 6px 20px rgba(7, 35, 134, 0.4)';
+          };
+          btnDescargar.onmouseout = function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 15px rgba(7, 35, 134, 0.3)';
+          };
+          
+          // Mostrar mensaje de confirmación
+          const mensajeDiv = document.getElementById('mensaje-autorizacion');
+          mensajeDiv.style.display = 'block';
+          mensajeDiv.style.background = '#d4edda';
+          mensajeDiv.style.color = '#155724';
+          mensajeDiv.style.border = '2px solid #c3e6cb';
+          mensajeDiv.innerHTML = `
+            <strong>✅ ¡Autorización Confirmada!</strong><br>
+            <span style="font-size: 0.9rem;">Ya puedes descargar tu PDF con las opciones de pago</span>
+          `;
+          
+          console.log("✅ Autorización completada - PDF listo para descargar");
+        }
+        
+        function cotizarOtroDesdeJustoTiempo() {
+          console.log("🔄 Iniciando nueva cotización desde JUSTO A TIEMPO");
+          
+          // Cerrar popup
+          document.getElementById("popup").classList.add("hidden");
+          
+          // Reset completo del formulario y variables
+          resetearFormularioCompleto();
+          
+          // Volver al inicio
+          volverInicio();
+          
+          // Limpiar vista especial de JUSTO A TIEMPO
+          const vistaFinal = document.getElementById('vista-final-justo-tiempo-completa');
+          if (vistaFinal) {
+            vistaFinal.remove();
+          }
+          
+          // Mensaje de confirmación
+          setTimeout(() => {
+            alert("✅ Listo para una nueva cotización. Selecciona el tipo de vehículo.");
+          }, 500);
         }
         
         function resetearFormularioCompleto() {
@@ -2225,12 +2683,45 @@
             contenidoJustoTiempo.remove();
           }
           
-          // Restaurar elementos estándar
-          document.getElementById("formfinal").style.display = "grid";
-          document.getElementById("tabla-completa-opciones").style.display = "block";
+          // Limpiar contenido final de JUSTO A TIEMPO si existe
+          const contenidoFinalJustoTiempo = document.getElementById("contenido-final-justo-tiempo");
+          if (contenidoFinalJustoTiempo) {
+            contenidoFinalJustoTiempo.remove();
+          }
           
-          // Restaurar texto del botón PDF
-          document.getElementById("btn-quote").textContent = "DESCARGAR PDF";
+          // Limpiar vista final completa de JUSTO A TIEMPO si existe
+          const vistaFinalCompleta = document.getElementById("vista-final-justo-tiempo-completa");
+          if (vistaFinalCompleta) {
+            vistaFinalCompleta.remove();
+          }
+          
+          // Limpiar CSS específico de JUSTO A TIEMPO
+          const styleOverride = document.getElementById("justo-tiempo-override");
+          if (styleOverride) {
+            styleOverride.remove();
+          }
+          document.body.classList.remove('justo-tiempo-mode');
+          
+          // Restaurar elementos estándar SOLO si NO es JUSTO A TIEMPO
+          if (planSeleccionado !== "PLAN JUSTO A TIEMPO") {
+            document.getElementById("formfinal").style.display = "grid";
+            document.getElementById("tabla-completa-opciones").style.display = "block";
+            document.getElementById("btn-quote").textContent = "DESCARGAR PDF";
+          } else {
+            // Para JUSTO A TIEMPO, FORZAR ocultación de elementos estándar
+            const elementosTabla = ["formfinal", "tabla-completa-opciones", "contenedor-tabla-opciones"];
+            elementosTabla.forEach(id => {
+              const elemento = document.getElementById(id);
+              if (elemento) {
+                elemento.style.display = "none";
+                elemento.style.visibility = "hidden";
+                elemento.style.height = "0px";
+                elemento.style.overflow = "hidden";
+              }
+            });
+            document.getElementById("btn-quote").textContent = "DESCARGAR OPCIONES DE PAGO PDF";
+            console.log("🎯 JUSTO A TIEMPO: Forzando ocultación completa de elementos de tabla");
+          }
           
           // Ocultar formularios de opciones
           document.getElementById("opciones-con-entrada").classList.add("hidden");
@@ -2247,12 +2738,30 @@
         }
         
         function mostrarContenidoJustoTiempoPDF() {
-          // Crear contenido específico para PLAN JUSTO A TIEMPO
+          console.log("🎯 Configurando contenido específico para JUSTO A TIEMPO PDF");
+          
+          // PASO 1: OCULTAR COMPLETAMENTE todos los elementos de tabla estándar
+          const elementosAOcultar = [
+            "tabla-completa-opciones",
+            "formfinal",
+            "contenedor-tabla-opciones"
+          ];
+          
+          elementosAOcultar.forEach(elementId => {
+            const elemento = document.getElementById(elementId);
+            if (elemento) {
+              elemento.style.display = "none";
+              elemento.style.visibility = "hidden";
+              console.log(`🚫 Ocultando elemento: ${elementId}`);
+            }
+          });
+          
+          // PASO 2: Crear contenido específico para PLAN JUSTO A TIEMPO
           const mesSeleccionado = document.getElementById("mesEntregaSelect").value;
           const montoSeleccionado = document.getElementById("montoSelectJustoTiempo").value;
           const mesSeleccionadoPDF = document.getElementById("mesEntregaSelect").value;
           
-          // Crear nueva sección para JUSTO A TIEMPO
+          // PASO 3: Crear nueva sección para JUSTO A TIEMPO
           let contenidoHTML = `
             <div id="contenido-justo-tiempo-pdf" style="margin: 20px 0; background: #f8f9fa; border-radius: 10px; padding: 20px;">
               <h3 style="text-align: center; color: #072386; margin-bottom: 20px; font-size: 1.4rem;">📅 Plan Justo a Tiempo - Opciones de Pago</h3>
@@ -2274,16 +2783,46 @@
             </div>
           `;
           
-          // Insertar el contenido en el PDF
+          // PASO 4: Insertar el contenido en el PDF
           const pdfContainer = document.getElementById("form-container-pdf");
           const autoImage = document.getElementById("auto-pdf");
           autoImage.insertAdjacentHTML('afterend', contenidoHTML);
           
-          // Generar las opciones de pago
+          // PASO 5: Generar las opciones de pago
           generarOpcionesPagoPDF(montoSeleccionado, mesSeleccionadoPDF);
           
-          // Cambiar texto del botón PDF para JUSTO A TIEMPO
+          // PASO 6: Cambiar texto del botón PDF para JUSTO A TIEMPO
           document.getElementById("btn-quote").textContent = "DESCARGAR OPCIONES DE PAGO PDF";
+          
+          // PASO 7: Verificación final - ocultar cualquier tabla que pueda aparecer
+          setTimeout(() => {
+            elementosAOcultar.forEach(elementId => {
+              const elemento = document.getElementById(elementId);
+              if (elemento && elemento.style.display !== "none") {
+                elemento.style.display = "none";
+                elemento.style.visibility = "hidden";
+                console.log(`🔄 Re-ocultando elemento: ${elementId}`);
+              }
+            });
+            
+            // Agregar CSS específico para ocultar completamente elementos de tabla
+            const styleElement = document.createElement('style');
+            styleElement.id = 'justo-tiempo-override';
+            styleElement.textContent = `
+              .justo-tiempo-mode #tabla-completa-opciones,
+              .justo-tiempo-mode #formfinal,
+              .justo-tiempo-mode #contenedor-tabla-opciones {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                overflow: hidden !important;
+              }
+            `;
+            document.head.appendChild(styleElement);
+            document.body.classList.add('justo-tiempo-mode');
+          }, 50);
+          
+          console.log("✅ Contenido JUSTO A TIEMPO configurado correctamente - SOLO opciones de pago");
         }
         
         // Nueva función para mostrar opciones de pago en la página web
@@ -2369,6 +2908,24 @@
         }
 
         function generarOpcionesPagoPDF(monto, mesEntrega) {
+          // ⚠️ VERIFICACIÓN: Solo generar para PLAN JUSTO A TIEMPO
+          if (planSeleccionado !== "PLAN JUSTO A TIEMPO") {
+            console.log("🚫 generarOpcionesPagoPDF: Solo para PLAN JUSTO A TIEMPO");
+            return;
+          }
+          
+          console.log("📋 Generando opciones de pago para JUSTO A TIEMPO PDF");
+          
+          // PROTECCIÓN ADICIONAL: Asegurar que elementos de tabla estén ocultos
+          const elementosTabla = ["tabla-completa-opciones", "formfinal", "contenedor-tabla-opciones"];
+          elementosTabla.forEach(id => {
+            const elemento = document.getElementById(id);
+            if (elemento) {
+              elemento.style.display = "none";
+              elemento.style.visibility = "hidden";
+            }
+          });
+          
           // Datos de la tabla (mismo que en la función principal)
           const datosTabla = {
             24: { 30: 7, 35: 6, 40: 5, 45: 4, 50: 3 },
@@ -2396,60 +2953,80 @@
             });
           });
           
-          // Generar HTML de opciones
+          // Generar HTML de opciones compactas similar al diseño de la página
           let opcionesHTML = '';
           
           if (opcionesPago.length > 0) {
+            opcionesHTML += `
+              <div style="text-align: center; margin-bottom: 20px;">
+                <h3 style="color: #072386; margin-bottom: 10px; font-size: 1.1rem;">🎯 Opciones de Pago - Mes ${mesEntrega}</h3>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9rem;">Monto Seleccionado: <strong>$${montoNumerico.toLocaleString()}</strong></p>
+              </div>
+              
+              <div style="display: grid; gap: 15px; grid-template-columns: repeat(${opcionesPago.length <= 3 ? opcionesPago.length : 3}, 1fr); ${opcionesPago.length > 3 ? 'grid-template-rows: repeat(2, 1fr);' : ''} margin-bottom: 20px;">
+            `;
+            
             opcionesPago.forEach((opcion, index) => {
               opcionesHTML += `
-                <div style="background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%); margin: 15px 0; padding: 20px; border-radius: 10px; border: 2px solid #e3f2fd; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
-                  <h4 style="margin: 0 0 15px 0; color: #072386; font-size: 1.2rem; display: flex; align-items: center;">
-                    <span style="background: #072386; color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: bold;">${index + 1}</span>
-                    Opción ${index + 1}: Plan de ${opcion.plazo} Meses
-                  </h4>
-                  
-                  <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                      <div style="text-align: center;">
-                        <p style="margin: 0 0 5px 0; font-weight: bold; color: #666; font-size: 0.9rem;">📊 PORCENTAJE A PAGAR</p>
-                        <p style="margin: 0; background: #072386; color: white; padding: 8px; border-radius: 6px; font-size: 1.1rem; font-weight: bold;">${opcion.porcentaje}%</p>
-                      </div>
-                      <div style="text-align: center;">
-                        <p style="margin: 0 0 5px 0; font-weight: bold; color: #666; font-size: 0.9rem;">💰 MONTO A PAGAR</p>
-                        <p style="margin: 0; background: #4CAF50; color: white; padding: 8px; border-radius: 6px; font-size: 1.1rem; font-weight: bold;">$${opcion.montoAPagar.toLocaleString()}</p>
-                      </div>
-                    </div>
-                    
-                    <div style="background: #e3f2fd; padding: 12px; border-radius: 6px; text-align: center;">
-                      <p style="margin: 0; color: #1976d2; font-size: 1rem;">🧮 <strong>Cálculo:</strong> $${montoNumerico.toLocaleString()} × ${opcion.porcentaje}% = <strong>$${opcion.montoAPagar.toLocaleString()}</strong></p>
-                      <p style="margin: 8px 0 0 0; color: #1976d2; font-size: 1rem; font-weight: bold;">📅 Pagas $${opcion.montoAPagar.toLocaleString()} en el mes ${mesEntrega}</p>
-                    </div>
+                <div style="background: #fff; padding: 15px; border-radius: 10px; border: 2px solid #072386; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
+                  <div style="background: #072386; color: white; margin: -15px -15px 10px -15px; padding: 8px; border-radius: 8px 8px 0 0; font-size: 0.9rem; font-weight: bold;">
+                    Opción ${index + 1}
+                  </div>
+                  <p style="margin: 0 0 6px 0; font-size: 0.85rem; color: #666;">
+                    <strong>Plazo:</strong> ${opcion.plazo} meses
+                  </p>
+                  <p style="margin: 0 0 6px 0; font-size: 0.85rem; color: #666;">
+                    <strong>Porcentaje:</strong> ${opcion.porcentaje}%
+                  </p>
+                  <div style="background: #4CAF50; color: white; padding: 10px; border-radius: 6px; font-size: 1rem; font-weight: bold; margin-top: 8px;">
+                    $${opcion.montoAPagar.toLocaleString()}
+                  </div>
+                  <div style="font-size: 0.75rem; color: #888; margin-top: 8px; padding: 6px; background: #f5f5f5; border-radius: 4px;">
+                    Pago en el Mes ${mesEntrega}
                   </div>
                 </div>
               `;
             });
             
-            // Agregar nota final
             opcionesHTML += `
-              <div style="background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%); padding: 15px; border-radius: 10px; margin-top: 20px; border: 2px solid #4CAF50; text-align: center;">
-                <p style="margin: 0; color: #2e7d32; font-size: 1.1rem; font-weight: bold;">✅ Total de opciones disponibles: ${opcionesPago.length}</p>
-                <p style="margin: 8px 0 0 0; color: #2e7d32; font-size: 1rem;">Elige la opción que mejor se adapte a tu planificación financiera</p>
+              </div>
+              
+              <div style="background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%); padding: 15px; border-radius: 8px; border: 2px solid #4CAF50; text-align: center; margin-top: 15px;">
+                <p style="margin: 0; color: #2e7d32; font-size: 0.95rem; font-weight: bold;">
+                  ✅ ${opcionesPago.length} ${opcionesPago.length === 1 ? 'opción disponible' : 'opciones disponibles'} para tu planificación
+                </p>
+                <p style="margin: 8px 0 0 0; color: #2e7d32; font-size: 0.85rem;">
+                  Estas son todas las alternativas de pago para el mes ${mesEntrega} con tu monto seleccionado
+                </p>
               </div>
             `;
           } else {
             opcionesHTML = `
               <div style="background: #fff3cd; padding: 20px; border-radius: 10px; border: 2px solid #ffc107; text-align: center;">
-                <h4 style="margin: 0 0 10px 0; color: #856404;">⚠️ No hay opciones disponibles</h4>
-                <p style="margin: 0; color: #856404;">El mes ${mesEntrega} no está disponible con el monto seleccionado.</p>
+                <h4 style="margin: 0 0 10px 0; color: #856404; font-size: 1rem;">⚠️ No hay opciones disponibles</h4>
+                <p style="margin: 0; color: #856404; font-size: 0.9rem;">
+                  El mes ${mesEntrega} no está disponible con el monto de $${montoNumerico.toLocaleString()}
+                </p>
+                <p style="margin: 10px 0 0 0; color: #856404; font-size: 0.8rem; font-style: italic;">
+                  Puedes probar con otro mes de entrega
+                </p>
               </div>
             `;
           }
           
           // Insertar opciones en el contenedor
           document.getElementById("opciones-pago-container").innerHTML = opcionesHTML;
+          
+          console.log(`📋 Opciones compactas generadas para PDF: ${opcionesPago.length} opciones`);
         }
         
         function generarTablaCompletaOpcionesInmobiliario() {
+          // ⚠️ VERIFICACIÓN CRÍTICA: No generar tabla para JUSTO A TIEMPO
+          if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
+            console.log("🚀 BLOQUEADO: No se genera tabla inmobiliaria para PLAN JUSTO A TIEMPO");
+            return;
+          }
+          
           if (!datosCompletosJSON || !montoSeleccionadoGlobal) {
             console.log("No hay datos completos disponibles para generar la tabla inmobiliaria");
             return;
@@ -2536,6 +3113,12 @@
         }
 
         function generarTablaCompletaOpcionesInmobiliario() {
+          // ⚠️ VERIFICACIÓN CRÍTICA: No generar tabla para JUSTO A TIEMPO
+          if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
+            console.log("🚀 BLOQUEADO: No se genera tabla inmobiliaria duplicada para PLAN JUSTO A TIEMPO");
+            return;
+          }
+          
           if (!datosCompletosJSON || !montoSeleccionadoGlobal) {
             console.log("No hay datos completos disponibles para generar la tabla inmobiliaria");
             return;
@@ -2622,6 +3205,12 @@
         }
 
         function generarTablaCompletaOpciones() {
+          // ⚠️ VERIFICACIÓN CRITICA: No generar tabla para JUSTO A TIEMPO
+          if (planSeleccionado === "PLAN JUSTO A TIEMPO") {
+            console.log("🚀 BLOQUEADO: No se genera tabla completa para PLAN JUSTO A TIEMPO");
+            return;
+          }
+          
           console.log("🔄 Iniciando generación de tabla completa de opciones...");
           console.log("📊 Datos disponibles:", {
             datosCompletosJSON: !!datosCompletosJSON,
