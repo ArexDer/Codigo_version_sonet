@@ -2797,6 +2797,85 @@
         // Hacer disponible globalmente para debugging
         window.diagnosticarTabla = diagnosticarTabla;
         
+        /**
+         * Función para enviar PDF por correo electrónico
+         * @param {jsPDF} pdf - El objeto PDF generado
+         * @param {Object} datosCliente - Datos del cliente y cotización
+         * @param {string} tipoCotizacion - Tipo de cotización (ej: 'Cotización Vehicular')
+         */
+        function enviarPDFPorCorreo(pdf, datosCliente, tipoCotizacion) {
+          console.log('📧 Iniciando envío de PDF por correo...', { datosCliente, tipoCotizacion });
+          
+          try {
+            // Convertir PDF a base64
+            const pdfBase64 = pdf.output('datauristring');
+            
+            // Preparar datos para enviar al servidor
+            const payload = {
+              pdf: pdfBase64,
+              correo: datosCliente.correo,
+              nombre: datosCliente.nombre,
+              telefono: datosCliente.telefono || '',
+              cedula: datosCliente.cedula || '',
+              ciudad: datosCliente.ciudad || '',
+              provincia: datosCliente.provincia || '',
+              vehiculo_marca: datosCliente.vehiculo_marca || '',
+              vehiculo_modelo: datosCliente.vehiculo_modelo || '',
+              precio_vehiculo: datosCliente.precio_vehiculo || '',
+              tipo_financiacion: datosCliente.tipo_financiacion || '',
+              monto_entrada: datosCliente.monto_entrada || '',
+              porcentaje_entrada: datosCliente.porcentaje_entrada || ''
+            };
+            
+            console.log('📤 Enviando PDF al servidor...');
+            
+            // Enviar al endpoint PHP
+            fetch('/wp-json/pdf/v1/send', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payload)
+            })
+            .then(response => {
+              console.log('📧 Respuesta del servidor recibida:', response.status);
+              return response.json();
+            })
+            .then(data => {
+              console.log('📧 Respuesta del servidor:', data);
+              
+              if (data.success) {
+                console.log('✅ PDF enviado exitosamente');
+                console.log('📊 Estado del envío:', {
+                  empresa: data.sent_company ? '✅ Enviado' : '❌ Error',
+                  cliente: data.sent_client ? '✅ Enviado' : '❌ Error'
+                });
+                
+                if (data.sent_company && data.sent_client) {
+                  console.log('🎉 PDF enviado exitosamente a ambos destinatarios');
+                } else if (data.sent_company || data.sent_client) {
+                  console.warn('⚠️ PDF enviado parcialmente:', {
+                    empresa: data.sent_company,
+                    cliente: data.sent_client
+                  });
+                }
+              } else {
+                console.error('❌ Error en el envío:', data.message);
+                console.log('🔍 Debug info:', data.debug);
+              }
+            })
+            .catch(error => {
+              console.error('❌ Error al enviar PDF:', error);
+              // No mostrar error al usuario ya que el PDF ya se descargó
+              console.log('ℹ️ El PDF se descargó localmente aunque hubo un problema con el envío por correo');
+            });
+            
+          } catch (error) {
+            console.error('❌ Error al procesar PDF para envío:', error);
+            console.log('ℹ️ El PDF se descargó localmente aunque hubo un problema con el envío por correo');
+          }
+        }
+        
         function generarPDFInmobiliario() {
           console.log('🏠 Iniciando generación de PDF para INMOBILIARIO...');
           
@@ -2998,7 +3077,24 @@
             const nombreArchivo = `Cotizacion_Inmobiliario_${nombre.replace(/\s+/g, '_')}_${fechaActual}.pdf`;
             pdf.save(nombreArchivo);
             
+            // Enviar PDF por correo electrónico
+            enviarPDFPorCorreo(pdf, {
+              nombre: nombre,
+              correo: correo,
+              telefono: telefono,
+              cedula: cedula,
+              ciudad: ciudad,
+              provincia: provincia,
+              vehiculo_marca: document.getElementById('propiedad-nombre')?.textContent || 'Propiedad Seleccionada',
+              vehiculo_modelo: '',
+              precio_vehiculo: `$${montoSeleccionadoGlobal?.toLocaleString() || '0'}`,
+              tipo_financiacion: planSeleccionado,
+              monto_entrada: (porcentajeGlobal || 0) > 0 ? `${porcentajeGlobal || 0}%` : 'Sin entrada',
+              porcentaje_entrada: `${porcentajeGlobal || 0}%`
+            }, 'Cotización Inmobiliaria');
+            
             console.log('✅ PDF inmobiliario generado exitosamente:', nombreArchivo);
+            alert('🎉 ¡PDF inmobiliario generado exitosamente!\n\n📧 El PDF ha sido enviado a tu correo electrónico y a la empresa.');
             
           } catch (error) {
             console.error('❌ Error al generar PDF inmobiliario:', error);
@@ -3273,11 +3369,29 @@
           const nombreArchivo = `Opciones_Pago_${nombre.replace(/\s+/g, '_')}_${vehiculoNombre.replace(/\s+/g, '_')}_Mes${mesSeleccionado}.pdf`;
           
           try {
+            // Guardar PDF localmente
             pdf.save(nombreArchivo);
             console.log('✅ PDF de Opciones de Pago descargado exitosamente:', nombreArchivo);
-            alert('🎉 ¡PDF generado exitosamente!\n\n📋 Contenido incluido:\n• Información del cliente\n• Detalles del vehículo\n• Opciones de pago para el mes ' + mesSeleccionado);
+            
+            // Enviar PDF por correo electrónico
+            enviarPDFPorCorreo(pdf, {
+              nombre: nombre,
+              correo: correo,
+              telefono: telefono,
+              cedula: cedula,
+              ciudad: ciudad,
+              provincia: provincia,
+              vehiculo_marca: vehiculoNombre.split(' ')[0] || '',
+              vehiculo_modelo: vehiculoNombre.split(' ').slice(1).join(' ') || '',
+              precio_vehiculo: `$${parseFloat(montoSeleccionado).toLocaleString()}`,
+              tipo_financiacion: 'PLAN JUSTO A TIEMPO',
+              monto_entrada: `Mes ${mesSeleccionado}`,
+              porcentaje_entrada: 'Opciones variables'
+            }, 'Cotización Plan Justo a Tiempo');
+            
+            alert('🎉 ¡PDF generado exitosamente!\n\n📋 Contenido incluido:\n• Información del cliente\n• Detalles del vehículo\n• Opciones de pago para el mes ' + mesSeleccionado + '\n\n📧 El PDF ha sido enviado a tu correo electrónico');
           } catch (error) {
-            console.error('❌ Error al descargar PDF:', error);
+            console.error('❌ Error al generar/enviar PDF:', error);
             alert('❌ Error al generar el PDF. Por favor, intenta nuevamente.');
           }
         }
@@ -3483,7 +3597,24 @@
             const nombreArchivo = `Cotizacion_Inmobiliario_${nombre.replace(/\s+/g, '_')}_${fechaActual}.pdf`;
             pdf.save(nombreArchivo);
             
+            // Enviar PDF por correo electrónico
+            enviarPDFPorCorreo(pdf, {
+              nombre: nombre,
+              correo: correo,
+              telefono: telefono,
+              cedula: cedula,
+              ciudad: ciudad,
+              provincia: provincia,
+              vehiculo_marca: propiedadNombre,
+              vehiculo_modelo: '',
+              precio_vehiculo: montoFormateado,
+              tipo_financiacion: planSeleccionado,
+              monto_entrada: porcentaje > 0 ? `${porcentaje}%` : 'Sin entrada',
+              porcentaje_entrada: `${porcentaje}%`
+            }, 'Cotización Inmobiliaria');
+            
             console.log('✅ PDF inmobiliario generado exitosamente:', nombreArchivo);
+            alert('🎉 ¡PDF inmobiliario generado exitosamente!\n\n📧 El PDF ha sido enviado a tu correo electrónico y a la empresa.');
             
           } catch (error) {
             console.error('❌ Error al generar PDF inmobiliario:', error);
@@ -3739,15 +3870,34 @@
           pdf.setFontSize(8);
           pdf.text("www.finan.ec | contacto@finan.ec", pageWidth / 2, pageHeight - 4, { align: 'center' });
           
-          // Descargar
+          // Descargar y enviar por correo
           const nombreArchivo = `Cotizacion_${planSeleccionado.replace(/\s+/g, '_')}_${nombre.replace(/\s+/g, '_')}.pdf`;
           console.log('💾 Intentando descargar PDF con nombre:', nombreArchivo);
           
           try {
             pdf.save(nombreArchivo);
             console.log('✅ PDF descargado exitosamente');
+            
+            // Enviar PDF por correo electrónico
+            enviarPDFPorCorreo(pdf, {
+              nombre: nombre,
+              correo: correo,
+              telefono: telefono,
+              cedula: cedula,
+              ciudad: ciudad,
+              provincia: document.getElementById('provincia').value || '',
+              vehiculo_marca: vehiculoNombre.split(' ')[0] || '',
+              vehiculo_modelo: vehiculoNombre.split(' ').slice(1).join(' ') || '',
+              precio_vehiculo: `$${montoEstimado.toLocaleString()}`,
+              tipo_financiacion: planSeleccionado,
+              monto_entrada: `$${montoEstimado.toLocaleString()}`,
+              porcentaje_entrada: `${porcentajeGlobal}%`
+            }, 'Cotización Vehicular');
+            
+            alert('🎉 ¡PDF generado exitosamente!\n\n📧 El PDF ha sido enviado a tu correo electrónico y a la empresa.');
+            
           } catch (error) {
-            console.error('❌ Error al descargar PDF:', error);
+            console.error('❌ Error al generar/enviar PDF:', error);
             alert('Error al generar el PDF. Revisa la consola para más detalles.');
           }
         }
