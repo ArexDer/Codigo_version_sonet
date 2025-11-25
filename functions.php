@@ -274,34 +274,103 @@ require HELLO_THEME_PATH . '/theme.php';
 HelloTheme\Theme::instance();
 
 /**
- * Configurar wp_mail para mejorar la entrega de correos
+ * FORZAR configuración de correo ANTES que cualquier plugin
+ * Evita conflictos con plugins de SMTP
  */
-function finanmotors_configure_wp_mail() {
-	// Configurar charset por defecto
-	if (!defined('FINANMOTORS_MAIL_CHARSET')) {
-		define('FINANMOTORS_MAIL_CHARSET', 'UTF-8');
-	}
-	
-	// Hook para modificar configuración de correo si es necesario
-	add_action('phpmailer_init', 'finanmotors_configure_phpmailer');
-}
-add_action('init', 'finanmotors_configure_wp_mail');
+add_action('plugins_loaded', function() {
+    // Remover cualquier acción previa que pueda estar interfiriendo
+    remove_all_actions('phpmailer_init');
+    
+    // Forzar nuestros filtros
+    add_filter('wp_mail_from', function($from_email) {
+        return 'marketing@finanmotors.com';
+    }, 999); // Prioridad muy alta
+    
+    add_filter('wp_mail_from_name', function($from_name) {
+        return 'Finan Motors';
+    }, 999);
+    
+    // Forzar configuración simple
+    add_action('phpmailer_init', 'finanmotors_force_simple_mail', 999);
+}, 1); // Prioridad muy temprana
 
 /**
- * Configuración adicional de PHPMailer
+ * Función que FUERZA configuración simple sin SMTP
  */
-function finanmotors_configure_phpmailer($phpmailer) {
-	// Solo aplicar a correos de cotizaciones
-	if (strpos($phpmailer->Subject, 'cotización') !== false || strpos($phpmailer->Subject, 'Cotización') !== false) {
-		// Configurar timeout más largo para PDFs grandes
-		$phpmailer->Timeout = 30;
-		$phpmailer->SMTPKeepAlive = true;
-		
-		// Configurar prioridad alta para correos de empresa
-		if (strpos($phpmailer->Subject, 'Nueva cotización registrada') !== false) {
-			$phpmailer->Priority = 1; // Alta prioridad
-		}
-	}
+function finanmotors_force_simple_mail($phpmailer) {
+    // FORZAR configuración simple, ignorando cualquier configuración SMTP previa
+    $phpmailer->isMail(); // Usar función mail() de PHP
+    $phpmailer->Host = '';
+    $phpmailer->SMTPAuth = false;
+    $phpmailer->Username = '';
+    $phpmailer->Password = '';
+    $phpmailer->SMTPSecure = '';
+    $phpmailer->Port = 25;
+    
+    // Configurar remitente correcto
+    $phpmailer->From = 'marketing@finanmotors.com';
+    $phpmailer->FromName = 'Finan Motors';
+    $phpmailer->CharSet = 'UTF-8';
+    $phpmailer->Timeout = 30;
+    
+    // Log para verificar que se ejecuta
+    error_log('[FinanMotors] Forced simple mail configuration applied');
+    
+    return $phpmailer;
+}
+
+/**
+ * Configurar correos para Finan Motors (OBSOLETO - mantenido por compatibilidad)
+ */
+function finanmotors_configure_mail() {
+    // Esta función ahora es redundante pero se mantiene por compatibilidad
+    return;
+}
+add_action('init', 'finanmotors_configure_mail');
+
+/**
+ * Configuración simple de correo (sin SMTP)
+ * Usar el sistema de correo del hosting
+ */
+function finanmotors_setup_simple_mail($phpmailer) {
+    // Usar el sistema de correo del servidor (más confiable)
+    $phpmailer->isMail(); // Usar función mail() de PHP
+    
+    // Configuraciones básicas
+    $phpmailer->From = 'marketing@finanmotors.com';
+    $phpmailer->FromName = 'Finan Motors';
+    $phpmailer->CharSet = 'UTF-8';
+    $phpmailer->Timeout = 30;
+    
+    // Solo para correos de cotización, configurar prioridad
+    if (isset($phpmailer->Subject) && strpos($phpmailer->Subject, 'cotización') !== false) {
+        $phpmailer->Priority = 1; // Alta prioridad
+    }
+    
+    return $phpmailer;
+}
+
+/**
+ * Configuración SMTP (solo activar si el hosting lo soporta)
+ * Para activar: cambiar finanmotors_setup_simple_mail por finanmotors_setup_smtp_mail
+ */
+function finanmotors_setup_smtp_mail($phpmailer) {
+    $phpmailer->isSMTP();
+    $phpmailer->Host = 'mail.finanmotors.com'; // Servidor SMTP del hosting
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->Port = 587;
+    $phpmailer->SMTPSecure = 'tls';
+    $phpmailer->Username = 'marketing@finanmotors.com';
+    $phpmailer->Password = 'Qjqtr35ZgR'; // Cambiar por el password real
+    $phpmailer->From = 'marketing@finanmotors.com';
+    $phpmailer->FromName = 'Finan Motors';
+    $phpmailer->CharSet = 'UTF-8';
+    $phpmailer->Timeout = 30;
+    
+    // Debug (descomentar para ver errores SMTP)
+    // $phpmailer->SMTPDebug = 2;
+    
+    return $phpmailer;
 }
 
 /**
@@ -332,35 +401,73 @@ function finanmotors_test_email(WP_REST_Request $request) {
 		], 400);
 	}
 	
-	// Configurar headers de prueba
+	// Capturar errores de wp_mail
+	$mail_errors = [];
+	$mail_error_handler = function($wp_error) use (&$mail_errors) {
+		if (is_wp_error($wp_error)) {
+			$mail_errors[] = $wp_error->get_error_message();
+		}
+	};
+	add_action('wp_mail_failed', $mail_error_handler);
+	
+	// Configurar headers simples
 	$headers = [];
-	$headers[] = 'From: Finan Motors <wordpress@finanmotors.com>';
+	$headers[] = 'From: Finan Motors <marketing@finanmotors.com>';
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
 	
-	$subject = 'Prueba de Configuración SMTP - Finan Motors';
-	$message = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">';
-	$message .= '<div style="background: #00205C; color: white; padding: 20px; text-align: center;">';
-	$message .= '<h2>✅ Test de Configuración SMTP</h2>';
+	$subject = '✅ Test de Email - Finan Motors';
+	$message = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9;">';
+	$message .= '<div style="background: #00205C; color: white; padding: 20px; text-align: center; border-radius: 8px;">';
+	$message .= '<h2 style="margin: 0;">✅ Test de Configuración</h2>';
+	$message .= '<p style="margin: 10px 0 0 0;">Sistema de correos funcionando</p>';
 	$message .= '</div>';
-	$message .= '<div style="padding: 20px; background: #f8f9fa;">';
-	$message .= '<p>Si recibes este email, la configuración SMTP está funcionando correctamente.</p>';
-	$message .= '<p><strong>Detalles del test:</strong></p>';
+	$message .= '<div style="padding: 20px; background: white; border-radius: 8px; margin-top: 10px;">';
+	$message .= '<p><strong>Si recibes este email, la configuración está funcionando correctamente.</strong></p>';
+	$message .= '<h3>Detalles del test:</h3>';
 	$message .= '<ul>';
-	$message .= '<li>Fecha: ' . date('d/m/Y H:i:s') . '</li>';
-	$message .= '<li>Servidor: ' . $_SERVER['HTTP_HOST'] . '</li>';
-	$message .= '<li>WordPress: ' . get_bloginfo('version') . '</li>';
+	$message .= '<li><strong>Fecha:</strong> ' . date('d/m/Y H:i:s') . '</li>';
+	$message .= '<li><strong>Servidor:</strong> ' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '</li>';
+	$message .= '<li><strong>WordPress:</strong> ' . get_bloginfo('version') . '</li>';
+	$message .= '<li><strong>PHP:</strong> ' . phpversion() . '</li>';
 	$message .= '</ul>';
-	$message .= '<p style="color: #00205C; font-weight: bold;">✨ ¡El sistema de cotizaciones está listo para enviar PDFs!</p>';
+	$message .= '<div style="background: #e8f5e8; padding: 15px; border-radius: 5px; margin-top: 20px;">';
+	$message .= '<p style="margin: 0; color: #2e7d32; font-weight: bold;">🎉 ¡El sistema de cotizaciones está listo para enviar PDFs!</p>';
+	$message .= '</div>';
 	$message .= '</div></div>';
 	
+	// Intentar envío
 	$sent = wp_mail($test_email, $subject, $message, $headers);
 	
-	return new WP_REST_Response([
+	// Remover el handler de errores
+	remove_action('wp_mail_failed', $mail_error_handler);
+	
+	// Construir respuesta con detalles
+	$response_data = [
 		'success' => $sent,
 		'message' => $sent ? 'Email de prueba enviado correctamente' : 'Error al enviar email de prueba',
 		'email' => $test_email,
-		'timestamp' => date('Y-m-d H:i:s')
-	], $sent ? 200 : 500);
+		'timestamp' => date('Y-m-d H:i:s'),
+		'mail_method' => 'PHP mail() function', // Indicar el método usado
+		'debug' => [
+			'mail_errors' => $mail_errors,
+			'php_last_error' => error_get_last(),
+			'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'unknown'
+		]
+	];
+	
+	// Si hubo errores, incluir detalles adicionales
+	if (!$sent || !empty($mail_errors)) {
+		$response_data['troubleshooting'] = [
+			'suggestions' => [
+				'Verificar que el servidor soporte la función mail() de PHP',
+				'Comprobar que el correo marketing@finanmotors.com existe',
+				'Revisar logs del servidor web para más detalles',
+				'Probar con un servicio SMTP externo si persiste el error'
+			]
+		];
+	}
+	
+	return new WP_REST_Response($response_data, $sent ? 200 : 500);
 }
 
 /**
@@ -560,7 +667,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 
 		// Prepare email details
 		$company_email = 'contacto@finanmotors.com';
-		$from_email = 'wordpress@finanmotors.com';
+		$from_email = 'marketing@finanmotors.com';
 		$from_name = 'Finan Motors';
 
 		$headers = [];
