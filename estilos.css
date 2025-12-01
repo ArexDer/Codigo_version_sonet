@@ -209,8 +209,8 @@ button:hover {
 
 /* 2.2 Detalle de vehículo (.detalle-vehiculo) */
 .detalle-vehiculo {
-    margin: 40px 0;
-    padding: 25px;
+    margin: 10px 0;
+    padding: 5px;
     background: white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -218,7 +218,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     min-height: 450px;
-    max-height: 600px;
+    max-height: 700px;
 }
 
 .vehiculo-container {
@@ -433,13 +433,13 @@ button:hover {
 .opciones-con-entrada button {
     background: #00205C;
     color: white;
-    padding: 15px 30px;
-    border: 2px solid #FEDE6E;
+    padding: 5px;
+    border: 3px solid #FEDE6E;
     border-radius: 10px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    margin: 20px auto 0 auto;
+    margin: 10px auto 0 auto;
     transition: all 0.3s ease;
     min-height: 52px;
     max-width: 300px;

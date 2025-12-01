@@ -716,7 +716,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 		$log( 'Company email sent: ' . ( $sent_company ? 'yes' : 'no' ) );
 
 		// Send to client
-		$subject_client = 'Tu cotización en Finan Motors';
+		$subject_client = 'Tu cotización en Finan';
 		$body_client = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f8f9fa; border-radius: 10px; overflow: hidden;">';
 		$body_client .= '<div style="background: linear-gradient(135deg, #00205C 0%, #1a2a5c 100%); color: white; padding: 30px; text-align: center;">';
 		$body_client .= '<h1 style="margin: 0; font-size: 28px;">🎉 ¡Tu Cotización está Lista!</h1>';
@@ -725,29 +725,16 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 		$body_client .= '<div style="padding: 30px;">';
 		$body_client .= '<h2 style="color: #00205C; margin-bottom: 20px;">Hola ' . esc_html( $client_name ) . ',</h2>';
 		$body_client .= '<p style="font-size: 16px; line-height: 1.6; color: #333;">Hemos preparado tu cotización personalizada. Encontrarás todos los detalles en el archivo PDF adjunto.</p>';
-		if ( $marca || $modelo || $precio ) {
-			$body_client .= '<div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #00205C;">';
-			$body_client .= '<h3 style="color: #00205C; margin-top: 0;">📋 Resumen de tu Cotización:</h3>';
-			if ( $marca || $modelo ) {
-				$body_client .= '<p style="margin: 5px 0;"><strong>🚗 Vehículo:</strong> ' . esc_html( $marca . ' ' . $modelo ) . '</p>';
-			}
-			if ( $precio ) {
-				$body_client .= '<p style="margin: 5px 0;"><strong>💰 Precio referencia:</strong> ' . esc_html( $precio ) . '</p>';
-			}
-			if ( $tipo_financiacion ) {
-				$body_client .= '<p style="margin: 5px 0;"><strong>📊 Plan seleccionado:</strong> ' . esc_html( $tipo_financiacion ) . '</p>';
-			}
-			$body_client .= '</div>';
-		}
+		
 		$body_client .= '<div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ff9800;">';
 		$body_client .= '<h3 style="color: #e65100; margin-top: 0;">📞 Próximos Pasos:</h3>';
 		$body_client .= '<p style="margin: 5px 0;">✅ Revisa tu cotización adjunta</p>';
 		$body_client .= '<p style="margin: 5px 0;">✅ Un asesor especializado te contactará pronto</p>';
-		$body_client .= '<p style="margin: 5px 0;">✅ Prepara tu documentación para agilizar el proceso</p>';
+		$body_client .= '<p style="margin: 5px 0;">✅ Preparate para tu nueva adquisición</p>';
 		$body_client .= '</div>';
 		$body_client .= '<div style="text-align: center; margin-top: 30px; padding: 20px; background: #e8f5e8; border-radius: 10px;">';
 		$body_client .= '<p style="margin: 0; color: #2e7d32; font-size: 16px; font-weight: bold;">¡Estamos aquí para hacer realidad tu sueño!</p>';
-		$body_client .= '<p style="margin: 10px 0 0 0; color: #2e7d32;">Saludos cordiales,<br/><strong>El equipo de Finan Motors</strong></p>';
+		$body_client .= '<p style="margin: 10px 0 0 0; color: #2e7d32;">Saludos cordiales,<br/><strong>El equipo de Finan </strong></p>';
 		$body_client .= '</div>';
 		$body_client .= '</div></div>';
 

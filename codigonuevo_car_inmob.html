@@ -25,7 +25,6 @@
         }
       });
     </script>
-
     
     <!-- Referencia al archivo de estilos CSS externo -->
     <link rel="stylesheet" href="estilos.css">
@@ -934,7 +933,7 @@
               </div>
 
               <!-- Botones en una fila con dos columnas -->
-              <div style="display: flex; gap: 20px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+              <div style="display: flex; gap: 40px; justify-content: center;  flex-wrap: wrap;">
                 <button class="btn-quote" id="btn-quote" style="flex: 1; min-width: 200px;">DESCARGAR PDF</button>
                 <button class="cotizar-otro" id="cotizar-otro" style="flex: 1; min-width: 200px;">COTIZAR OTRO</button>
               </div>              <div>
@@ -1108,22 +1107,22 @@
           if (!document.getElementById("selector_autos").hasAttribute('data-initialized')) {
             // Selectores de vehículos con imágenes reales
             document.getElementById("selector_autos").addEventListener("click", () => {
-              seleccionarVehiculo("autos", "Auto", "https://via.placeholder.com/400x300/4CAF50/ffffff?text=Auto");
+              seleccionarVehiculo("autos", "Auto", "https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png");
             });
             document.getElementById("selector_autos").setAttribute('data-initialized', 'true');
 
             document.getElementById("selector_suvs").addEventListener("click", () => {
-              seleccionarVehiculo("suvs", "SUV", "https://via.placeholder.com/400x300/2196F3/ffffff?text=SUV");
+              seleccionarVehiculo("suvs", "SUV", "https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png");
             });
             document.getElementById("selector_suvs").setAttribute('data-initialized', 'true');
 
             document.getElementById("selector_camionetas").addEventListener("click", () => {
-              seleccionarVehiculo("camionetas", "Camioneta", "https://via.placeholder.com/400x300/FF9800/ffffff?text=Camioneta");
+              seleccionarVehiculo("camionetas", "Camioneta", "https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png");
             });
             document.getElementById("selector_camionetas").setAttribute('data-initialized', 'true');
 
             document.getElementById("selector_camiones").addEventListener("click", () => {
-              seleccionarVehiculo("camiones", "Camión", "https://via.placeholder.com/400x300/F44336/ffffff?text=Camión");
+              seleccionarVehiculo("camiones", "Camión", "https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png");
             });
             document.getElementById("selector_camiones").setAttribute('data-initialized', 'true');
 
