@@ -217,8 +217,8 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 450px;
-    max-height: 700px;
+    min-height: 650px;
+    max-height: 900px;
 }
 
 .vehiculo-container {
@@ -246,6 +246,12 @@ button:hover {
     min-height: 350px;
 }
 
+/* Cuando se muestran opciones de pago, ajustar el contenedor */
+.vehiculo-imagen.opciones-activas {
+    justify-content: flex-start;
+    padding-top: 10px;
+}
+
 .vehiculo-imagen img {
     width: 100%;
     max-width: 400px;
@@ -253,6 +259,12 @@ button:hover {
     height: auto;
     object-fit: contain;
     border-radius: 10px;
+    transition: opacity 0.3s ease;
+}
+
+/* Hacer la imagen opaca cuando se muestran las opciones de pago */
+.vehiculo-imagen.opciones-activas img {
+    opacity: 0.3;
 }
 
 /* 2.4 Selectores del vehículo (.vehiculo-selectores-container) */
@@ -262,6 +274,7 @@ button:hover {
     justify-content: flex-start;
     width: 100%;
     height: 100%;
+    min-height: 600px;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -405,8 +418,8 @@ button:hover {
     text-align: center;
     display: flex;
     flex-direction: column;
-    min-height: 400px;
-    max-height: 600px;
+    min-height: 500px;
+    max-height: 700px;
     border: 2px solid #e9ecef;
 }
 
@@ -452,6 +465,36 @@ button:hover {
     border: 2px solid #FEDE6E;
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(44,62,80,0.3);
+}
+
+/* Estilos específicos para formulario justo a tiempo */
+#opciones-justo-tiempo {
+    min-height: 550px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#opciones-justo-tiempo > button {
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+#opciones-justo-tiempo .titulo_marca_modelo,
+#opciones-justo-tiempo select,
+#opciones-justo-tiempo div {
+    flex-shrink: 0;
+}
+
+/* Estilos específicos para formulario justo a tiempo */
+#opciones-justo-tiempo {
+    min-height: 550px !important;
+    justify-content: space-between;
+}
+
+#opciones-justo-tiempo > button {
+    margin-top: auto;
+    margin-bottom: 10px;
 }
 
 /* Elementos adicionales de formularios */
@@ -1219,16 +1262,49 @@ button:hover {
   position: relative;
 }
 
+/* Estilos específicos para formulario justo a tiempo */
+#opciones-justo-tiempo {
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#opciones-justo-tiempo > button {
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
 /* ====================================
    10. SECCIÓN OPCIONES PAGO JUSTO A TIEMPO
    ==================================== */
 #opciones-pago-justo-tiempo {
-  margin: 30px 0;
-  padding: 20px;
+  margin: 0 0 20px 0;
+  padding: 15px;
   background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%);
   border-radius: 10px;
   border: 2px solid #072386;
   box-shadow: 0 4px 15px rgba(7, 35, 134, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+/* Responsive para dispositivos móviles */
+@media (max-width: 480px) {
+  #opciones-pago-justo-tiempo {
+    margin: 0 0 15px 0;
+    padding: 10px;
+  }
+  
+  #opciones-pago-justo-tiempo h3 {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+  
+  #opciones-pago-justo-tiempo p {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
 }
 
 #opciones-pago-justo-tiempo h3 {
@@ -1248,8 +1324,15 @@ button:hover {
 
 #contenedor-opciones-pago {
   display: grid;
-  gap: 15px;
-  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Para pantallas más pequeñas, usar una sola columna */
+@media (max-width: 768px) {
+  #contenedor-opciones-pago {
+    grid-template-columns: 1fr;
+  }
 }
 
 .opcion-pago-card {

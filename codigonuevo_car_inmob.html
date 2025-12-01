@@ -70,8 +70,22 @@
         <!-- Detalle de vehículo (inicialmente oculto) -->
         <div class="detalle-vehiculo hidden" id="detalle-vehiculo">
           <div class="vehiculo-container">
-            <!-- Imagen del vehículo -->
+            <!-- Imagen del vehículo y opciones de pago -->
             <div class="vehiculo-imagen">
+              <!-- OPCIONES DE PAGO PARA EL MES SELECCIONADO -->
+              <div id="opciones-pago-justo-tiempo" style="margin: 0 0 20px 0; padding: 15px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px; border: 2px solid #072386; display: none;">
+                <h3 style="text-align: center; color: #072386; margin-bottom: 10px; font-size: 1rem;">!!!! Opciones de Pago Mes <span id="mes-seleccionado-titulo"></span></h3>
+                <p style="text-align: center; color: #666; margin-bottom: 15px; font-size: 0.85rem;">Monto Seleccionado: <strong id="monto-justo-tiempo-titulo">$0</strong></p>
+                
+                <div id="contenedor-opciones-pago" style="display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr);">
+                  <!-- Las opciones se generarán dinámicamente -->
+                </div>
+                
+                <div id="sin-opciones-disponibles" style="display: none; text-align: center; padding: 15px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; margin-top: 10px;">
+                  <p style="margin: 0; color: #09e14e; font-size: 0.85rem; font-weight: bold;">⚠️ No hay opciones disponibles para este mes</p>
+                </div>
+              </div>
+              
               <img id="vehiculo-imagen" src="https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png" alt="Vehículo seleccionado" />
               <p id="vehiculo-nombre" style="font-weight: bold; font-size: 1.2em; margin-top: 10px;"></p>
             </div>
@@ -497,22 +511,6 @@
                     </tbody>
                   </table>
                 </div>
-                
-                <!-- OPCIONES DE PAGO PARA EL MES SELECCIONADO -->
-                <div id="opciones-pago-justo-tiempo" style="margin: 20px 0; padding: 15px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px; border: 2px solid #072386; display: none;">
-                  <h3 style="text-align: center; color: #072386; margin-bottom: 10px; font-size: 1rem;">!!!! Opciones de Pago Mes <span id="mes-seleccionado-titulo"></span></h3>
-                  <p style="text-align: center; color: #666; margin-bottom: 15px; font-size: 0.85rem;">Monto Seleccionado: <strong id="monto-justo-tiempo-titulo">$0</strong></p>
-                  
-                  <div id="contenedor-opciones-pago" style="display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr);">
-                    <!-- Las opciones se generarán dinámicamente -->
-                  </div>
-                  
-                  <div id="sin-opciones-disponibles" style="display: none; text-align: center; padding: 15px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; margin-top: 10px;">
-                    <p style="margin: 0; color: #09e14e; font-size: 0.85rem; font-weight: bold;">⚠️ No hay opciones disponibles para este mes</p>
-                  </div>
-                </div>
-                
-
                 
                 <button id="continuar-justo-tiempo">CONTINUAR</button>
                 <button id="volver-opciones-justo-tiempo">VOLVER A OPCIONES</button>
@@ -1240,6 +1238,16 @@
             document.getElementById("volver-opciones-justo-tiempo").addEventListener("click", () => {
               document.getElementById("opciones-justo-tiempo").classList.add("hidden");
               document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+              
+              // Ocultar opciones de pago justo tiempo y restaurar imagen
+              const opcionesPagoJT = document.getElementById("opciones-pago-justo-tiempo");
+              const vehiculoImagen = document.querySelector('.vehiculo-imagen');
+              if (opcionesPagoJT) {
+                opcionesPagoJT.style.display = "none";
+              }
+              if (vehiculoImagen) {
+                vehiculoImagen.classList.remove('opciones-activas');
+              }
             });
             
             // Botón continuar JUSTO A TIEMPO - abrir popup
@@ -2186,8 +2194,13 @@
           
           // Ocultar opciones de pago JUSTO A TIEMPO
           const opcionesPagoJT = document.getElementById("opciones-pago-justo-tiempo");
+          const vehiculoImagenJT = document.querySelector('.vehiculo-imagen');
           if (opcionesPagoJT) {
             opcionesPagoJT.style.display = "none";
+            // Remover clase opciones-activas para restaurar opacidad normal
+            if (vehiculoImagenJT) {
+              vehiculoImagenJT.classList.remove('opciones-activas');
+            }
           }
           
           // Limpiar selección de tabla
@@ -2237,7 +2250,15 @@
           document.getElementById("opciones-justo-tiempo").classList.add("hidden");
           
           // Ocultar sección de opciones de pago JUSTO A TIEMPO
-          document.getElementById("opciones-pago-justo-tiempo").style.display = "none";
+          const opcionesPagoSection = document.getElementById("opciones-pago-justo-tiempo");
+          const vehiculoImagenSection = document.querySelector('.vehiculo-imagen');
+          if (opcionesPagoSection) {
+            opcionesPagoSection.style.display = "none";
+            // Remover clase opciones-activas
+            if (vehiculoImagenSection) {
+              vehiculoImagenSection.classList.remove('opciones-activas');
+            }
+          }
           
           // Limpiar mensajes de error
           const mensajeError = document.getElementById("mensaje-error-global");
@@ -2319,6 +2340,7 @@
           const seccionOpciones = document.getElementById('opciones-pago-justo-tiempo');
           const contenedorOpciones = document.getElementById('contenedor-opciones-pago');
           const sinOpciones = document.getElementById('sin-opciones-disponibles');
+          const vehiculoImagen = document.querySelector('.vehiculo-imagen');
           
           if (!seccionOpciones || !contenedorOpciones) {
             console.error('❌ No se encontraron los elementos necesarios');
@@ -2357,14 +2379,30 @@
             contenedorOpciones.innerHTML = opcionesHTML;
             sinOpciones.style.display = 'none';
             
+            // Añadir clase para hacer opaca la imagen
+            if (vehiculoImagen) {
+              vehiculoImagen.classList.add('opciones-activas');
+            }
+            
             console.log(`✅ Se generaron ${opcionesPago.length} opciones de pago`);
           } else {
             contenedorOpciones.innerHTML = '';
             sinOpciones.style.display = 'block';
+            
+            // Añadir clase para hacer opaca la imagen
+            if (vehiculoImagen) {
+              vehiculoImagen.classList.add('opciones-activas');
+            }
+            
             console.log('⚠️ No hay opciones disponibles para este mes');
           }
           
           seccionOpciones.style.display = 'block';
+          
+          // Aplicar clase opciones-activas si no se aplicó antes
+          if (vehiculoImagen && !vehiculoImagen.classList.contains('opciones-activas')) {
+            vehiculoImagen.classList.add('opciones-activas');
+          }
         }
 
         function generarOpcionesPagoPDF(monto, mesEntrega) {
@@ -4059,8 +4097,13 @@
                 } else {
                   // Ocultar la sección de opciones de pago si no hay opciones
                   const opcionesPagoSection = document.getElementById('opciones-pago-justo-tiempo');
+                  const vehiculoImagenOcultar = document.querySelector('.vehiculo-imagen');
                   if (opcionesPagoSection) {
                     opcionesPagoSection.style.display = 'none';
+                    // Remover clase opciones-activas
+                    if (vehiculoImagenOcultar) {
+                      vehiculoImagenOcultar.classList.remove('opciones-activas');
+                    }
                   }
                   
                   console.log(`⚠️ No hay opciones disponibles para el mes ${mesEntregaValue}`);
@@ -4068,15 +4111,25 @@
               } else {
                 // Ocultar la sección de opciones de pago si no hay monto
                 const opcionesPagoSection = document.getElementById('opciones-pago-justo-tiempo');
+                const vehiculoImagenMonto = document.querySelector('.vehiculo-imagen');
                 if (opcionesPagoSection) {
                   opcionesPagoSection.style.display = 'none';
+                  // Remover clase opciones-activas
+                  if (vehiculoImagenMonto) {
+                    vehiculoImagenMonto.classList.remove('opciones-activas');
+                  }
                 }
               }
             } else {
               // Ocultar la sección de opciones de pago si no hay mes seleccionado
               const opcionesPagoSection = document.getElementById('opciones-pago-justo-tiempo');
+              const vehiculoImagenMes = document.querySelector('.vehiculo-imagen');
               if (opcionesPagoSection) {
                 opcionesPagoSection.style.display = 'none';
+                // Remover clase opciones-activas
+                if (vehiculoImagenMes) {
+                  vehiculoImagenMes.classList.remove('opciones-activas');
+                }
               }
             }
           }
