@@ -287,7 +287,7 @@ add_action('plugins_loaded', function() {
     }, 999); // Prioridad muy alta
     
     add_filter('wp_mail_from_name', function($from_name) {
-        return 'Finan Motors';
+        return 'FINAN';
     }, 999);
     
     // Forzar configuración simple
@@ -309,7 +309,7 @@ function finanmotors_force_simple_mail($phpmailer) {
     
     // Configurar remitente correcto
     $phpmailer->From = 'marketing@finanmotors.com';
-    $phpmailer->FromName = 'Finan Motors';
+    $phpmailer->FromName = 'FINAN';
     $phpmailer->CharSet = 'UTF-8';
     $phpmailer->Timeout = 30;
     
@@ -320,7 +320,7 @@ function finanmotors_force_simple_mail($phpmailer) {
 }
 
 /**
- * Configurar correos para Finan Motors (OBSOLETO - mantenido por compatibilidad)
+ * Configurar correos para FINAN (OBSOLETO - mantenido por compatibilidad)
  */
 function finanmotors_configure_mail() {
     // Esta función ahora es redundante pero se mantiene por compatibilidad
@@ -338,7 +338,7 @@ function finanmotors_setup_simple_mail($phpmailer) {
     
     // Configuraciones básicas
     $phpmailer->From = 'marketing@finanmotors.com';
-    $phpmailer->FromName = 'Finan Motors';
+    $phpmailer->FromName = 'FINAN';
     $phpmailer->CharSet = 'UTF-8';
     $phpmailer->Timeout = 30;
     
@@ -363,7 +363,7 @@ function finanmotors_setup_smtp_mail($phpmailer) {
     $phpmailer->Username = 'marketing@finanmotors.com';
     $phpmailer->Password = 'Qjqtr35ZgR'; // Cambiar por el password real
     $phpmailer->From = 'marketing@finanmotors.com';
-    $phpmailer->FromName = 'Finan Motors';
+    $phpmailer->FromName = 'FINAN';
     $phpmailer->CharSet = 'UTF-8';
     $phpmailer->Timeout = 30;
     
@@ -412,10 +412,10 @@ function finanmotors_test_email(WP_REST_Request $request) {
 	
 	// Configurar headers simples
 	$headers = [];
-	$headers[] = 'From: Finan Motors <marketing@finanmotors.com>';
+	$headers[] = 'From: FINAN <marketing@finanmotors.com>';
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
 	
-	$subject = '✅ Test de Email - Finan Motors';
+	$subject = '✅ Test de Email - FINAN';
 	$message = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9;">';
 	$message .= '<div style="background: #00205C; color: white; padding: 20px; text-align: center; border-radius: 8px;">';
 	$message .= '<h2 style="margin: 0;">✅ Test de Configuración</h2>';
@@ -668,7 +668,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 		// Prepare email details
 		$company_email = 'contacto@finanmotors.com';
 		$from_email = 'marketing@finanmotors.com';
-		$from_name = 'Finan Motors';
+		$from_name = 'FINAN';
 
 		$headers = [];
 		$headers[] = 'From: ' . $from_name . ' <' . $from_email . '>';
@@ -720,7 +720,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 		$body_client = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f8f9fa; border-radius: 10px; overflow: hidden;">';
 		$body_client .= '<div style="background: linear-gradient(135deg, #00205C 0%, #1a2a5c 100%); color: white; padding: 30px; text-align: center;">';
 		$body_client .= '<h1 style="margin: 0; font-size: 28px;">🎉 ¡Tu Cotización está Lista!</h1>';
-		$body_client .= '<p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Gracias por confiar en Finan Motors</p>';
+		$body_client .= '<p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Gracias por confiar en FINAN</p>';
 		$body_client .= '</div>';
 		$body_client .= '<div style="padding: 30px;">';
 		$body_client .= '<h2 style="color: #00205C; margin-bottom: 20px;">Hola ' . esc_html( $client_name ) . ',</h2>';
