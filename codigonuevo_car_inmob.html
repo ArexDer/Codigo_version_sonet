@@ -930,6 +930,17 @@
                 
               </div>
 
+              <!-- OPCIONES DE PAGO JUSTO A TIEMPO EN POPUP -->
+              <div id="opciones-pago-justo-tiempo-popup" style="margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px; border: 2px solid #072386; display: none;">
+                <h3 style="text-align: center; color: #072386; margin-bottom: 20px; font-size: 1.3rem;">🎯 Opciones de Pago - Plan Justo a Tiempo</h3>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Monto del vehículo: <strong id="monto-vehiculo-popup">$0</strong> | Mes de entrega: <strong id="mes-entrega-popup">0 meses</strong></p>
+                
+                <div id="opcion-seleccionada-popup" style="background: #fff; padding: 20px; border-radius: 10px; border: 2px solid #072386; text-align: center; box-shadow: 0 4px 12px rgba(7, 35, 134, 0.1);">
+                  <!-- Las opciones disponibles se mostrarán aquí -->
+                </div>
+                
+              </div>
+
               <!-- Botones en una fila con dos columnas -->
               <div style="display: flex; gap: 40px; justify-content: center;  flex-wrap: wrap;">
                 <button class="btn-quote" id="btn-quote" style="flex: 1; min-width: 200px;">DESCARGAR PDF</button>
@@ -1188,6 +1199,10 @@
                 document.getElementById("imagen-carro").src = imagenSeleccionada;
                 document.getElementById("usuario").textContent = "";
                 
+                // Mostrar tabla completa y ocultar opciones justo tiempo
+                document.getElementById("tabla-completa-opciones").style.display = "block";
+                document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
+                
                 // Mostrar popup
                 document.getElementById("popup").classList.remove("hidden");
                 
@@ -1255,20 +1270,48 @@
               if (avaluoActual > 0) {
                 // Preparar datos para el popup
                 const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                const mesEntrega = document.getElementById("mesEntregaSelect").value;
+                const montoVehiculo = document.getElementById("montoSelectJustoTiempo").value;
+                
+                // Verificar que haya opciones de pago disponibles
+                const opcionesPagoContainer = document.getElementById('contenedor-opciones-pago');
+                if (!opcionesPagoContainer || !opcionesPagoContainer.innerHTML.trim()) {
+                  alert("No hay opciones de pago disponibles. Por favor selecciona un monto y mes de entrega válidos.");
+                  return;
+                }
                 
                 // Configurar popup
                 document.getElementById("imagen-carro").src = imagenSeleccionada;
                 document.getElementById("usuario").textContent = "";
                 
+                // Ocultar tabla completa completamente para plan justo tiempo
+                document.getElementById("tabla-completa-opciones").style.display = "none";
+                document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "block";
+                
+                // Configurar datos específicos del plan justo tiempo
+                document.getElementById("monto-vehiculo-popup").textContent = "$" + parseInt(montoVehiculo).toLocaleString();
+                document.getElementById("mes-entrega-popup").textContent = mesEntrega + " meses";
+                
+                // Copiar todas las opciones de pago al popup
+                const todasLasOpciones = opcionesPagoContainer.innerHTML;
+                document.getElementById("opcion-seleccionada-popup").innerHTML = `
+                  <h4 style="color: #072386; margin-bottom: 15px;">Opciones Disponibles:</h4>
+                  <div style="display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr);">
+                    ${todasLasOpciones}
+                  </div>
+                `;
+                
                 // Mostrar popup
                 document.getElementById("popup").classList.remove("hidden");
                 
-                console.log("Abriendo popup JUSTO A TIEMPO con datos:", {
+                console.log("Abriendo popup JUSTO A TIEMPO con todas las opciones:", {
                   vehiculo: marcaModelo,
                   precio: avaluoActual,
-                  resultado: textoResultado,
+                  mesEntrega: mesEntrega,
+                  montoVehiculo: montoVehiculo,
                   imagen: imagenSeleccionada,
-                  plan: planSeleccionado
+                  plan: planSeleccionado,
+                  totalOpciones: opcionesPagoContainer.children.length
                 });
               } else {
                 alert("Por favor completa todos los campos antes de continuar.");
@@ -1287,6 +1330,10 @@
                 document.getElementById("imagen-carro").src = imagenSeleccionada;
                 // document.getElementById("precio-vehiculo-pop").value = `${marcaModelo} - Cuota: $${precioMensualTexto}`; // COMENTADO - campo oculto
                 document.getElementById("usuario").textContent = "";
+                
+                // Mostrar tabla completa y ocultar opciones justo tiempo
+                document.getElementById("tabla-completa-opciones").style.display = "block";
+                document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
                 
                 // Mostrar popup
                 document.getElementById("popup").classList.remove("hidden");
@@ -2239,7 +2286,15 @@
           
           // Restaurar elementos estándar
           document.getElementById("formfinal").style.display = "grid";
-          document.getElementById("tabla-completa-opciones").style.display = "block";
+          
+          // Solo mostrar tabla completa si NO es plan justo a tiempo
+          if (planSeleccionado !== "JUSTO_A_TIEMPO") {
+            document.getElementById("tabla-completa-opciones").style.display = "block";
+          } else {
+            document.getElementById("tabla-completa-opciones").style.display = "none";
+          }
+          
+          document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
           
           // Restaurar texto del botón PDF
           document.getElementById("btn-quote").textContent = "DESCARGAR PDF";
@@ -2366,6 +2421,7 @@
             opcionesPago.forEach((opcion, index) => {
               opcionesHTML += `
                 <div style="background: #fff; padding: 12px; border-radius: 8px; border: 2px solid #072386; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease;" 
+                     class="opcion-pago-card"
                      onmouseover="this.style.transform='translateY(-3px)'; this.style.borderColor='#1976d2';" 
                      onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#072386';">
                   <div style="background: #072386; color: white; margin: -12px -12px 8px -12px; padding: 6px; border-radius: 6px 6px 0 0; font-size: 0.8rem; font-weight: bold;">Opción ${index + 1}</div>

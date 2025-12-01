@@ -1351,6 +1351,42 @@ button:hover {
   border-color: #FEDE6E;
 }
 
+/* Estilo para opción seleccionada */
+.opcion-pago-seleccionada {
+  border-color: #FEDE6E !important;
+  background-color: #f8f9ff !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(7, 35, 134, 0.3) !important;
+}
+
+/* Ocultar tabla completa cuando se muestra popup justo tiempo */
+.popup:has(#opciones-pago-justo-tiempo-popup[style*="block"]) #tabla-completa-opciones {
+  display: none !important;
+}
+
+/* Estilos para opciones en el popup */
+#opcion-seleccionada-popup .opcion-pago-card {
+  margin-bottom: 0;
+}
+
+/* Responsive para opciones en popup */
+@media (max-width: 768px) {
+  #opcion-seleccionada-popup > div > div {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #opciones-pago-justo-tiempo-popup {
+    margin: 20px 0;
+    padding: 15px;
+  }
+  
+  #opciones-pago-justo-tiempo-popup h3 {
+    font-size: 1.1rem;
+  }
+}
+
 .opcion-pago-header {
   background: #072386;
   color: white;
