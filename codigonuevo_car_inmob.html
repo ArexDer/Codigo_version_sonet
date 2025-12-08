@@ -1203,6 +1203,9 @@
                 document.getElementById("tabla-completa-opciones").style.display = "block";
                 document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
                 
+                // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
+                document.getElementById("primero-renovacion").style.display = "block";
+                
                 // Mostrar popup
                 document.getElementById("popup").classList.remove("hidden");
                 
@@ -1288,6 +1291,9 @@
                 document.getElementById("tabla-completa-opciones").style.display = "none";
                 document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "block";
                 
+                // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
+                document.getElementById("primero-renovacion").style.display = "block";
+                
                 // Configurar datos específicos del plan justo tiempo
                 document.getElementById("monto-vehiculo-popup").textContent = "$" + parseInt(montoVehiculo).toLocaleString();
                 document.getElementById("mes-entrega-popup").textContent = mesEntrega + " meses";
@@ -1334,6 +1340,9 @@
                 // Mostrar tabla completa y ocultar opciones justo tiempo
                 document.getElementById("tabla-completa-opciones").style.display = "block";
                 document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
+                
+                // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
+                document.getElementById("primero-renovacion").style.display = "block";
                 
                 // Mostrar popup
                 document.getElementById("popup").classList.remove("hidden");
@@ -1547,6 +1556,9 @@
               document.getElementById("imagen-carro").src = imagenSeleccionada;
               document.getElementById("usuario").textContent = "";
               
+              // Ocultar select de primer vehículo porque es inmobiliario
+              document.getElementById("primero-renovacion").style.display = "none";
+              
               // Mostrar popup
               document.getElementById("popup").classList.remove("hidden");
               
@@ -1576,6 +1588,9 @@
               // Configurar popup
               document.getElementById("imagen-carro").src = imagenSeleccionada;
               document.getElementById("usuario").textContent = "";
+              
+              // Ocultar select de primer vehículo porque es inmobiliario
+              document.getElementById("primero-renovacion").style.display = "none";
               
               // Mostrar popup
               document.getElementById("popup").classList.remove("hidden");
@@ -1949,6 +1964,9 @@
         function initializePopup() {
           // Cerrar popup
           document.getElementById("cerrarPop").addEventListener("click", () => {
+            // Restaurar select de primer vehículo
+            document.getElementById("primero-renovacion").style.display = "block";
+            
             document.getElementById("popup").classList.add("hidden");
           });
           
@@ -2100,6 +2118,9 @@
           
           // Botón cotizar otro
           document.getElementById("cotizar-otro").addEventListener("click", () => {
+            // Restaurar select de primer vehículo
+            document.getElementById("primero-renovacion").style.display = "block";
+            
             // Cerrar popup
             document.getElementById("popup").classList.add("hidden");
             
