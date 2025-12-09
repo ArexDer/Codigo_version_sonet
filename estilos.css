@@ -1,9 +1,4 @@
-/* ===============================================
-   COTIZADOR VEHICULAR E INMOBILIARIO - ESTILOS
-   Organizado según estructura del HTML
-   =============================================== */
-
-/* ========== ESTILOS GENERALES ========== */
+/* Estilos simplificados para presentación básica */
 * {
     margin: 0;
     padding: 0;
@@ -26,205 +21,145 @@ body {
     display: none !important;
 }
 
-/* ========== ELEMENTOS GENERALES ========== */
 h1 {
-    font-size: 15px;
-    color: #54595F;
+    font-size: 18px;
+    color: #333;
 }
 
 p {
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .highlight {
-    color: orange;
+    color: #c57b00;
     font-weight: bold;
 }
 
-/* ========== ESTILOS GENERALES PARA SELECT Y BUTTONS ========== */
 select {
     padding: 10px;
     font-size: 15px;
-    border-radius: 8px;
-    margin: 8px 0px;
-    border: none;
-    border-bottom: 3px solid #00205C;
-    background: #F7F7F7;
+    border-radius: 6px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    background: #fff;
 }
 
 option {
-    background: #F7F7F7;
+    background: #fff;
 }
 
 button {
     margin-top: 8px;
-    padding: 12px 20px;
+    padding: 12px 16px;
     font-size: 1rem;
-    color: white;
-    font-weight: 600;
-    background-color: #00205C;
-    border: 2px solid #FEDE6E;
-    border-radius: 10px;
+    color: #fff;
+    background: #00205c;
+    border: 1px solid #00205c;
+    border-radius: 8px;
     cursor: pointer;
-    justify-content: center;
     width: 100%;
-    min-height: 48px;
-    transition: all 0.3s ease;
-    letter-spacing: 0.3px;
-}
-
-button:hover {
-    color: #FEDE6E;
-    background: #00205C;
-    border: 2px solid #FEDE6E;
-    font-weight: 600;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(44,62,80,0.3);
+    min-height: 44px;
 }
 
 #continuar {
-    font-size: 1.1rem;
-    background: #FEDE6E;
-    color: #00205C;
-    border: 2px solid #00205C;
+    background: #fede6e;
+    color: #00205c;
+    border: 1px solid #00205c;
     font-weight: 700;
-    min-height: 55px;
 }
 
-/* ==========================================
-   1. SECCIÓN INICIAL (seccion-inicial)
-   ========================================== */
 .seccion-inicial {
     text-align: center;
-    padding: 60px 20px;
-    background: linear-gradient(135deg, #00205C 0%, #1a2a5c 100%);
-    color: white;
-    margin-bottom: 40px;
+    padding: 40px 20px;
+    background: #00205c;
+    color: #fff;
+    margin-bottom: 30px;
 }
 
 .seccion-inicial h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    font-weight: bold;
-    color: white;
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
 .seccion-inicial p {
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-    opacity: 0.9;
+    font-size: 1rem;
+    margin-bottom: 20px;
 }
 
 .botones-principales {
     display: grid;
-    grid-template-columns: 280px 280px;
-    grid-template-rows: 280px;
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
     justify-content: center;
     align-items: center;
 }
 
 #btn-vehicular, #btn-inmobiliario {
-    background: white;
-    color: #00205C;
-    border: 3px solid #FEDE6E;
-    border-radius: 35px;
-    font-size: 1.4rem;
+    background: #fff;
+    color: #00205c;
+    border: 1px solid #00205c;
+    border-radius: 20px;
+    font-size: 1.2rem;
     font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 20px rgba(0,32,92,0.4);
-    width: 280px;
-    height: 280px;
+    width: 100%;
+    min-height: 220px;
     display: flex;
     align-items: center;
     justify-content: center;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
-#boton-principal:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 15px 35px rgba(0,32,92,0.6);
-    background: #FEDE6E;
-    color: #00205C;
-    border: 3px solid #00205C;
-}
-
-/* ===========================================
-   2. SECCIÓN VEHICULAR (seccion-vehicular)
-   =========================================== */
-/* 2.1 Tipos de vehículos (.vehicle-types) */
 .vehicle-types {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 16px;
     flex-wrap: wrap;
-    margin: 40px 0;
+    margin: 30px 0;
 }
 
 .vehicle {
     text-align: center;
-    padding: 20px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: white;
-    min-width: 150px;
-}
-
-.vehicle:hover {
-    border-color: #00205C;
-    background-color: #f8f9fa;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,32,92,0.3);
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    min-width: 140px;
 }
 
 .vehicle img {
-    width: 120px;
+    width: 110px;
     height: auto;
-    border-radius: 1px;
-    transition: transform 0.3s ease;
     object-fit: contain;
-}
-
-.vehicle:hover img {
-    transform: scale(1.1);
 }
 
 .vehicle p {
     margin: 10px 0 0 0;
-    font-size: 15px;
-    color: #2C3E50;
+    font-size: 14px;
+    color: #2c3e50;
     font-weight: bold;
 }
 
 .vehicle.selected {
-    border-color: #00205C;
-    background: #FEDE6E;
-    opacity: 1;
-    box-shadow: 0 8px 20px rgba(254,222,110,0.4);
+    border-color: #00205c;
+    background: #fede6e;
 }
 
-/* 2.2 Detalle de vehículo (.detalle-vehiculo) */
 .detalle-vehiculo {
     margin: 10px 0;
-    padding: 5px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 650px;
-    max-height: 900px;
+    min-height: 400px;
 }
 
 .vehiculo-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
     align-items: flex-start;
     width: 100%;
     max-width: 1000px;
@@ -232,7 +167,6 @@ button:hover {
     margin-right: auto;
 }
 
-/* 2.3 Imagen del vehículo (.vehiculo-imagen) */
 .vehiculo-imagen {
     display: flex;
     flex-direction: column;
@@ -240,59 +174,48 @@ button:hover {
     align-items: center;
     text-align: center;
     width: 100%;
-    height: 100%;
-    padding: 20px;
+    padding: 12px;
     box-sizing: border-box;
-    min-height: 350px;
-}
-
-/* Cuando se muestran opciones de pago, ajustar el contenedor */
-.vehiculo-imagen.opciones-activas {
-    justify-content: flex-start;
-    padding-top: 10px;
+    min-height: 260px;
 }
 
 .vehiculo-imagen img {
     width: 100%;
-    max-width: 400px;
-    max-height: 300px;
+    max-width: 360px;
+    max-height: 260px;
     height: auto;
     object-fit: contain;
-    border-radius: 10px;
-    transition: opacity 0.3s ease;
+    border-radius: 8px;
 }
 
-/* Hacer la imagen opaca cuando se muestran las opciones de pago */
 .vehiculo-imagen.opciones-activas img {
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
-/* 2.4 Selectores del vehículo (.vehiculo-selectores-container) */
 .vehiculo-selectores-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     width: 100%;
-    height: 100%;
-    min-height: 600px;
-    padding: 20px;
+    min-height: 320px;
+    padding: 12px;
     box-sizing: border-box;
 }
 
 .vehiculo-selectores {
-    background: #f8f9fa;
-    padding: 25px;
-    border-radius: 15px;
-    margin-bottom: 20px;
+    background: #f0f0f0;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: column;
-    min-height: 200px;
-    border: 2px solid #e9ecef;
+    gap: 8px;
+    border: 1px solid #ddd;
 }
 
 .vehiculo-selectores label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     font-weight: bold;
     color: #333;
 }
@@ -301,175 +224,103 @@ button:hover {
     width: 100%;
     padding: 10px;
     font-size: 15px;
-    border-radius: 8px;
-    margin: 8px 0px;
-    border: none;
-    border-bottom: 3px solid #00205C;
-    background: #F7F7F7;
-    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    margin-bottom: 10px;
 }
 
 .vehiculo-selectores button {
-    background: #00205C;
-    color: white;
-    padding: 12px 25px;
-    border: 2px solid #FEDE6E;
-    border-radius: 10px;
+    background: #00205c;
+    color: #fff;
+    padding: 10px 14px;
+    border: 1px solid #00205c;
+    border-radius: 8px;
     font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
     width: 100%;
-    max-width: 280px;
+    max-width: 260px;
     margin: 0 auto;
-    min-height: 48px;
-    letter-spacing: 0.3px;
+    min-height: 44px;
 }
 
-.vehiculo-selectores button:hover {
-   background: #00205C;
-    color: #FEDE6E;
-    border: 2px solid #FEDE6E;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(44,62,80,0.3);
-}
-
-/* 2.5 Opciones de financiación (.opciones-financiacion) */
 .opciones-financiacion {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 15px;
-    margin: 20px auto;
-    align-items: stretch;
-    max-width: 400px;
+    gap: 12px;
+    margin: 16px auto;
+    max-width: 380px;
 }
 
 .opcion-financiacion {
     position: relative;
-    background: #00205C;
-    color: white;
-    padding: 18px 20px;
-    border: 2px solid #FEDE6E;
-    border-radius: 12px;
+    background: #00205c;
+    color: #fff;
+    padding: 14px 16px;
+    border: 1px solid #fede6e;
+    border-radius: 10px;
     font-size: 1rem;
     font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
     text-align: center;
-    height: auto;
+    min-height: 70px;
+    max-width: 360px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 75px;
-    max-width: 380px;
-    margin: 0 auto;
-    box-shadow: 0 4px 15px rgba(0,32,92,0.3);
-    letter-spacing: 0.3px;
-}
-
-.opcion-financiacion:hover {
-    background: #FEDE6E;
-    color: #00205C;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(254,222,110,0.4);
-    border: 2px solid #00205C;
 }
 
 .tooltip {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.9);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    margin-bottom: 5px;
+    display: none;
 }
 
-.tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: rgba(0,0,0,0.9);
-}
-
-.opcion-financiacion:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* 2.6 Formularios CON/SIN ENTRADA (.opciones-con-entrada) */
 .opciones-con-entrada {
-    background: #f8f9fa;
-    padding: 25px;
-    border-radius: 15px;
-    margin-top: 20px;
+    background: #f0f0f0;
+    padding: 16px;
+    border-radius: 10px;
+    margin-top: 16px;
     text-align: center;
     display: flex;
     flex-direction: column;
-    min-height: 500px;
-    max-height: 700px;
-    border: 2px solid #e9ecef;
+    min-height: 320px;
+    border: 1px solid #ddd;
 }
 
 .titulo_marca_modelo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    color: #00205C;
-    margin-bottom: 20px;
-    font-family: Mont;
+    color: #00205c;
+    margin-bottom: 12px;
 }
 
 .opciones-con-entrada select {
     width: 100%;
     padding: 10px;
     font-size: 15px;
-    border-radius: 8px;
-    margin: 8px 0px;
-    border: none;
-    border-bottom: 3px solid #00205C;
-    background: #F7F7F7;
-    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    margin-bottom: 10px;
 }
 
 .opciones-con-entrada button {
-    background: #00205C;
-    color: white;
-    padding: 5px;
-    border: 3px solid #FEDE6E;
-    border-radius: 10px;
+    background: #00205c;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #00205c;
+    border-radius: 8px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     margin: 10px auto 0 auto;
-    transition: all 0.3s ease;
-    min-height: 52px;
-    max-width: 300px;
-    letter-spacing: 0.3px;
+    min-height: 46px;
+    max-width: 260px;
 }
 
-.opciones-con-entrada button:hover {
-    background: #00205C;
-    color: #FEDE6E;
-    border: 2px solid #FEDE6E;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(44,62,80,0.3);
-}
-
-/* Estilos específicos para formulario justo a tiempo */
 #opciones-justo-tiempo {
-    min-height: 550px !important;
+    min-height: 320px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -477,100 +328,55 @@ button:hover {
 
 #opciones-justo-tiempo > button {
     margin-top: auto;
-    margin-bottom: 10px;
 }
 
-#opciones-justo-tiempo .titulo_marca_modelo,
-#opciones-justo-tiempo select,
-#opciones-justo-tiempo div {
-    flex-shrink: 0;
-}
-
-/* Estilos específicos para formulario justo a tiempo */
-#opciones-justo-tiempo {
-    min-height: 550px !important;
-    justify-content: space-between;
-}
-
-#opciones-justo-tiempo > button {
-    margin-top: auto;
-    margin-bottom: 10px;
-}
-
-/* Elementos adicionales de formularios */
 .precio_mensual, .inscripcion {
-    background: #00205C;
-    color: white;
+    background: #00205c;
+    color: #fff;
     padding: 10px;
-    border-radius: 8px;
-    margin: 10px 0;
+    border-radius: 6px;
+    margin: 8px 0;
     font-weight: bold;
-    font-family: 'Mont';
     text-align: left;
-    font-size: 15px;
-    border: 2px solid #FEDE6E;
+    font-size: 14px;
+    border: 1px solid #fede6e;
 }
 
 .precio-vehiculo {
-    border: none;
-    color: #2C3E50;
-    background-color: #F7F7F7;
-    font-size: 16px;
-    margin-top: 15px;
+    border: 1px solid #ccc;
+    color: #2c3e50;
+    background-color: #fff;
+    font-size: 15px;
+    margin-top: 10px;
 }
 
 #precio-vehiculo-con-entrada, #estimado {
-    border-radius: 7px;
+    border-radius: 6px;
 }
 
 #marca_modelo, #marca_modelo_Suv, #marca_modelo_Camioneta, #marca_modelo_Camion {
     font-weight: bold;
-    color: #000000;
+    color: #000;
 }
 
 .marca, .modelo {
-    color: #2C3E50;
+    color: #2c3e50;
     text-align: left;
     font-size: 12px;
-    font-family: Mont;
 }
 
 .entrada_opciones {
-    color: #2C3E50;
+    color: #2c3e50;
 }
 
 .texto-vehicular {
-    font-size: 16px;
+    font-size: 15px;
 }
 
 #auto-precio, #suv-precio, #camioneta-precio, #camion-precio {
-    font-size: 15px;
-    font-family: Mont;
-    color: #2C3E50;
-    border-bottom: 0.5px solid #FEDE6E;
-}
-
-/* =============================================
-   3. SECCIÓN INMOBILIARIA (seccion-inmobiliaria)
-   ============================================= */
-/* La sección inmobiliaria reutiliza muchos estilos de la sección vehicular:
-   - .vehicle-types (tipos de propiedades)
-   - .vehicle (elementos individuales)
-   - .detalle-vehiculo (detalle de propiedad)
-   - .vehiculo-container (contenedor de propiedad)
-   - .vehiculo-imagen (imagen de propiedad)
-   - .vehiculo-selectores-container (selectores de propiedad)
-   Los estilos ya están definidos arriba y se aplican automáticamente */
-
-/* ========== POPUP ========== */
-/* Animación efecto neon */
-@keyframes neonGlow {
-    from {
-        box-shadow: 0 0 20px rgba(0, 32, 92, 0.6), 0 0 40px rgba(0, 32, 92, 0.3), 0 0 60px rgba(0, 32, 92, 0.1);
-    }
-    to {
-        box-shadow: 0 0 30px rgba(0, 32, 92, 0.8), 0 0 60px rgba(0, 32, 92, 0.5), 0 0 90px rgba(0, 32, 92, 0.3);
-    }
+    font-size: 14px;
+    color: #2c3e50;
+    border-bottom: 1px solid #fede6e;
 }
 
 .popup {
@@ -580,124 +386,98 @@ button:hover {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 32, 92, 0.75);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background-color: rgba(0, 32, 92, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .popup-contenido {
-    background-color: white;
-    padding: 25px;
-    border-radius: 20px;
-    border: 3px solid #00205C;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid #00205c;
     width: 90%;
-    max-width: 800px;
+    max-width: 760px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
     text-align: center;
-    box-shadow: 0 0 30px rgba(0, 32, 92, 0.8), 0 0 60px rgba(0, 32, 92, 0.4), 0 0 90px rgba(0, 32, 92, 0.2);
-    animation: neonGlow 2s ease-in-out infinite alternate;
 }
 
 .cerrar {
     position: absolute;
-    top: 15px;
-    right: 25px;
-    color: #00205C;
-    font-size: 28px;
+    top: 12px;
+    right: 16px;
+    color: #00205c;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    float: right;
-    transition: all 0.3s ease;
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(254, 222, 110, 0.1);
+    background: #f0f0f0;
 }
 
-.cerrar:hover {
-    color: white;
-    background: #00205C;
-    transform: scale(1.1);
-}
-
-/* 4.1 Contenido del popup */
 .gracias_cotizar {
     text-align: center;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #00205C;
-    /*margin-bottom: 25px;*/
-    /*padding: 15px;*/
-    /*background: linear-gradient(135deg, #FEDE6E, #f5d659);*/
-    border-radius: 12px;
-    /*box-shadow: 0 4px 15px rgba(254, 222, 110, 0.3); */
+    color: #00205c;
+    margin-bottom: 10px;
 }
 
 .imagen-precio {
     text-align: center;
-    /*margin: 20px 0;
-    padding: 20px;*/
-
-    background: linear-gradient(135deg, #ffffff, #ffffff);
-    border-radius: 15px;
-    /*border: 2px solid #00205C;*/
-    /*box-shadow: 0 4px 12px rgba(0, 32, 92, 0.1);*/
+    background: #fff;
+    border-radius: 10px;
 }
 
 .imagen-carro {
-    max-width: 230px;
-    width: 230px;
+    max-width: 200px;
+    width: 200px;
     height: auto;
-    border-radius: 10px;
+    border-radius: 8px;
     margin: 10px auto;
     display: block;
     object-fit: contain;
 }
 
 .precio-vehiculo-pop, .precio-vehiculo-popSN {
-    width: 300px;
+    width: 260px;
     max-width: 100%;
-    padding: 10px;
-    font-size: 1.2rem;
+    padding: 8px;
+    font-size: 1rem;
     font-weight: bold;
     text-align: center;
-    border: 2px solid #667eea;
-    border-radius: 8px;
-    margin-top: 10px;
-    background: #f0f4ff;
-    display: block;
-    margin: auto auto;
+    border: 1px solid #667eea;
+    border-radius: 6px;
+    margin: 8px auto 0 auto;
+    background: #f5f7ff;
 }
 
 #precio-vehiculo-pop, #precio-vehiculo-popSN {
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 6px;
+    font-size: 15px;
     font-weight: bold;
-    color: #F9B651;
+    color: #c57b00;
 }
 
-/* 4.2 Formulario del popup */
 .popup-formulario {
     display: flex;
-    gap: 20px;
+    gap: 14px;
     flex-wrap: wrap;
-    margin: 20px 0;
-    grid-template-columns: 50% 50%;
-    padding: 10px 20px;
+    margin: 14px 0;
+    padding: 8px 0;
 }
 
 .columna {
     flex: 1;
-    min-width: 250px;
-    width: 98%;
+    min-width: 240px;
+    width: 100%;
 }
 
 .columna label {
@@ -708,27 +488,28 @@ button:hover {
 .columna input,
 .columna select {
     width: 100%;
-    padding: 6px;
-    margin-top: 8px;
+    padding: 8px;
+    margin-top: 6px;
     text-align: left;
-    color: #A4A4A4;
-    border-radius: 8px;
-    border: 1px solid #EEEEEE;
+    color: #555;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: #fff;
 }
 
 .columna-izquierda, .columna-derecha {
-    background: #f0f0f0;
+    background: #f7f7f7;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
 }
 
 .pop-input {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 15px;
 }
 
 .pop-input.error {
@@ -736,14 +517,14 @@ button:hover {
 }
 
 .pop-input.success {
-    border-color: #4CAF50;
+    border-color: #4caf50;
 }
 
 .check-terminos {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 8px;
+    margin: 12px 0;
     grid-column: span 2;
     text-align: center;
     justify-content: center;
@@ -753,66 +534,40 @@ button:hover {
     display: grid;
     grid-row: 1;
     justify-content: left;
-    gap: 10px;
+    gap: 8px;
 }
 
 .terminos {
-    font-size: 10px;
+    font-size: 11px;
 }
 
-/* 4.3 Botones del popup */
 .boton-cotizar {
     background: #072386;
-    color: white;
-    padding: 15px 30px;
-    border: 2px solid #FEDE6E;
+    color: #fff;
+    padding: 12px 20px;
+    border: 1px solid #072386;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    margin: 0 10px;
-    transition: all 0.3s ease;
-    letter-spacing: 0.3px;
-}
-
-.boton-cotizar:hover {
-    background: #2C3E50;
-    color: #FEDE6E;
-    border: 2px solid #FEDE6E;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(44,62,80,0.3);
+    margin: 0 8px;
 }
 
 .btn-quote, .cotizar-otro {
-    background: #4CAF50;
-    color: white;
-    padding: 15px 25px;
-    border: 2px solid transparent;
+    background: #4caf50;
+    color: #fff;
+    padding: 12px 18px;
+    border: 1px solid #4caf50;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    margin: 10px;
-    transition: all 0.3s ease;
-    letter-spacing: 0.3px;
-}
-
-.btn-quote:hover, .cotizar-otro:hover {
-    background: #45a049;
-    border: 2px solid #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(76,175,80,0.3);
+    margin: 8px;
 }
 
 .cotizar-otro {
     background: #667eea;
-}
-
-.cotizar-otro:hover {
-    background: #5a6fd8;
-    border: 2px solid #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(103,126,234,0.3);
+    border-color: #667eea;
 }
 
 #mensaje-error-global {
@@ -823,85 +578,59 @@ button:hover {
     margin: 10px 0;
 }
 
-/* ================================================
-   5. VENTANA DE AUTORIZACIÓN (.ventana-autorizacion)
-   ================================================ */
 .ventana-autorizacion {
     background: #f8f9fa;
-    border: 2px solid #667eea;
-    border-radius: 15px;
-    padding: 25px;
-    margin: 20px 0;
+    border: 1px solid #667eea;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 16px 0;
     text-align: center;
 }
 
 .mensaje-autorizacion {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #333;
-    margin-bottom: 20px;
-    line-height: 1.5;
+    margin-bottom: 12px;
+    line-height: 1.4;
     font-weight: bold;
 }
 
 .botones-autorizacion {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .btn-autorizar {
-    background: #4CAF50;
-    color: white;
-    padding: 15px 30px;
-    border: 2px solid transparent;
+    background: #4caf50;
+    color: #fff;
+    padding: 12px 18px;
+    border: 1px solid #4caf50;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-    letter-spacing: 0.3px;
-}
-
-.btn-autorizar:hover {
-    background: #45a049;
-    border: 2px solid #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(76,175,80,0.3);
 }
 
 .btn-cancelar {
     background: #f44336;
-    color: white;
-    padding: 15px 30px;
-    border: 2px solid transparent;
+    color: #fff;
+    padding: 12px 18px;
+    border: 1px solid #f44336;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-    letter-spacing: 0.3px;
 }
 
-.btn-cancelar:hover {
-    background: #d32f2f;
-    border: 2px solid #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(244,67,54,0.3);
-}
-
-/* ============================
-   6. SECCIÓN PDF (.pdf)
-   ============================ */
 .pdf {
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: auto;
-    max-height: 100%;
-    padding: 30px;
+    padding: 20px;
     box-sizing: border-box;
 }
 
@@ -911,39 +640,34 @@ button:hover {
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
 }
 
 .thankYouMessage {
-    color: #072386 !important;
-    font-size: 2.2rem;
+    color: #072386;
+    font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 20px;
-    background: none !important;
-    background-color: transparent !important;
+    margin-bottom: 16px;
 }
 
 #thankYouMessage {
     font-size: 10px;
-    color: black;
-    background: green;
-    padding: 10px;
+    color: #000;
+    background: #b2d8b2;
+    padding: 8px;
 }
 
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin: 20px 0;
-    text-align: left;
-    justify-content: left;
-    align-items: center;
     grid-template-columns: 60% 30%;
-    gap: 2px;
-    background-color: white;
+    gap: 6px;
+    margin: 14px 0;
+    text-align: left;
+    background-color: #fff;
     border-radius: 4px;
     max-width: 100%;
     box-sizing: border-box;
+    padding: 8px;
 }
 
 #formfinal {
@@ -951,11 +675,12 @@ button:hover {
     justify-content: left;
     align-items: center;
     grid-template-columns: 60% 30%;
-    gap: 2px;
-    background-color: white;
+    gap: 6px;
+    background-color: #fff;
     border-radius: 4px;
     max-width: 100%;
     box-sizing: border-box;
+    padding: 8px;
 }
 
 #formfinal p {
@@ -963,12 +688,12 @@ button:hover {
 }
 
 #formfinal input {
-    border-radius: 8px;
+    border-radius: 6px;
     width: 130px;
-    height: 25px;
-    margin: 5px 0px;
-    border: none;
-    background: #F7F7F7;
+    height: 26px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    background: #fff;
 }
 
 .form-row .title {
@@ -984,11 +709,9 @@ button:hover {
 }
 
 .frase_adjudicacion {
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 20px;
-    font-family: 'Mont';
     font-size: 13px;
+    color: #666;
+    margin-top: 16px;
 }
 
 .precio-vehiculo-pdf {
@@ -996,46 +719,43 @@ button:hover {
 }
 
 #auto-sin-entrada-pdf {
-    width: 350px;
+    width: 320px;
     height: auto;
     margin: 5px auto;
 }
 
-/* ===============================================
-   7. TABLA COMPLETA DE OPCIONES (.tabla-opciones-completa)
-   =============================================== */
 .tabla-opciones-completa {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 16px 0;
     font-size: 0.9rem;
-    background-color: white;
-    border-radius: 8px;
+    background-color: #fff;
+    border-radius: 6px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    min-height: 200px;
+    border: 1px solid #ddd;
+    min-height: 180px;
 }
 
 .tabla-opciones-completa thead {
-    background: linear-gradient(135deg, #00205C, #2C3E50);
-    color: white;
+    background: #00205c;
+    color: #fff;
 }
 
 .tabla-opciones-completa th {
-    padding: 12px 8px;
+    padding: 10px 6px;
     text-align: center;
     font-weight: bold;
     border: 1px solid #ddd;
-    background-color: #00205C;
-    color: white;
+    background-color: #00205c;
+    color: #fff;
     font-size: 0.9rem;
 }
 
 .tabla-opciones-completa td {
-    padding: 10px 8px;
+    padding: 8px 6px;
     text-align: center;
     border: 1px solid #ddd;
-    background-color: white;
+    background-color: #fff;
     font-size: 0.85rem;
 }
 
@@ -1043,28 +763,21 @@ button:hover {
     background-color: #f9f9f9;
 }
 
-.tabla-opciones-completa tr:hover {
-    background-color: #FEDE6E;
-    color: #00205C;
-    transition: background-color 0.3s ease;
-}
-
 .tabla-opciones-completa .opcion-seleccionada {
-    background-color: #FEDE6E !important;
-    border-left: 4px solid #00205C;
+    background-color: #fede6e;
+    border-left: 4px solid #00205c;
     font-weight: bold;
-    color: #00205C;
-    box-shadow: inset 0 0 0 2px #00205C;
+    color: #00205c;
 }
 
 .tabla-opciones-completa .opcion-seleccionada td {
-    color: #00205C;
-    background-color: #FEDE6E !important;
+    color: #00205c;
+    background-color: #fede6e;
     font-weight: bold;
 }
 
 #contenedor-tabla-opciones {
-    min-height: 200px;
+    min-height: 180px;
     width: 100%;
     overflow-x: auto;
 }
@@ -1072,425 +785,241 @@ button:hover {
 #tabla-completa-opciones {
     display: block !important;
     visibility: visible !important;
-    margin: 30px 0;
-    padding: 20px;
+    margin: 20px 0;
+    padding: 12px;
     background: #f8f9fa;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
-/* =================================
-   8. MEDIA QUERIES RESPONSIVOS
-   ================================= */
+.resultado-justo-tiempo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 35, 134, 0.6);
+    border-radius: 12px;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.resultado-justo-tiempo-overlay p {
+    color: #fff !important;
+}
+
+.resultado-justo-tiempo-overlay h4 {
+    color: #fede6e !important;
+}
+
+.resultado-justo-tiempo-overlay div {
+    background: #fff !important;
+    border: 1px solid #fede6e;
+}
+
+.resultado-justo-tiempo-overlay div p {
+    color: #072386 !important;
+}
+
+.cerrar-overlay {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    color: #072386;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f0f0f0;
+}
+
+#opciones-pago-justo-tiempo {
+    margin: 0 0 16px 0;
+    padding: 12px;
+    background: #eef4fb;
+    border-radius: 8px;
+    border: 1px solid #072386;
+}
+
+#opciones-pago-justo-tiempo h3 {
+    text-align: center;
+    color: #072386;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#opciones-pago-justo-tiempo p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+
+#contenedor-opciones-pago {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 768px) {
+    #contenedor-opciones-pago {
+        grid-template-columns: 1fr;
+    }
+}
+
+.opcion-pago-card {
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #072386;
+    text-align: center;
+}
+
+.opcion-pago-seleccionada {
+    border-color: #fede6e !important;
+    background-color: #f8f9ff !important;
+}
+
+.popup:has(#opciones-pago-justo-tiempo-popup[style*="block"]) #tabla-completa-opciones {
+    display: none !important;
+}
+
+#opcion-seleccionada-popup .opcion-pago-card {
+    margin-bottom: 0;
+}
+
+.opcion-pago-header {
+    background: #072386;
+    color: #fff;
+    margin: -10px -10px 6px -10px;
+    padding: 6px;
+    border-radius: 6px 6px 0 0;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.opcion-pago-info {
+    margin: 0 0 4px 0;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.opcion-pago-monto {
+    background: #4caf50;
+    color: #fff;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-top: 6px;
+}
+
+#sin-opciones-disponibles {
+    text-align: center;
+    padding: 14px;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+#sin-opciones-disponibles p {
+    margin: 0;
+    color: #856404;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
 @media (max-width: 1024px) {
     .vehicle-types {
-        gap: 30px;
-        margin-top: 20px;
+        gap: 20px;
     }
-    
+
     .vehiculo-container {
-        gap: 30px;
-        grid-template-columns: 1fr 1fr;
+        gap: 20px;
     }
-    
+
     .popup-contenido {
-        width: 60%;
-        max-width: 500px;
+        width: 70%;
+        max-width: 520px;
     }
 }
 
 @media (max-width: 768px) {
     .seccion-inicial h1 {
-        font-size: 2rem;
+        font-size: 1.6rem;
     }
-    
+
     .botones-principales {
-        grid-template-columns: 240px;
-        grid-template-rows: 240px 240px;
-        gap: 25px;
+        grid-template-columns: 1fr;
     }
-    
-    .boton-principal {
-        width: 240px;
-        height: 240px;
-        font-size: 1.2rem;
-    }
-    
-    .vehicle-types {
-        display: grid;
-        grid-template-columns: 50% 50%;
-        grid-template-rows: auto auto;
-        gap: 10px;
-        justify-content: center;
-        margin-top: 10px;
-    }
-    
+
     .vehiculo-container {
-        gap: 20px;
         grid-template-columns: 1fr;
         justify-items: center;
     }
-    
-    .opciones-financiacion {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr 1fr;
-        gap: 10px;
-    }
-    
+
     .popup-contenido {
-        width: 80%;
-        max-width: 400px;
-        padding: 15px;
+        width: 90%;
+        max-width: 440px;
+        padding: 14px;
     }
 }
 
 @media (max-width: 480px) {
-    .vehicle-types {
-        gap: 0px;
-        margin-top: 0px;
-    }
-    
     .vehiculo-container {
-        gap: 15px;
-        grid-template-columns: 1fr;
-        margin: 10px;
+        gap: 12px;
+        margin: 8px;
     }
-    
+
     .vehiculo-imagen, .vehiculo-selectores-container {
         padding: 10px;
     }
-    
+
     .popup-contenido {
-        width: 90%;
-        max-width: 350px;
+        width: 92%;
+        max-width: 360px;
         padding: 10px;
     }
-    
+
     .opciones-financiacion {
-        grid-template-columns: 1fr;
         gap: 8px;
     }
-    
+
     .opcion-financiacion {
-        font-size: 0.9rem;
-        padding: 12px 15px;
-        min-height: 60px;
+        font-size: 0.95rem;
+        padding: 12px 12px;
+    }
+
+    #opciones-pago-justo-tiempo {
+        padding: 10px;
+        margin: 12px 0;
     }
 }
 
-/* ====================================
-   9. OVERLAY JUSTO A TIEMPO
-   ==================================== */
-.resultado-justo-tiempo-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(7, 35, 134, 0.85); /* Fondo azul semi-transparente */
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border-radius: 15px;
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  animation: fadeInOverlay 0.5s ease-in-out;
-}
-
-@keyframes fadeInOverlay {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.resultado-justo-tiempo-overlay p {
-  color: white !important;
-}
-
-.resultado-justo-tiempo-overlay h4 {
-  color: #FEDE6E !important;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.resultado-justo-tiempo-overlay div {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border: 2px solid #FEDE6E;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.resultado-justo-tiempo-overlay div p {
-  color: #072386 !important;
-}
-
-/* Botón cerrar overlay */
-.cerrar-overlay {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  color: #FEDE6E;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.cerrar-overlay:hover {
-  background: rgba(255, 255, 255, 0.9);
-  color: #072386;
-  transform: scale(1.1);
-  text-shadow: none;
-}
-
-/* Hacer la imagen del vehículo relativa para posicionar el overlay */
-.vehiculo-imagen {
-  position: relative;
-}
-
-/* Estilos específicos para formulario justo a tiempo */
-#opciones-justo-tiempo {
-    min-height: 450px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-#opciones-justo-tiempo > button {
-    margin-top: auto;
-    margin-bottom: 10px;
-}
-
-/* ====================================
-   10. SECCIÓN OPCIONES PAGO JUSTO A TIEMPO
-   ==================================== */
-#opciones-pago-justo-tiempo {
-  margin: 0 0 20px 0;
-  padding: 15px;
-  background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%);
-  border-radius: 10px;
-  border: 2px solid #072386;
-  box-shadow: 0 4px 15px rgba(7, 35, 134, 0.1);
-  position: relative;
-  z-index: 2;
-}
-
-/* Responsive para dispositivos móviles */
-@media (max-width: 480px) {
-  #opciones-pago-justo-tiempo {
-    margin: 0 0 15px 0;
-    padding: 10px;
-  }
-  
-  #opciones-pago-justo-tiempo h3 {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-  }
-  
-  #opciones-pago-justo-tiempo p {
-    font-size: 0.8rem;
-    margin-bottom: 12px;
-  }
-}
-
-#opciones-pago-justo-tiempo h3 {
-  text-align: center;
-  color: #072386;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-
-#opciones-pago-justo-tiempo p {
-  text-align: center;
-  color: #666;
-  margin-bottom: 20px;
-  font-size: 0.9rem;
-}
-
-#contenedor-opciones-pago {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-/* Para pantallas más pequeñas, usar una sola columna */
-@media (max-width: 768px) {
-  #contenedor-opciones-pago {
-    grid-template-columns: 1fr;
-  }
-}
-
-.opcion-pago-card {
-  background: #fff;
-  padding: 12px;
-  border-radius: 8px;
-  border: 2px solid #072386;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-.opcion-pago-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(7, 35, 134, 0.2);
-  border-color: #FEDE6E;
-}
-
-/* Estilo para opción seleccionada */
-.opcion-pago-seleccionada {
-  border-color: #FEDE6E !important;
-  background-color: #f8f9ff !important;
-  transform: translateY(-3px) !important;
-  box-shadow: 0 6px 20px rgba(7, 35, 134, 0.3) !important;
-}
-
-/* Ocultar tabla completa cuando se muestra popup justo tiempo */
-.popup:has(#opciones-pago-justo-tiempo-popup[style*="block"]) #tabla-completa-opciones {
-  display: none !important;
-}
-
-/* Estilos para opciones en el popup */
-#opcion-seleccionada-popup .opcion-pago-card {
-  margin-bottom: 0;
-}
-
-/* Responsive para opciones en popup */
-@media (max-width: 768px) {
-  #opcion-seleccionada-popup > div > div {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-@media (max-width: 480px) {
-  #opciones-pago-justo-tiempo-popup {
-    margin: 20px 0;
-    padding: 15px;
-  }
-  
-  #opciones-pago-justo-tiempo-popup h3 {
-    font-size: 1.1rem;
-  }
-}
-
-.opcion-pago-header {
-  background: #072386;
-  color: white;
-  margin: -12px -12px 8px -12px;
-  padding: 6px;
-  border-radius: 6px 6px 0 0;
-  font-size: 0.8rem;
-  font-weight: bold;
-}
-
-.opcion-pago-info {
-  margin: 0 0 4px 0;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-.opcion-pago-monto {
-  background: #4CAF50;
-  color: white;
-  padding: 6px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-top: 6px;
-}
-
-#sin-opciones-disponibles {
-  text-align: center;
-  padding: 20px;
-  background: #fff3cd;
-  border: 2px solid #ffc107;
-  border-radius: 8px;
-  margin-top: 15px;
-}
-
-#sin-opciones-disponibles p {
-  margin: 0;
-  color: #856404;
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
-/* Media queries para responsividad */
-@media (max-width: 768px) {
-  #contenedor-opciones-pago {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  
-  #opciones-pago-justo-tiempo h3 {
-    font-size: 1rem;
-  }
-  
-  .opcion-pago-header {
-    font-size: 0.75rem;
-  }
-  
-  .opcion-pago-info {
-    font-size: 0.75rem;
-  }
-  
-  .opcion-pago-monto {
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 480px) {
-  #opciones-pago-justo-tiempo {
-    padding: 15px;
-    margin: 20px 0;
-  }
-}
-
-/* ====================================
-   10. ESTILOS LEGACY Y ADICIONALES
-   ==================================== */
-.detalle-vehiculo-suvs {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(117, 119, 219);
-}
-
-.detalle-vehiculo-camionetas {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(89, 204, 114);
-}
-
+.detalle-vehiculo-suvs,
+.detalle-vehiculo-camionetas,
 .detalle-vehiculo-camiones {
     margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(207, 81, 211);
+    background-color: #e0e0e0;
 }
 
 .opciones-botones {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
     justify-content: space-between;
 }
 
