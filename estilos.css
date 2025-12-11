@@ -1500,6 +1500,611 @@ button:hover {
     justify-content: space-between;
 }
 
+/* ====================================
+   11. MEDIA QUERIES - RESPONSIVO
+   ==================================== */
 
+/* ===== TABLET (768px - 1024px) ===== */
+@media (max-width: 1024px) {
+    .container {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    .vehiculo-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .vehiculo-selectores-container {
+        min-height: auto;
+    }
+    
+    .seccion-inicial h1 {
+        font-size: 2.5rem;
+    }
+    
+    .botones-principales {
+        grid-template-columns: 200px 200px;
+        gap: 30px;
+    }
+    
+    #btn-vehicular, #btn-inmobiliario {
+        width: 200px;
+        height: 200px;
+        font-size: 1.1rem;
+    }
+    
+    .vehicle-types {
+        gap: 15px;
+    }
+    
+    .vehicle {
+        min-width: 130px;
+        padding: 15px;
+    }
+    
+    .vehicle img {
+        width: 100px;
+    }
+}
 
+/* ===== TABLETS PEQUEÑAS Y LANDSCAPE (600px - 767px) ===== */
+@media (max-width: 767px) {
+    /* Contenedor general */
+    .container {
+        padding: 10px;
+    }
+    
+    /* Sección inicial */
+    .seccion-inicial {
+        padding: 40px 15px;
+    }
+    
+    .seccion-inicial h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+    
+    .seccion-inicial p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+    
+    /* Botones principales */
+    .botones-principales {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 250px;
+        margin: 0 auto;
+    }
+    
+    #btn-vehicular, #btn-inmobiliario {
+        width: 100%;
+        height: 150px;
+        font-size: 1rem;
+        padding: 20px;
+    }
+    
+    /* Detalle vehículo */
+    .detalle-vehiculo {
+        min-height: auto;
+        max-height: none;
+        padding: 10px;
+    }
+    
+    .vehiculo-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 100%;
+        padding: 10px;
+    }
+    
+    .vehiculo-imagen {
+        min-height: 250px;
+        padding: 15px;
+    }
+    
+    .vehiculo-imagen img {
+        max-width: 100%;
+        max-height: 250px;
+    }
+    
+    /* Selectores */
+    .vehiculo-selectores-container {
+        padding: 15px;
+    }
+    
+    .vehiculo-selectores {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    /* Tipos de vehículos */
+    .vehicle-types {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .vehicle {
+        width: 100%;
+        max-width: 100%;
+        padding: 15px;
+        min-width: auto;
+    }
+    
+    .vehicle img {
+        width: 80px;
+    }
+    
+    /* Botones */
+    button {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+        min-height: 44px;
+    }
+    
+    /* Select */
+    select {
+        padding: 10px;
+        font-size: 14px;
+        width: 100%;
+    }
+    
+    /* Popup */
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-height: 90vh;
+        border-radius: 15px;
+        padding: 15px;
+        overflow-y: auto;
+    }
+    
+    .popup-contenido {
+        padding: 15px;
+    }
+    
+    .popup-formulario {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .columna {
+        width: 100%;
+    }
+    
+    /* Tabla responsiva */
+    table {
+        font-size: 0.8rem;
+        width: 100%;
+        overflow-x: auto;
+        display: block;
+    }
+    
+    table thead {
+        display: none;
+    }
+    
+    table tbody, table tr, table td {
+        display: block;
+        width: 100%;
+    }
+    
+    table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    
+    table td {
+        padding: 10px 5px;
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+    }
+    
+    table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: bold;
+        color: #00205C;
+    }
+}
+
+/* ===== MÓVILES MEDIANOS (480px - 599px) ===== */
+@media (max-width: 599px) {
+    /* Fuentes */
+    body {
+        font-size: 14px;
+    }
+    
+    /* Sección inicial */
+    .seccion-inicial {
+        padding: 30px 10px;
+    }
+    
+    .seccion-inicial h1 {
+        font-size: 1.5rem;
+    }
+    
+    .seccion-inicial p {
+        font-size: 0.95rem;
+    }
+    
+    .botones-principales {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    #btn-vehicular, #btn-inmobiliario {
+        height: 120px;
+        font-size: 0.9rem;
+    }
+    
+    /* Vehículos */
+    .vehicle {
+        padding: 12px;
+    }
+    
+    .vehicle img {
+        width: 70px;
+    }
+    
+    .vehicle p {
+        font-size: 12px;
+    }
+    
+    /* Imagen vehículo */
+    .vehiculo-imagen {
+        min-height: 200px;
+        padding: 10px;
+    }
+    
+    .vehiculo-imagen img {
+        max-height: 180px;
+    }
+    
+    /* Formulario popup */
+    .pop-input {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    .popup-formulario {
+        display: block;
+    }
+    
+    /* Botones */
+    button {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        min-height: 40px;
+    }
+    
+    .boton-cotizar {
+        font-size: 0.9rem;
+    }
+    
+    /* Select */
+    select {
+        font-size: 13px;
+        padding: 8px;
+    }
+    
+    /* Encabezados */
+    h1 {
+        font-size: 13px;
+    }
+    
+    p {
+        font-size: 11px;
+    }
+    
+    label {
+        font-size: 12px;
+    }
+    
+    /* Tabla */
+    table {
+        font-size: 0.75rem;
+    }
+    
+    .tabla-plazos {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Grid ajustado */
+    .vehiculo-selectores {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+/* ===== MÓVILES PEQUEÑOS (< 480px) ===== */
+@media (max-width: 479px) {
+    .container {
+        padding: 8px;
+    }
+    
+    .seccion-inicial {
+        padding: 25px 8px;
+        margin: 0;
+    }
+    
+    .seccion-inicial h1 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+    
+    .seccion-inicial p {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+    
+    .botones-principales {
+        gap: 12px;
+    }
+    
+    #btn-vehicular, #btn-inmobiliario {
+        height: 100px;
+        font-size: 0.8rem;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px;
+    }
+    
+    .vehicle-types {
+        gap: 10px;
+    }
+    
+    .vehicle {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    
+    .vehicle img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .vehicle p {
+        font-size: 11px;
+        margin-top: 8px;
+    }
+    
+    .vehiculo-imagen {
+        min-height: 150px;
+        padding: 8px;
+    }
+    
+    .vehiculo-imagen img {
+        max-width: 100%;
+        max-height: 150px;
+    }
+    
+    .vehiculo-selectores-container {
+        padding: 8px;
+    }
+    
+    .vehiculo-selectores {
+        padding: 8px;
+        margin-bottom: 8px;
+        min-height: auto;
+    }
+    
+    .vehiculo-selectores label {
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    
+    .vehiculo-selectores select,
+    .vehiculo-selectores input {
+        font-size: 12px;
+        padding: 6px;
+        height: auto;
+    }
+    
+    button {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        min-height: 36px;
+        margin-top: 6px;
+    }
+    
+    select {
+        font-size: 12px;
+        padding: 6px;
+    }
+    
+    /* Popup móvil */
+    .popup {
+        width: 95%;
+        max-height: 95vh;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+        padding: 12px;
+    }
+    
+    .popup-contenido {
+        padding: 12px;
+    }
+    
+    .cerrar {
+        font-size: 28px;
+        right: 8px;
+        top: 5px;
+    }
+    
+    .gracias_cotizar {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+    
+    .imagen-precio {
+        margin: 10px 0;
+    }
+    
+    .imagen-precio img {
+        max-width: 100%;
+        height: auto;
+        max-height: 150px;
+    }
+    
+    .popup-formulario {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .pop-input {
+        font-size: 12px;
+        padding: 8px;
+        height: auto;
+    }
+    
+    .columna {
+        width: 100%;
+    }
+    
+    .columna div {
+        margin-bottom: 8px;
+    }
+    
+    label {
+        font-size: 11px;
+    }
+    
+    h1 {
+        font-size: 12px;
+    }
+    
+    p {
+        font-size: 10px;
+    }
+    
+    /* Tabla móvil */
+    .tabla-plazos {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    table {
+        width: 100%;
+        font-size: 0.7rem;
+    }
+    
+    table thead {
+        display: none;
+    }
+    
+    table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    table tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: #f8f9fa;
+    }
+    
+    table td {
+        padding: 5px;
+        word-wrap: break-word;
+        text-align: left;
+    }
+    
+    table td:first-child {
+        grid-column: 1 / -1;
+        font-weight: bold;
+        background: #e9ecef;
+        border-radius: 4px;
+        padding: 6px;
+    }
+    
+    /* Opciones de pago */
+    .opcion-pago {
+        padding: 8px;
+        margin: 8px 0;
+        border-radius: 6px;
+    }
+    
+    .opcion-pago h4 {
+        font-size: 11px;
+    }
+    
+    .opcion-pago-info {
+        font-size: 10px;
+    }
+    
+    .opcion-pago-monto {
+        font-size: 11px;
+    }
+    
+    /* Lottie player */
+    lottie-player {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/* ===== Optimizaciones adicionales para todos los tamaños ===== */
+
+/* Asegurar que Lottie sea responsivo */
+lottie-player {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Mejorar legibilidad en móviles */
+@media (max-width: 767px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+        font-size: 16px; /* Evita zoom automático en iOS */
+    }
+}
+
+/* Tabla responsiva para todos los puntos de quiebre */
+@media (max-width: 768px) {
+    .tabla-completa-opciones {
+        overflow-x: auto;
+        width: 100%;
+    }
+    
+    .tabla-completa-opciones table {
+        width: 100%;
+        font-size: 0.8rem;
+    }
+    
+    .tabla-completa-opciones td,
+    .tabla-completa-opciones th {
+        padding: 8px 4px;
+    }
+}
 
