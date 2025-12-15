@@ -100,6 +100,16 @@
                 <div id="sin-opciones-disponibles" style="display: none; text-align: center; padding: 15px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; margin-top: 10px;">
                   <p style="margin: 0; color: #09e14e; font-size: 0.85rem; font-weight: bold;">⚠️ No hay opciones disponibles para este mes</p>
                 </div>
+                
+                <!-- Precio mensual e Inscripción -->
+                <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 8px; border: 2px solid #072386;">
+                  <p class="precio_mensual">
+                    Precio mensual: $ <span id="resultadoPrecioJustoTiempo">0</span>
+                  </p>
+                  <p class="inscripcion">
+                    Inscripción: $ <span id="resultadoInscripcionJustoTiempo">0</span>
+                  </p>
+                </div>
               </div>
               
               <img id="vehiculo-imagen" src="https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png" alt="Vehículo seleccionado" />
@@ -526,16 +536,6 @@
                       <!-- Las filas se generarán dinámicamente -->
                     </tbody>
                   </table>
-                </div>
-                
-                <!-- Precio mensual e Inscripción -->
-                <div>
-                  <p class="precio_mensual">
-                    Precio mensual: $ <span id="resultadoPrecioJustoTiempo">0</span>
-                  </p>
-                  <p class="inscripcion">
-                    Inscripción: $ <span id="resultadoInscripcionJustoTiempo">0</span>
-                  </p>
                 </div>
                 
                 <button id="continuar-justo-tiempo">CONTINUAR</button>
@@ -4109,6 +4109,16 @@
           const montoSelect = document.getElementById("montoSelectJustoTiempo");
           const mesEntregaSelect = document.getElementById("mesEntregaSelect");
           
+          // Cargar JSON vehicular una sola vez
+          let datosJSON = null;
+          fetch("https://finanmotors.com/vehicular_M.json")
+            .then(response => response.json())
+            .then(data => {
+              datosJSON = data;
+              console.log("✅ JSON vehicular cargado para JUSTO A TIEMPO");
+            })
+            .catch(error => console.error("❌ Error cargando JSON:", error));
+          
           function actualizarResultado() {
             const monto = parseFloat(montoSelect.value);
             const mesEntregaValue = mesEntregaSelect.value;
@@ -4156,11 +4166,17 @@
               if (monto) {
                 // Buscar en qué filas y columnas aparece el mes seleccionado
                 const opcionesPago = [];
+                let plazoEncontrado = null;
                 
                 Object.keys(datosTabla).forEach(plazoMeses => {
                   Object.keys(datosTabla[plazoMeses]).forEach(porcentaje => {
                     const valorCelda = datosTabla[plazoMeses][porcentaje];
                     if (valorCelda.toString() === mesEntregaValue) {
+                      // Guardar el plazo encontrado (primera vez)
+                      if (!plazoEncontrado) {
+                        plazoEncontrado = parseInt(plazoMeses);
+                      }
+                      
                       // Calcular el monto a pagar con este porcentaje
                       const montoPorcentaje = monto * (parseInt(porcentaje) / 100);
                       opcionesPago.push({
@@ -4171,6 +4187,47 @@
                     }
                   });
                 });
+                
+                // Obtener precio mensual e inscripción del JSON
+                if (plazoEncontrado && datosJSON) {
+                  // Buscar el monto en el JSON
+                  const filaJSON = datosJSON.find(item => item.MONTO === monto);
+                  
+                  if (filaJSON) {
+                    // Buscar el campo correspondiente al plazo (ej: "24_MESES", "36_MESES", etc.)
+                    const camposPlazo = ["24_MESES", "36_MESES", "48_MESES", "60_MESES", "72_MESES"];
+                    const campoBuscado = camposPlazo[Object.keys(datosTabla).indexOf(plazoEncontrado.toString())];
+                    
+                    // Obtener precio mensual del JSON
+                    const precioMensualJSON = filaJSON[campoBuscado] || filaJSON[`${plazoEncontrado}_MESES`];
+                    const inscripcionJSON = filaJSON.INSCRIPCION;
+                    
+                    if (precioMensualJSON) {
+                      document.getElementById("resultadoPrecioJustoTiempo").textContent = precioMensualJSON.toLocaleString();
+                      monthlyPrice = precioMensualJSON;
+                    } else {
+                      document.getElementById("resultadoPrecioJustoTiempo").textContent = "0";
+                    }
+                    
+                    if (inscripcionJSON) {
+                      document.getElementById("resultadoInscripcionJustoTiempo").textContent = inscripcionJSON.toLocaleString();
+                    } else {
+                      document.getElementById("resultadoInscripcionJustoTiempo").textContent = "0";
+                    }
+                    
+                    console.log(`✅ Mes ${mesEntregaValue} encontrado en plazo de ${plazoEncontrado} meses`);
+                    console.log(`💰 Precio mensual (desde JSON): $${precioMensualJSON}`);
+                    console.log(`📋 Inscripción (desde JSON): $${inscripcionJSON}`);
+                  } else {
+                    console.warn(`⚠️ Monto ${monto} no encontrado en el JSON`);
+                    document.getElementById("resultadoPrecioJustoTiempo").textContent = "0";
+                    document.getElementById("resultadoInscripcionJustoTiempo").textContent = "0";
+                  }
+                } else {
+                  // Si no se encuentra el mes o no hay JSON, mostrar 0
+                  document.getElementById("resultadoPrecioJustoTiempo").textContent = "0";
+                  document.getElementById("resultadoInscripcionJustoTiempo").textContent = "0";
+                }
                 
                 // Mostrar resultados solo en la tabla de opciones de pago
                 if (opcionesPago.length > 0) {
@@ -4188,18 +4245,10 @@
                     }
                   });
                   
-                  // Almacenar valores para PDF (usar la primera opción)
-                  monthlyPrice = Math.round(opcionesPago[0].montoAPagar);
-                  selectedMonths = `${opcionesPago[0].plazo}_MESES`;
+                  // Almacenar valores para PDF
+                  selectedMonths = `${plazoEncontrado}_MESES`;
                   porcentajeGlobal = parseInt(opcionesPago[0].porcentaje);
                   montoEstimado = monto;
-                  
-                  // Actualizar los campos de Precio mensual e Inscripción
-                  document.getElementById("resultadoPrecioJustoTiempo").textContent = monthlyPrice.toLocaleString();
-                  
-                  // Calcular inscripción (asumiendo un porcentaje estándar de 3% del monto)
-                  const inscripcionJustoTiempo = Math.round(monto * 0.03);
-                  document.getElementById("resultadoInscripcionJustoTiempo").textContent = inscripcionJustoTiempo.toLocaleString();
                   
                   // Mostrar la sección de opciones de pago
                   mostrarOpcionesPagoJustoTiempo(monto, mesEntregaValue);
@@ -4221,26 +4270,23 @@
                   console.log(`⚠️ No hay opciones disponibles para el mes ${mesEntregaValue}`);
                 }
               } else {
-                // Ocultar la sección de opciones de pago si no hay monto
-                const opcionesPagoSection = document.getElementById('opciones-pago-justo-tiempo');
-                const vehiculoImagenMonto = document.querySelector('.vehiculo-imagen');
-                if (opcionesPagoSection) {
-                  opcionesPagoSection.style.display = 'none';
-                  // Remover clase opciones-activas
-                  if (vehiculoImagenMonto) {
-                    vehiculoImagenMonto.classList.remove('opciones-activas');
-                  }
-                }
+                // Si solo hay mes de entrega sin monto, limpiar resultados
+                document.getElementById("resultadoPrecioJustoTiempo").textContent = "0";
+                document.getElementById("resultadoInscripcionJustoTiempo").textContent = "0";
               }
             } else {
-              // Ocultar la sección de opciones de pago si no hay mes seleccionado
+              // Si no hay mes de entrega seleccionado, limpiar resultados
+              document.getElementById("resultadoPrecioJustoTiempo").textContent = "0";
+              document.getElementById("resultadoInscripcionJustoTiempo").textContent = "0";
+              
+              // Ocultar la sección de opciones de pago (no hay mes seleccionado aún)
               const opcionesPagoSection = document.getElementById('opciones-pago-justo-tiempo');
-              const vehiculoImagenMes = document.querySelector('.vehiculo-imagen');
+              const vehiculoImagenMonto = document.querySelector('.vehiculo-imagen');
               if (opcionesPagoSection) {
                 opcionesPagoSection.style.display = 'none';
                 // Remover clase opciones-activas
-                if (vehiculoImagenMes) {
-                  vehiculoImagenMes.classList.remove('opciones-activas');
+                if (vehiculoImagenMonto) {
+                  vehiculoImagenMonto.classList.remove('opciones-activas');
                 }
               }
             }
