@@ -2434,80 +2434,148 @@
                 opcionesPago.push({
                   plazo: plazoMeses,
                   porcentaje: porcentaje,
-                  montoAPagar: Math.round(montoPorcentaje)
+                  montoAPagar: Math.round(montoPorcentaje),
+                  precioMensual: null,
+                  inscripcion: null
                 });
               }
             });
           });
           
-          // Mostrar la sección
-          const seccionOpciones = document.getElementById('opciones-pago-justo-tiempo');
-          const contenedorOpciones = document.getElementById('contenedor-opciones-pago');
-          const sinOpciones = document.getElementById('sin-opciones-disponibles');
-          const vehiculoImagen = document.querySelector('.vehiculo-imagen');
-          
-          if (!seccionOpciones || !contenedorOpciones) {
-            console.error('❌ No se encontraron los elementos necesarios');
-            return;
-          }
-          
-          // Actualizar títulos
-          document.getElementById('mes-seleccionado-titulo').textContent = mesEntrega;
-          document.getElementById('monto-justo-tiempo-titulo').textContent = '$' + montoNumerico.toLocaleString();
-          
-          if (opcionesPago.length > 0) {
-            // Ajustar grid según número de opciones
-            if (opcionesPago.length <= 3) {
-              contenedorOpciones.style.gridTemplateColumns = 'repeat(3, 1fr)';
-              contenedorOpciones.style.gridTemplateRows = '1fr';
-            } else {
-              contenedorOpciones.style.gridTemplateColumns = 'repeat(3, 1fr)';
-              contenedorOpciones.style.gridTemplateRows = 'repeat(2, 1fr)';
-            }
-            
-            // Generar HTML de opciones compactas
-            let opcionesHTML = '';
-            opcionesPago.forEach((opcion, index) => {
-              opcionesHTML += `
-                <div style="background: #fff; padding: 12px; border-radius: 8px; border: 2px solid #072386; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease;" 
-                     class="opcion-pago-card"
-                     onmouseover="this.style.transform='translateY(-3px)'; this.style.borderColor='#1976d2';" 
-                     onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#072386';">
-                  <div style="background: #072386; color: white; margin: -12px -12px 8px -12px; padding: 6px; border-radius: 6px 6px 0 0; font-size: 0.8rem; font-weight: bold;">Opción ${index + 1}</div>
-                  <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #666;">Plazo: <strong>${opcion.plazo} meses</strong></p>
-                  <p style="margin: 0 0 6px 0; font-size: 0.8rem; color: #666;">Porcentaje: <strong>${opcion.porcentaje}%</strong></p>
-                  <div style="background: #4CAF50; color: white; padding: 6px; border-radius: 4px; font-size: 0.9rem; font-weight: bold;">$${opcion.montoAPagar.toLocaleString()}</div>
-                </div>
-              `;
+          // Cargar datos del JSON para obtener precios reales
+          fetch("https://finanmotors.com/vehicular_M.json")
+            .then(response => response.json())
+            .then(datosJSON => {
+              // Para cada opción, obtener el precio mensual e inscripción del JSON
+              opcionesPago.forEach(opcion => {
+                const filaJSON = datosJSON.find(item => item.MONTO === montoNumerico);
+                
+                if (filaJSON) {
+                  // Obtener precio mensual del JSON según el plazo
+                  const precioMensualJSON = filaJSON[`${opcion.plazo}_MESES`];
+                  const inscripcionJSON = filaJSON.INSCRIPCION;
+                  
+                  opcion.precioMensual = precioMensualJSON || 0;
+                  opcion.inscripcion = inscripcionJSON || 0;
+                  
+                  console.log(`✅ Opción ${opcion.plazo} meses - Precio: $${opcion.precioMensual}, Inscripción: $${opcion.inscripcion}`);
+                }
+              });
+              
+              // Mostrar la sección
+              const seccionOpciones = document.getElementById('opciones-pago-justo-tiempo');
+              const contenedorOpciones = document.getElementById('contenedor-opciones-pago');
+              const sinOpciones = document.getElementById('sin-opciones-disponibles');
+              const vehiculoImagen = document.querySelector('.vehiculo-imagen');
+              
+              if (!seccionOpciones || !contenedorOpciones) {
+                console.error('❌ No se encontraron los elementos necesarios');
+                return;
+              }
+              
+              // Actualizar títulos
+              document.getElementById('mes-seleccionado-titulo').textContent = mesEntrega;
+              document.getElementById('monto-justo-tiempo-titulo').textContent = '$' + montoNumerico.toLocaleString();
+              
+              if (opcionesPago.length > 0) {
+                // Cambiar a layout de COLUMNA (1 columna, múltiples filas)
+                contenedorOpciones.style.display = 'grid';
+                contenedorOpciones.style.gridTemplateColumns = '1fr';
+                contenedorOpciones.style.gap = '15px';
+                
+                // Generar HTML de opciones con precio mensual e inscripción
+                let opcionesHTML = '';
+                opcionesPago.forEach((opcion, index) => {
+                  // Calcular monto a pagar por porcentaje de entrada
+                  const montoAPagar = montoNumerico * (parseInt(opcion.porcentaje) / 100);
+                  
+                  opcionesHTML += `
+                    <div style="background: #fff; padding: 16px; border-radius: 8px; border: 2px solid #072386; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease;" 
+                         class="opcion-pago-card"
+                         onmouseover="this.style.transform='translateY(-3px)'; this.style.borderColor='#1976d2'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
+                         onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#072386'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)';">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div style="background: #072386; color: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 1rem;">Opción ${index + 1}</div>
+                        <div style="background: #4CAF50; color: white; padding: 6px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">${opcion.plazo} meses</div>
+                      </div>
+                      
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
+                        <div style="text-align: center; padding: 10px; background: #f0f7ff; border-radius: 6px; border-left: 4px solid #1976d2;">
+                          <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #666; font-weight: 500;">Cuota Mensual</p>
+                          <p style="margin: 0; font-size: 1.2rem; color: #072386; font-weight: bold;">$${opcion.precioMensual.toLocaleString()}</p>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #fff3e0; border-radius: 6px; border-left: 4px solid #ff9800;">
+                          <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #666; font-weight: 500;">Inscripción</p>
+                          <p style="margin: 0; font-size: 1.2rem; color: #f57c00; font-weight: bold;">$${opcion.inscripcion.toLocaleString()}</p>
+                        </div>
+                      </div>
+                      
+                      <div style="text-align: center; padding: 12px; background: #f3e5f5; border-radius: 4px; margin-bottom: 10px; border: 1px solid #e1bee7;">
+                        <p style="margin: 0 0 6px 0; font-size: 0.85rem; color: #333; font-weight: 500;">Monto de Entrada (${opcion.porcentaje}%)</p>
+                        <p style="margin: 0; font-size: 1.1rem; color: #7b1fa2; font-weight: bold;">$${montoNumerico.toLocaleString()} × ${opcion.porcentaje}% = $${Math.round(montoAPagar).toLocaleString()}</p>
+                      </div>
+                      
+                      <div style="text-align: center; padding: 8px; background: #e8eaf6; border-radius: 4px;">
+                        <p style="margin: 0; font-size: 0.8rem; color: #333;">Porcentaje de entrada: <strong>${opcion.porcentaje}%</strong></p>
+                      </div>
+                    </div>
+                  `;
+                });
+                
+                contenedorOpciones.innerHTML = opcionesHTML;
+                sinOpciones.style.display = 'none';
+                
+                // Añadir clase para hacer opaca la imagen
+                if (vehiculoImagen) {
+                  vehiculoImagen.classList.add('opciones-activas');
+                }
+                
+                console.log(`✅ Se generaron ${opcionesPago.length} opciones de pago en COLUMNA`);
+              } else {
+                contenedorOpciones.innerHTML = '';
+                sinOpciones.style.display = 'block';
+                
+                // Añadir clase para hacer opaca la imagen
+                if (vehiculoImagen) {
+                  vehiculoImagen.classList.add('opciones-activas');
+                }
+                
+                console.log('⚠️ No hay opciones disponibles para este mes');
+              }
+              
+              seccionOpciones.style.display = 'block';
+              
+              // Aplicar clase opciones-activas si no se aplicó antes
+              if (vehiculoImagen && !vehiculoImagen.classList.contains('opciones-activas')) {
+                vehiculoImagen.classList.add('opciones-activas');
+              }
+            })
+            .catch(error => {
+              console.error('❌ Error cargando JSON:', error);
+              
+              // Fallback: mostrar opciones sin precios del JSON
+              const seccionOpciones = document.getElementById('opciones-pago-justo-tiempo');
+              const contenedorOpciones = document.getElementById('contenedor-opciones-pago');
+              
+              if (seccionOpciones && contenedorOpciones) {
+                contenedorOpciones.style.display = 'grid';
+                contenedorOpciones.style.gridTemplateColumns = '1fr';
+                contenedorOpciones.style.gap = '15px';
+                
+                let opcionesHTML = '';
+                opcionesPago.forEach((opcion, index) => {
+                  opcionesHTML += `
+                    <div style="background: #fff; padding: 16px; border-radius: 8px; border: 2px solid #072386;">
+                      <p style="margin: 0; font-size: 1rem; color: #072386; font-weight: bold;">Opción ${index + 1} - ${opcion.plazo} meses</p>
+                      <p style="margin: 8px 0 0 0; font-size: 0.9rem; color: #666;">Porcentaje: ${opcion.porcentaje}%</p>
+                    </div>
+                  `;
+                });
+                
+                contenedorOpciones.innerHTML = opcionesHTML;
+                seccionOpciones.style.display = 'block';
+              }
             });
-            
-            contenedorOpciones.innerHTML = opcionesHTML;
-            sinOpciones.style.display = 'none';
-            
-            // Añadir clase para hacer opaca la imagen
-            if (vehiculoImagen) {
-              vehiculoImagen.classList.add('opciones-activas');
-            }
-            
-            console.log(`✅ Se generaron ${opcionesPago.length} opciones de pago`);
-          } else {
-            contenedorOpciones.innerHTML = '';
-            sinOpciones.style.display = 'block';
-            
-            // Añadir clase para hacer opaca la imagen
-            if (vehiculoImagen) {
-              vehiculoImagen.classList.add('opciones-activas');
-            }
-            
-            console.log('⚠️ No hay opciones disponibles para este mes');
-          }
-          
-          seccionOpciones.style.display = 'block';
-          
-          // Aplicar clase opciones-activas si no se aplicó antes
-          if (vehiculoImagen && !vehiculoImagen.classList.contains('opciones-activas')) {
-            vehiculoImagen.classList.add('opciones-activas');
-          }
         }
 
         function generarOpcionesPagoPDF(monto, mesEntrega) {
