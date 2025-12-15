@@ -528,6 +528,16 @@
                   </table>
                 </div>
                 
+                <!-- Precio mensual e Inscripción -->
+                <div>
+                  <p class="precio_mensual">
+                    Precio mensual: $ <span id="resultadoPrecioJustoTiempo">0</span>
+                  </p>
+                  <p class="inscripcion">
+                    Inscripción: $ <span id="resultadoInscripcionJustoTiempo">0</span>
+                  </p>
+                </div>
+                
                 <button id="continuar-justo-tiempo">CONTINUAR</button>
                 <button id="volver-opciones-justo-tiempo">VOLVER A OPCIONES</button>
               </div>
@@ -2275,6 +2285,8 @@
           // Resetear formulario JUSTO A TIEMPO
           document.getElementById("montoSelectJustoTiempo").value = "";
           document.getElementById("mesEntregaSelect").value = "";
+          document.getElementById("resultadoPrecioJustoTiempo").textContent = "0";
+          document.getElementById("resultadoInscripcionJustoTiempo").textContent = "0";
           
           // Ocultar opciones de pago JUSTO A TIEMPO
           const opcionesPagoJT = document.getElementById("opciones-pago-justo-tiempo");
@@ -4181,6 +4193,13 @@
                   selectedMonths = `${opcionesPago[0].plazo}_MESES`;
                   porcentajeGlobal = parseInt(opcionesPago[0].porcentaje);
                   montoEstimado = monto;
+                  
+                  // Actualizar los campos de Precio mensual e Inscripción
+                  document.getElementById("resultadoPrecioJustoTiempo").textContent = monthlyPrice.toLocaleString();
+                  
+                  // Calcular inscripción (asumiendo un porcentaje estándar de 3% del monto)
+                  const inscripcionJustoTiempo = Math.round(monto * 0.03);
+                  document.getElementById("resultadoInscripcionJustoTiempo").textContent = inscripcionJustoTiempo.toLocaleString();
                   
                   // Mostrar la sección de opciones de pago
                   mostrarOpcionesPagoJustoTiempo(monto, mesEntregaValue);
