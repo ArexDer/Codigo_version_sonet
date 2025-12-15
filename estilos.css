@@ -23,6 +23,16 @@ body {
     padding: 20px;
 }
 
+/* Forzar que el contenedor con id="container" ocupe todo el ancho */
+#container {
+    width: 100%;
+    max-width: none;
+    margin: 0;              /* elimina centrado */
+    padding-left: 0;        /* sin padding lateral para ancho completo */
+    padding-right: 0;
+    display: block;
+}
+
 .hidden {
     display: none !important;
 }
@@ -160,6 +170,13 @@ button:hover {
 /* ===========================================
    2. SECCIÓN VEHICULAR (seccion-vehicular)
    =========================================== */
+.seccion-vehicular {
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 /* 2.1 Tipos de vehículos (.vehicle-types) */
 .vehicle-types {
     display: flex;
@@ -225,6 +242,10 @@ button:hover {
     align-items: center;
     min-height: 650px;
     max-height: 900px;
+    width: 100%;
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .vehiculo-container {
@@ -233,7 +254,7 @@ button:hover {
     gap: 40px;
     align-items: flex-start;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1289,8 +1310,8 @@ button:hover {
   padding: 15px;
   background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%);
   border-radius: 10px;
-  border: 2px solid #072386;
-  box-shadow: 0 4px 15px rgba(7, 35, 134, 0.1);
+  border: 2px solid #4CAF50;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.1);
   position: relative;
   z-index: 2;
 }
