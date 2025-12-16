@@ -2129,3 +2129,760 @@ lottie-player {
     }
 }
 
+/* ================================================
+   MEDIA QUERIES RESPONSIVAS
+   ================================================ */
+
+/* ========== TABLET (hasta 1024px) ========== */
+@media (max-width: 1024px) {
+    /* Contenedor general */
+    .container {
+        padding: 15px;
+    }
+    
+    /* Sección inicial */
+    .seccion-inicial {
+        padding: 40px 20px;
+    }
+    
+    .seccion-inicial h1 {
+        font-size: 2.5rem;
+    }
+    
+    .seccion-inicial p {
+        font-size: 1.1rem;
+    }
+    
+    .botones-principales {
+        grid-template-columns: 240px 240px;
+        grid-template-rows: 240px;
+        gap: 30px;
+    }
+    
+    #btn-vehicular, #btn-inmobiliario {
+        width: 240px;
+        height: 240px;
+        font-size: 1.2rem;
+        border-radius: 30px;
+    }
+    
+    /* Sección vehicular */
+    .seccion-vehicular {
+        padding: 15px;
+    }
+    
+    /* Tipos de vehículos */
+    .vehicle-types {
+        gap: 15px;
+        margin: 30px 0;
+    }
+    
+    .vehicle {
+        padding: 15px;
+        min-width: 140px;
+    }
+    
+    .vehicle img {
+        width: 100px;
+    }
+    
+    .vehicle p {
+        font-size: 14px;
+    }
+    
+    /* Detalle vehículo */
+    .detalle-vehiculo {
+        padding: 15px;
+        min-height: 500px;
+    }
+    
+    .vehiculo-container {
+        gap: 30px;
+    }
+    
+    .vehiculo-imagen {
+        padding: 15px;
+        min-height: 300px;
+    }
+    
+    .vehiculo-imagen img {
+        max-width: 350px;
+        max-height: 250px;
+    }
+    
+    .vehiculo-selectores-container {
+        padding: 15px;
+        min-height: 500px;
+    }
+    
+    .vehiculo-selectores {
+        padding: 20px;
+    }
+    
+    .vehiculo-selectores button {
+        max-width: 250px;
+        font-size: 0.9rem;
+    }
+    
+    /* Opciones de financiación */
+    .opciones-financiacion {
+        max-width: 350px;
+        gap: 12px;
+    }
+    
+    .opcion-financiacion {
+        padding: 15px 18px;
+        min-height: 70px;
+        max-width: 350px;
+        font-size: 0.95rem;
+    }
+    
+    /* Formularios con entrada */
+    .opciones-con-entrada {
+        padding: 20px;
+        min-height: 450px;
+    }
+    
+    .titulo_marca_modelo {
+        font-size: 1.1rem;
+    }
+    
+    .opciones-con-entrada button {
+        max-width: 280px;
+        font-size: 0.95rem;
+    }
+    
+    #opciones-justo-tiempo {
+        min-height: 500px !important;
+    }
+    
+    /* Sección inmobiliaria */
+    .seccion-inmobiliaria {
+        padding: 15px;
+    }
+    
+    .property-types {
+        gap: 15px;
+    }
+    
+    .property {
+        padding: 15px;
+        min-width: 140px;
+    }
+    
+    .property img {
+        width: 100px;
+    }
+    
+    .property p {
+        font-size: 14px;
+    }
+    
+    /* Detalle inmobiliario */
+    .detalle-inmobiliario {
+        padding: 15px;
+    }
+    
+    .inmobiliario-container {
+        gap: 30px;
+    }
+    
+    .inmobiliario-imagen {
+        padding: 15px;
+    }
+    
+    .inmobiliario-imagen img {
+        max-width: 350px;
+        max-height: 250px;
+    }
+    
+    .inmobiliario-selectores-container {
+        padding: 15px;
+    }
+    
+    .inmobiliario-selectores {
+        padding: 20px;
+    }
+    
+    .inmobiliario-selectores button {
+        max-width: 250px;
+    }
+    
+    /* Resumen total */
+    .resumen-total {
+        padding: 15px;
+    }
+    
+    .resumen-datos {
+        padding: 15px;
+    }
+    
+    .resumen-datos h3 {
+        font-size: 1.4rem;
+    }
+    
+    /* Calculadora */
+    .calculadora {
+        padding: 20px 15px;
+    }
+    
+    .calculadora h3 {
+        font-size: 1.3rem;
+    }
+    
+    .columna {
+        gap: 12px;
+    }
+    
+    /* Tablas */
+    .tabla-plazos table {
+        font-size: 0.9rem;
+    }
+    
+    .tabla-plazos td, .tabla-plazos th {
+        padding: 10px 8px;
+    }
+    
+    /* Opciones de pago */
+    .opcion-pago {
+        padding: 12px;
+    }
+    
+    .opcion-pago h4 {
+        font-size: 1rem;
+    }
+    
+    .opcion-pago-monto {
+        font-size: 1.3rem;
+    }
+    
+    /* Formulario de contacto */
+    .formulario-contacto {
+        padding: 20px;
+    }
+    
+    .formulario-contacto h3 {
+        font-size: 1.5rem;
+    }
+    
+    .formulario-contacto input,
+    .formulario-contacto select,
+    .formulario-contacto textarea {
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+    
+    /* Modal */
+    .modal-content {
+        width: 85%;
+        padding: 25px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* ========== MÓVILES (hasta 767px) ========== */
+@media (max-width: 767px) {
+    /* Contenedor general */
+    .container {
+        padding: 10px;
+    }
+    
+    /* Tipografía general */
+    h1 {
+        font-size: 13px;
+    }
+    
+    p {
+        font-size: 11px;
+    }
+    
+    /* Botones generales */
+    button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+    
+    /* Sección inicial */
+    .seccion-inicial {
+        padding: 30px 15px;
+    }
+    
+    .seccion-inicial h1 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    
+    .seccion-inicial p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+    
+    .botones-principales {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        gap: 20px;
+        padding: 0 20px;
+    }
+    
+    #btn-vehicular, #btn-inmobiliario {
+        width: 100%;
+        max-width: 280px;
+        height: 200px;
+        font-size: 1.2rem;
+        border-radius: 25px;
+        margin: 0 auto;
+    }
+    
+    /* Sección vehicular */
+    .seccion-vehicular {
+        padding: 10px;
+    }
+    
+    /* Tipos de vehículos */
+    .vehicle-types {
+        flex-direction: column;
+        gap: 12px;
+        margin: 20px 0;
+        padding: 0 10px;
+    }
+    
+    .vehicle {
+        padding: 15px;
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .vehicle img {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .vehicle p {
+        font-size: 13px;
+        text-align: left;
+        margin: 0;
+    }
+    
+    /* Detalle vehículo */
+    .detalle-vehiculo {
+        padding: 10px;
+        min-height: auto;
+        max-height: none;
+    }
+    
+    .vehiculo-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .vehiculo-imagen {
+        padding: 15px;
+        min-height: 200px;
+    }
+    
+    .vehiculo-imagen img {
+        max-width: 100%;
+        max-height: 200px;
+    }
+    
+    .vehiculo-selectores-container {
+        padding: 10px;
+        min-height: auto;
+    }
+    
+    .vehiculo-selectores {
+        padding: 15px;
+        min-height: auto;
+    }
+    
+    .vehiculo-selectores select {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .vehiculo-selectores button {
+        max-width: 100%;
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+    
+    /* Opciones de financiación */
+    .opciones-financiacion {
+        max-width: 100%;
+        gap: 10px;
+        margin: 15px 0;
+    }
+    
+    .opcion-financiacion {
+        padding: 12px 15px;
+        min-height: 65px;
+        max-width: 100%;
+        font-size: 0.9rem;
+    }
+    
+    .tooltip {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        white-space: normal;
+        max-width: 200px;
+    }
+    
+    /* Formularios con entrada */
+    .opciones-con-entrada {
+        padding: 15px;
+        min-height: auto;
+        max-height: none;
+    }
+    
+    .titulo_marca_modelo {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+    
+    .opciones-con-entrada select {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .opciones-con-entrada button {
+        max-width: 100%;
+        font-size: 0.9rem;
+        padding: 10px;
+        min-height: 48px;
+    }
+    
+    #opciones-justo-tiempo {
+        min-height: auto !important;
+    }
+    
+    /* Sección inmobiliaria */
+    .seccion-inmobiliaria {
+        padding: 10px;
+    }
+    
+    .property-types {
+        flex-direction: column;
+        gap: 12px;
+        padding: 0 10px;
+    }
+    
+    .property {
+        padding: 15px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .property img {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .property p {
+        font-size: 13px;
+        text-align: left;
+        margin: 0;
+    }
+    
+    /* Detalle inmobiliario */
+    .detalle-inmobiliario {
+        padding: 10px;
+        min-height: auto;
+    }
+    
+    .inmobiliario-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .inmobiliario-imagen {
+        padding: 15px;
+        min-height: 200px;
+    }
+    
+    .inmobiliario-imagen img {
+        max-width: 100%;
+        max-height: 200px;
+    }
+    
+    .inmobiliario-selectores-container {
+        padding: 10px;
+        min-height: auto;
+    }
+    
+    .inmobiliario-selectores {
+        padding: 15px;
+    }
+    
+    .inmobiliario-selectores select {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .inmobiliario-selectores button {
+        max-width: 100%;
+        padding: 10px;
+    }
+    
+    /* Resumen total */
+    .resumen-total {
+        padding: 10px;
+        margin: 15px 0;
+    }
+    
+    .resumen-datos {
+        padding: 15px;
+    }
+    
+    .resumen-datos h3 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .resumen-datos p {
+        font-size: 0.9rem;
+        margin: 8px 0;
+    }
+    
+    /* Calculadora */
+    .calculadora {
+        padding: 15px 10px;
+    }
+    
+    .calculadora h3 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .contenedor-columnas {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .columna {
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .columna label {
+        font-size: 0.85rem;
+    }
+    
+    .columna select,
+    .columna input {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    /* Tablas */
+    .tabla-plazos {
+        width: 100%;
+        overflow-x: auto;
+        display: block;
+    }
+    
+    .tabla-plazos table {
+        width: 100%;
+        font-size: 0.75rem;
+        min-width: 300px;
+    }
+    
+    .tabla-plazos thead {
+        display: none;
+    }
+    
+    .tabla-plazos tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .tabla-plazos tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #f8f9fa;
+    }
+    
+    .tabla-plazos td {
+        padding: 6px;
+        text-align: left;
+        font-size: 0.8rem;
+    }
+    
+    .tabla-plazos td:first-child {
+        grid-column: 1 / -1;
+        font-weight: bold;
+        background: #e9ecef;
+        border-radius: 4px;
+        padding: 8px;
+        text-align: center;
+    }
+    
+    .tabla-plazos td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 4px;
+        color: #00205C;
+    }
+    
+    /* Opciones de pago */
+    .tabla-completa-opciones {
+        overflow-x: auto;
+    }
+    
+    .opcion-pago {
+        padding: 12px;
+        margin: 10px 0;
+    }
+    
+    .opcion-pago h4 {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+    
+    .opcion-pago-info {
+        font-size: 0.8rem;
+        margin: 4px 0;
+    }
+    
+    .opcion-pago-monto {
+        font-size: 1.2rem;
+    }
+    
+    .opcion-pago button {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    
+    /* Formulario de contacto */
+    .formulario-contacto {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .formulario-contacto h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .formulario-contacto label {
+        font-size: 0.85rem;
+    }
+    
+    .formulario-contacto input,
+    .formulario-contacto select,
+    .formulario-contacto textarea {
+        font-size: 16px; /* Evita zoom en iOS */
+        padding: 10px;
+    }
+    
+    .formulario-contacto button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+    
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+        margin: 10% auto;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .modal-body {
+        padding: 15px 0;
+    }
+    
+    .modal-body p {
+        font-size: 0.9rem;
+        margin: 8px 0;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-footer button {
+        width: 100%;
+        margin: 0;
+    }
+    
+    /* Ajustes adicionales para mejorar UX móvil */
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 20px;
+        padding-right: 35px;
+    }
+    
+    /* Mejorar táctil en móviles */
+    button,
+    select,
+    input,
+    .vehicle,
+    .property,
+    .opcion-financiacion,
+    .opcion-pago {
+        -webkit-tap-highlight-color: rgba(0, 32, 92, 0.1);
+    }
+}
+
+/* ========== MÓVILES PEQUEÑOS (hasta 480px) ========== */
+@media (max-width: 480px) {
+    .seccion-inicial h1 {
+        font-size: 1.5rem;
+    }
+    
+    .seccion-inicial p {
+        font-size: 0.9rem;
+    }
+    
+    #btn-vehicular, #btn-inmobiliario {
+        height: 180px;
+        font-size: 1.1rem;
+    }
+    
+    .vehicle img,
+    .property img {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .calculadora h3,
+    .formulario-contacto h3 {
+        font-size: 1rem;
+    }
+    
+    .resumen-datos h3 {
+        font-size: 1.1rem;
+    }
+    
+    .modal-content {
+        width: 98%;
+        padding: 15px;
+    }
+}
+
