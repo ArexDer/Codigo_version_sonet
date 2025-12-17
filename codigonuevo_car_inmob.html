@@ -103,10 +103,10 @@
                 
                 <!-- Precio mensual e Inscripción -->
                 <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 8px; border: 2px solid #4CAF50;">
-                  <p class="precio_mensual">
+                  <p class="precio_mensual" style="display: none;">
                     Precio mensual: $ <span id="resultadoPrecioJustoTiempo">0</span>
                   </p>
-                  <p class="inscripcion">
+                  <p class="inscripcion" style="display: none;">
                     Inscripción: $ <span id="resultadoInscripcionJustoTiempo">0</span>
                   </p>
                 </div>
@@ -1142,213 +1142,329 @@
           if (!document.getElementById("selector_autos").hasAttribute('data-initialized')) {
             // Selectores de vehículos con imágenes reales
             document.getElementById("selector_autos").addEventListener("click", () => {
+              // Resetear selects al cambiar tipo de vehículo
+              document.getElementById("marca-vehiculo").value = "";
+              document.getElementById("modelo-vehiculo").value = "";
+              document.getElementById("modelo-vehiculo").disabled = true;
+              document.getElementById("continuar-vehiculo").disabled = true;
+              
               seleccionarVehiculo("autos", "Auto", "https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png");
             });
             document.getElementById("selector_autos").setAttribute('data-initialized', 'true');
 
             document.getElementById("selector_suvs").addEventListener("click", () => {
+              // Resetear selects al cambiar tipo de vehículo
+              document.getElementById("marca-vehiculo").value = "";
+              document.getElementById("modelo-vehiculo").value = "";
+              document.getElementById("modelo-vehiculo").disabled = true;
+              document.getElementById("continuar-vehiculo").disabled = true;
+              
               seleccionarVehiculo("suvs", "SUV", "https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png");
             });
             document.getElementById("selector_suvs").setAttribute('data-initialized', 'true');
 
             document.getElementById("selector_camionetas").addEventListener("click", () => {
+              // Resetear selects al cambiar tipo de vehículo
+              document.getElementById("marca-vehiculo").value = "";
+              document.getElementById("modelo-vehiculo").value = "";
+              document.getElementById("modelo-vehiculo").disabled = true;
+              document.getElementById("continuar-vehiculo").disabled = true;
+              
               seleccionarVehiculo("camionetas", "Camioneta", "https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png");
             });
             document.getElementById("selector_camionetas").setAttribute('data-initialized', 'true');
 
             document.getElementById("selector_camiones").addEventListener("click", () => {
+              // Resetear selects al cambiar tipo de vehículo
+              document.getElementById("marca-vehiculo").value = "";
+              document.getElementById("modelo-vehiculo").value = "";
+              document.getElementById("modelo-vehiculo").disabled = true;
+              document.getElementById("continuar-vehiculo").disabled = true;
+              
               seleccionarVehiculo("camiones", "Camión", "https://finanmotors.com/wp-content/uploads/2025/03/carroCubierto.png");
             });
             document.getElementById("selector_camiones").setAttribute('data-initialized', 'true');
 
-            // Botón continuar vehículo
+            // Botón continuar vehículo - con validación mejorada
             document.getElementById("continuar-vehiculo").addEventListener("click", () => {
+              const marcaValue = document.getElementById("marca-vehiculo").value;
+              const modeloValue = document.getElementById("modelo-vehiculo").value;
+              
+              // Validar que haya marca Y modelo seleccionados
+              if (!marcaValue || !modeloValue) {
+                alert("Por favor selecciona tanto marca como modelo antes de continuar.");
+                return;
+              }
+              
               if (avaluoActual > 0) {
                 document.getElementById("selectores-vehiculo").classList.add("hidden");
                 document.getElementById("opciones-financiacion-container").classList.remove("hidden");
-              }
-            });
-            
-            // Botón CON ENTRADA
-            document.getElementById("con-entrada").addEventListener("click", () => {
-              planSeleccionado = "PLAN ADELANTADO"; // Capturar plan seleccionado
-              document.getElementById("opciones-financiacion-container").classList.add("hidden");
-              document.getElementById("opciones-con-entrada").classList.remove("hidden");
-              
-              // Actualizar información del vehículo
-              document.getElementById("precio-vehiculo-con-entrada").value = "AVALUO $" + avaluoActual;
-              const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
-              document.getElementById("marca_modelo").textContent = marcaModelo;
-              
-              // Inicializar cálculos
-              cargarDatosYActualizarResultados(
-                "montoSelect",
-                "mesesSelect",
-                "resultadoPrecio",
-                "resultadoInscripcion"
-              );
-            });
-            
-            // Botón SIN ENTRADA
-            document.getElementById("sin-entrada").addEventListener("click", () => {
-              planSeleccionado = "PLAN PUNTUACIÓN"; // Capturar plan seleccionado
-              document.getElementById("opciones-financiacion-container").classList.add("hidden");
-              document.getElementById("opciones-sin-entrada").classList.remove("hidden");
-              
-              // Actualizar información del vehículo
-              document.getElementById("precio-vehiculo-sin-entrada").value = "AVALUO $" + avaluoActual;
-              const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
-              document.getElementById("marca_modelo_sin_entrada").textContent = marcaModelo;
-              
-              // Inicializar cálculos para SIN ENTRADA
-              cargarDatosYActualizarResultados(
-                "montoSelectSinEntrada",
-                "mesesSelectSinEntrada", 
-                "resultadoPrecioSinEntrada",
-                "resultadoInscripcionSinEntrada",
-                "SIN_ENTRADA"
-              );
-            });
-            
-            // Botón continuar SIN ENTRADA - abrir popup
-            document.getElementById("continuar-sin-entrada").addEventListener("click", () => {
-              const montoSelect = document.getElementById("montoSelectSinEntrada");
-              const mesesSelect = document.getElementById("mesesSelectSinEntrada");
-              
-              if (avaluoActual > 0 && montoSelect.value && mesesSelect.value) {
-                // Preparar datos para el popup
-                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
-                const resultadoPrecio = document.getElementById("resultadoPrecioSinEntrada").textContent;
-                const resultadoInscripcion = document.getElementById("resultadoInscripcionSinEntrada").textContent;
-                
-                // Configurar popup
-                document.getElementById("imagen-carro").src = imagenSeleccionada;
-                document.getElementById("usuario").textContent = "";
-                
-                // Mostrar tabla completa y ocultar opciones justo tiempo
-                document.getElementById("tabla-completa-opciones").style.display = "block";
-                document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
-                
-                // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
-                document.getElementById("primero-renovacion").style.display = "block";
-                
-                // Mostrar popup
-                document.getElementById("popup").classList.remove("hidden");
-                
-                console.log("Abriendo popup SIN ENTRADA con datos:", {
-                  vehiculo: marcaModelo,
-                  precio: avaluoActual,
-                  cuotaMensual: resultadoPrecio,
-                  inscripcion: resultadoInscripcion,
-                  imagen: imagenSeleccionada,
-                  plan: "PLAN PUNTUACION"
-                });
               } else {
-                alert("Por favor completa todos los campos antes de continuar.");
+                alert("No se pudo obtener el precio del vehículo. Intenta de nuevo.");
               }
             });
             
-            // Botón volver a opciones CON ENTRADA
-            document.getElementById("volver-opciones").addEventListener("click", () => {
-              document.getElementById("opciones-con-entrada").classList.add("hidden");
-              document.getElementById("opciones-financiacion-container").classList.remove("hidden");
-            });
-            
-            // Botón volver a opciones SIN ENTRADA
-            document.getElementById("volver-opciones-sin-entrada").addEventListener("click", () => {
-              document.getElementById("opciones-sin-entrada").classList.add("hidden");
-              document.getElementById("opciones-financiacion-container").classList.remove("hidden");
-            });
-            
-            // Botón JUSTO A TIEMPO
-            document.getElementById("justo-tiempo").addEventListener("click", () => {
-              planSeleccionado = "PLAN JUSTO A TIEMPO"; // Capturar plan seleccionado
-              document.getElementById("opciones-financiacion-container").classList.add("hidden");
-              document.getElementById("opciones-justo-tiempo").classList.remove("hidden");
-              
-              // Actualizar información del vehículo
-              document.getElementById("precio-vehiculo-justo-tiempo").value = "AVALUO $" + avaluoActual;
-              const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
-              document.getElementById("marca_modelo_justo_tiempo").textContent = marcaModelo;
-              
-              // Generar tabla de plazos
-              generarTablaPlazos();
-              
-              // Inicializar event listeners para JUSTO A TIEMPO
-              inicializarJustoTiempo();
-            });
-            
-            // Botón volver a opciones JUSTO A TIEMPO
-            document.getElementById("volver-opciones-justo-tiempo").addEventListener("click", () => {
-              document.getElementById("opciones-justo-tiempo").classList.add("hidden");
-              document.getElementById("opciones-financiacion-container").classList.remove("hidden");
-              
-              // Ocultar opciones de pago justo tiempo y restaurar imagen
-              const opcionesPagoJT = document.getElementById("opciones-pago-justo-tiempo");
-              const vehiculoImagen = document.querySelector('.vehiculo-imagen');
-              if (opcionesPagoJT) {
-                opcionesPagoJT.style.display = "none";
-              }
-              if (vehiculoImagen) {
-                vehiculoImagen.classList.remove('opciones-activas');
-              }
-            });
-            
-            // Botón continuar JUSTO A TIEMPO - abrir popup
-            document.getElementById("continuar-justo-tiempo").addEventListener("click", () => {
-              if (avaluoActual > 0) {
-                // Preparar datos para el popup
-                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
-                const mesEntrega = document.getElementById("mesEntregaSelect").value;
-                const montoVehiculo = document.getElementById("montoSelectJustoTiempo").value;
+            // Botón CON ENTRADA - protegido contra duplicados
+            if (!document.getElementById("con-entrada").hasAttribute('data-listener-con-entrada')) {
+              document.getElementById("con-entrada").addEventListener("click", () => {
+                planSeleccionado = "PLAN ADELANTADO"; // Capturar plan seleccionado
+                document.getElementById("opciones-financiacion-container").classList.add("hidden");
+                document.getElementById("opciones-con-entrada").classList.remove("hidden");
                 
-                // Verificar que haya opciones de pago disponibles
-                const opcionesPagoContainer = document.getElementById('contenedor-opciones-pago');
-                if (!opcionesPagoContainer || !opcionesPagoContainer.innerHTML.trim()) {
-                  alert("No hay opciones de pago disponibles. Por favor selecciona un monto y mes de entrega válidos.");
-                  return;
+                // Actualizar información del vehículo
+                document.getElementById("precio-vehiculo-con-entrada").value = "AVALUO $" + avaluoActual;
+                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                document.getElementById("marca_modelo").textContent = marcaModelo;
+                
+                // Inicializar cálculos
+                cargarDatosYActualizarResultados(
+                  "montoSelect",
+                  "mesesSelect",
+                  "resultadoPrecio",
+                  "resultadoInscripcion"
+                );
+              });
+              document.getElementById("con-entrada").setAttribute('data-listener-con-entrada', 'true');
+            }
+            
+            // Botón SIN ENTRADA - protegido contra duplicados
+            if (!document.getElementById("sin-entrada").hasAttribute('data-listener-sin-entrada')) {
+              document.getElementById("sin-entrada").addEventListener("click", () => {
+                planSeleccionado = "PLAN PUNTUACIÓN"; // Capturar plan seleccionado
+                document.getElementById("opciones-financiacion-container").classList.add("hidden");
+                document.getElementById("opciones-sin-entrada").classList.remove("hidden");
+                
+                // Actualizar información del vehículo
+                document.getElementById("precio-vehiculo-sin-entrada").value = "AVALUO $" + avaluoActual;
+                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                document.getElementById("marca_modelo_sin_entrada").textContent = marcaModelo;
+                
+                // Inicializar cálculos para SIN ENTRADA
+                cargarDatosYActualizarResultados(
+                  "montoSelectSinEntrada",
+                  "mesesSelectSinEntrada", 
+                  "resultadoPrecioSinEntrada",
+                  "resultadoInscripcionSinEntrada",
+                  "SIN_ENTRADA"
+                );
+              });
+              document.getElementById("sin-entrada").setAttribute('data-listener-sin-entrada', 'true');
+            }
+            
+            // Botón continuar SIN ENTRADA - abrir popup (protegido contra duplicados)
+            if (!document.getElementById("continuar-sin-entrada").hasAttribute('data-listener-continuar-sin-entrada')) {
+              document.getElementById("continuar-sin-entrada").addEventListener("click", () => {
+                const montoSelect = document.getElementById("montoSelectSinEntrada");
+                const mesesSelect = document.getElementById("mesesSelectSinEntrada");
+                const btnContinuar = document.getElementById("continuar-sin-entrada");
+                
+                // Deshabilitar botón durante procesamiento
+                btnContinuar.disabled = true;
+                btnContinuar.style.opacity = "0.5";
+                btnContinuar.style.cursor = "not-allowed";
+                
+                if (avaluoActual > 0 && montoSelect.value && mesesSelect.value) {
+                  // Preparar datos para el popup
+                  const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                  const resultadoPrecio = document.getElementById("resultadoPrecioSinEntrada").textContent;
+                  const resultadoInscripcion = document.getElementById("resultadoInscripcionSinEntrada").textContent;
+                  
+                  // Configurar popup
+                  document.getElementById("imagen-carro").src = imagenSeleccionada;
+                  document.getElementById("usuario").textContent = "";
+                  
+                  // Mostrar tabla completa y ocultar opciones justo tiempo
+                  document.getElementById("tabla-completa-opciones").style.display = "block";
+                  document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
+                  
+                  // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
+                  document.getElementById("primero-renovacion").style.display = "block";
+                  
+                  // Mostrar popup
+                  document.getElementById("popup").classList.remove("hidden");
+                  
+                  console.log("Abriendo popup SIN ENTRADA con datos:", {
+                    vehiculo: marcaModelo,
+                    precio: avaluoActual,
+                    cuotaMensual: resultadoPrecio,
+                    inscripcion: resultadoInscripcion,
+                    imagen: imagenSeleccionada,
+                    plan: "PLAN PUNTUACION"
+                  });
+                  
+                  // Habilitar botón al finalizar
+                  btnContinuar.disabled = false;
+                  btnContinuar.style.opacity = "1";
+                  btnContinuar.style.cursor = "pointer";
+                } else {
+                  // Habilitar botón si hay error
+                  btnContinuar.disabled = false;
+                  btnContinuar.style.opacity = "1";
+                  btnContinuar.style.cursor = "pointer";
+                  alert("Por favor completa todos los campos antes de continuar.");
                 }
+              });
+              document.getElementById("continuar-sin-entrada").setAttribute('data-listener-continuar-sin-entrada', 'true');
+            }
+            
+            // Botón volver a opciones CON ENTRADA - protegido contra duplicados con limpieza de datos
+            if (!document.getElementById("volver-opciones").hasAttribute('data-listener-volver-con-entrada')) {
+              document.getElementById("volver-opciones").addEventListener("click", () => {
+                // Limpiar selectores y resultados
+                document.getElementById("montoSelect").value = "";
+                document.getElementById("porcentaje_auto").value = "";
+                document.getElementById("mesesSelect").value = "";
+                document.getElementById("resultadoPrecio").textContent = "0";
+                document.getElementById("resultadoInscripcion").textContent = "0";
                 
-                // Configurar popup
-                document.getElementById("imagen-carro").src = imagenSeleccionada;
-                document.getElementById("usuario").textContent = "";
+                document.getElementById("opciones-con-entrada").classList.add("hidden");
+                document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+              });
+              document.getElementById("volver-opciones").setAttribute('data-listener-volver-con-entrada', 'true');
+            }
+            
+            // Botón volver a opciones SIN ENTRADA - protegido contra duplicados con limpieza de datos
+            if (!document.getElementById("volver-opciones-sin-entrada").hasAttribute('data-listener-volver-sin-entrada')) {
+              document.getElementById("volver-opciones-sin-entrada").addEventListener("click", () => {
+                // Limpiar selectores y resultados
+                document.getElementById("montoSelectSinEntrada").value = "";
+                document.getElementById("mesesSelectSinEntrada").value = "";
+                document.getElementById("resultadoPrecioSinEntrada").textContent = "0";
+                document.getElementById("resultadoInscripcionSinEntrada").textContent = "0";
                 
-                // Ocultar tabla completa completamente para plan justo tiempo
-                document.getElementById("tabla-completa-opciones").style.display = "none";
-                document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "block";
+                document.getElementById("opciones-sin-entrada").classList.add("hidden");
+                document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+              });
+              document.getElementById("volver-opciones-sin-entrada").setAttribute('data-listener-volver-sin-entrada', 'true');
+            }
+            
+            // Botón JUSTO A TIEMPO - protegido contra duplicados
+            if (!document.getElementById("justo-tiempo").hasAttribute('data-listener-justo-tiempo')) {
+              document.getElementById("justo-tiempo").addEventListener("click", () => {
+                planSeleccionado = "PLAN JUSTO A TIEMPO"; // Capturar plan seleccionado
+                document.getElementById("opciones-financiacion-container").classList.add("hidden");
+                document.getElementById("opciones-justo-tiempo").classList.remove("hidden");
                 
-                // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
-                document.getElementById("primero-renovacion").style.display = "block";
+                // Actualizar información del vehículo
+                document.getElementById("precio-vehiculo-justo-tiempo").value = "AVALUO $" + avaluoActual;
+                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                document.getElementById("marca_modelo_justo_tiempo").textContent = marcaModelo;
                 
-                // Configurar datos específicos del plan justo tiempo
-                document.getElementById("monto-vehiculo-popup").textContent = "$" + parseInt(montoVehiculo).toLocaleString();
-                document.getElementById("mes-entrega-popup").textContent = mesEntrega + " meses";
+                // Limpiar tabla anterior antes de regenerar
+                document.getElementById("tabla-plazos-body").innerHTML = "";
                 
-                // Copiar todas las opciones de pago al popup
-                const todasLasOpciones = opcionesPagoContainer.innerHTML;
-                document.getElementById("opcion-seleccionada-popup").innerHTML = `
-                  <h4 style="color: #072386; margin-bottom: 15px;">Opciones Disponibles:</h4>
-                  <div style="display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr);">
-                    ${todasLasOpciones}
-                  </div>
-                `;
+                // Generar tabla de plazos
+                generarTablaPlazos();
                 
-                // Mostrar popup
-                document.getElementById("popup").classList.remove("hidden");
+                // Inicializar event listeners para JUSTO A TIEMPO
+                inicializarJustoTiempo();
+              });
+              document.getElementById("justo-tiempo").setAttribute('data-listener-justo-tiempo', 'true');
+            }
+            
+            // Botón volver a opciones JUSTO A TIEMPO - protegido contra duplicados con limpieza de datos
+            if (!document.getElementById("volver-opciones-justo-tiempo").hasAttribute('data-listener-volver-justo-tiempo')) {
+              document.getElementById("volver-opciones-justo-tiempo").addEventListener("click", () => {
+                // Limpiar selectores y tabla
+                document.getElementById("montoSelectJustoTiempo").value = "";
+                document.getElementById("mesEntregaSelect").value = "";
+                document.getElementById("tabla-plazos-body").innerHTML = "";
+                document.getElementById("contenedor-opciones-pago").innerHTML = "";
                 
-                console.log("Abriendo popup JUSTO A TIEMPO con todas las opciones:", {
-                  vehiculo: marcaModelo,
-                  precio: avaluoActual,
-                  mesEntrega: mesEntrega,
-                  montoVehiculo: montoVehiculo,
-                  imagen: imagenSeleccionada,
-                  plan: planSeleccionado,
-                  totalOpciones: opcionesPagoContainer.children.length
-                });
-              } else {
-                alert("Por favor completa todos los campos antes de continuar.");
-              }
-            });
+                document.getElementById("opciones-justo-tiempo").classList.add("hidden");
+                document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+                
+                // Ocultar opciones de pago justo tiempo y restaurar imagen
+                const opcionesPagoJT = document.getElementById("opciones-pago-justo-tiempo");
+                const vehiculoImagen = document.querySelector('.vehiculo-imagen');
+                if (opcionesPagoJT) {
+                  opcionesPagoJT.style.display = "none";
+                }
+                if (vehiculoImagen) {
+                  vehiculoImagen.classList.remove('opciones-activas');
+                }
+              });
+              document.getElementById("volver-opciones-justo-tiempo").setAttribute('data-listener-volver-justo-tiempo', 'true');
+            }
+            
+            // Botón continuar JUSTO A TIEMPO - abrir popup (protegido contra duplicados)
+            if (!document.getElementById("continuar-justo-tiempo").hasAttribute('data-listener-continuar-justo-tiempo')) {
+              document.getElementById("continuar-justo-tiempo").addEventListener("click", () => {
+                const btnContinuar = document.getElementById("continuar-justo-tiempo");
+                
+                // Deshabilitar botón durante procesamiento
+                btnContinuar.disabled = true;
+                btnContinuar.style.opacity = "0.5";
+                btnContinuar.style.cursor = "not-allowed";
+                
+                if (avaluoActual > 0) {
+                  // Preparar datos para el popup
+                  const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                  const mesEntrega = document.getElementById("mesEntregaSelect").value;
+                  const montoVehiculo = document.getElementById("montoSelectJustoTiempo").value;
+                  
+                  // Verificar que haya opciones de pago disponibles
+                  const opcionesPagoContainer = document.getElementById('contenedor-opciones-pago');
+                  if (!opcionesPagoContainer || !opcionesPagoContainer.innerHTML.trim()) {
+                    // Habilitar botón si hay error
+                    btnContinuar.disabled = false;
+                    btnContinuar.style.opacity = "1";
+                    btnContinuar.style.cursor = "pointer";
+                    alert("No hay opciones de pago disponibles. Por favor selecciona un monto y mes de entrega válidos.");
+                    return;
+                  }
+                  
+                  // Configurar popup
+                  document.getElementById("imagen-carro").src = imagenSeleccionada;
+                  document.getElementById("usuario").textContent = "";
+                  
+                  // Ocultar tabla completa completamente para plan justo tiempo
+                  document.getElementById("tabla-completa-opciones").style.display = "none";
+                  document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "block";
+                  
+                  // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
+                  document.getElementById("primero-renovacion").style.display = "block";
+                  
+                  // Configurar datos específicos del plan justo tiempo
+                  document.getElementById("monto-vehiculo-popup").textContent = "$" + parseInt(montoVehiculo).toLocaleString();
+                  document.getElementById("mes-entrega-popup").textContent = mesEntrega + " meses";
+                  
+                  // Copiar todas las opciones de pago al popup
+                  const todasLasOpciones = opcionesPagoContainer.innerHTML;
+                  document.getElementById("opcion-seleccionada-popup").innerHTML = `
+                    <h4 style="color: #072386; margin-bottom: 15px;">Opciones Disponibles:</h4>
+                    <div style="display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr);">
+                      ${todasLasOpciones}
+                    </div>
+                  `;
+                  
+                  // Mostrar popup
+                  document.getElementById("popup").classList.remove("hidden");
+                  
+                  console.log("Abriendo popup JUSTO A TIEMPO con todas las opciones:", {
+                    vehiculo: marcaModelo,
+                    precio: avaluoActual,
+                    mesEntrega: mesEntrega,
+                    montoVehiculo: montoVehiculo,
+                    imagen: imagenSeleccionada,
+                    plan: planSeleccionado,
+                    totalOpciones: opcionesPagoContainer.children.length
+                  });
+                  
+                  // Habilitar botón al finalizar
+                  btnContinuar.disabled = false;
+                  btnContinuar.style.opacity = "1";
+                  btnContinuar.style.cursor = "pointer";
+                } else {
+                  // Habilitar botón si hay error
+                  btnContinuar.disabled = false;
+                  btnContinuar.style.opacity = "1";
+                  btnContinuar.style.cursor = "pointer";
+                  alert("Por favor completa todos los campos antes de continuar.");
+                }
+              });
+              document.getElementById("continuar-justo-tiempo").setAttribute('data-listener-continuar-justo-tiempo', 'true');
+            }
             
             // Botón continuar CON ENTRADA - abrir popup
             document.getElementById("continuar-con-entrada").addEventListener("click", () => {
@@ -1513,126 +1629,187 @@
             seleccionarPropiedad("construcciones", "Construcción", "https://finanmotors.com/wp-content/uploads/2025/11/construccion.jpg");
           });
 
-          // Event listeners para opciones de financiación inmobiliaria
-          document.getElementById("con-entrada-inmob").addEventListener("click", () => {
-            planSeleccionado = "PLAN ADELANTADO INMOBILIARIO";
-            document.getElementById("opciones-financiacion-inmob").classList.add("hidden");
-            document.getElementById("opciones-con-entrada-inmob").classList.remove("hidden");
-            
-            // Actualizar información de la propiedad
-            document.getElementById("precio-vehiculo-con-entrada-inmob").value = "AVALUO $" + avaluoActual;
-            const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
-            document.getElementById("marca_modelo_inmob").textContent = propiedadNombre;
-            
-            // Inicializar cálculos para inmobiliario
-            cargarDatosYActualizarResultadosInmobiliario(
-              "montoSelectInmob",
-              "mesesSelectInmob",
-              "resultadoPrecioInmob",
-              "resultadoInscripcionInmob",
-              "porcentaje_inmob"
-            );
-          });
+          // Event listeners para opciones de financiación inmobiliaria - protegidos contra duplicados
+          if (!document.getElementById("con-entrada-inmob").hasAttribute('data-listener-con-entrada-inmob')) {
+            document.getElementById("con-entrada-inmob").addEventListener("click", () => {
+              planSeleccionado = "PLAN ADELANTADO INMOBILIARIO";
+              document.getElementById("opciones-financiacion-inmob").classList.add("hidden");
+              document.getElementById("opciones-con-entrada-inmob").classList.remove("hidden");
+              
+              // Actualizar información de la propiedad
+              document.getElementById("precio-vehiculo-con-entrada-inmob").value = "AVALUO $" + avaluoActual;
+              const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
+              document.getElementById("marca_modelo_inmob").textContent = propiedadNombre;
+              
+              // Inicializar cálculos para inmobiliario
+              cargarDatosYActualizarResultadosInmobiliario(
+                "montoSelectInmob",
+                "mesesSelectInmob",
+                "resultadoPrecioInmob",
+                "resultadoInscripcionInmob",
+                "porcentaje_inmob"
+              );
+            });
+            document.getElementById("con-entrada-inmob").setAttribute('data-listener-con-entrada-inmob', 'true');
+          }
 
-          document.getElementById("sin-entrada-inmob").addEventListener("click", () => {
-            planSeleccionado = "PLAN PUNTUACIÓN INMOBILIARIO";
-            document.getElementById("opciones-financiacion-inmob").classList.add("hidden");
-            document.getElementById("opciones-sin-entrada-inmob").classList.remove("hidden");
-            
-            // Actualizar información de la propiedad
-            document.getElementById("precio-vehiculo-sin-entrada-inmob").value = "AVALUO $" + avaluoActual;
-            const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
-            document.getElementById("marca_modelo_sin_entrada_inmob").textContent = propiedadNombre;
-            
-            // Inicializar cálculos para SIN ENTRADA inmobiliario
-            cargarDatosYActualizarResultadosInmobiliario(
-              "montoSelectSinEntradaInmob",
-              "mesesSelectSinEntradaInmob", 
-              "resultadoPrecioSinEntradaInmob",
-              "resultadoInscripcionSinEntradaInmob",
-              null,
-              "SIN_ENTRADA"
-            );
-          });
-          
-          // Botones volver a opciones inmobiliario
-          document.getElementById("volver-opciones-inmob").addEventListener("click", () => {
-            document.getElementById("opciones-con-entrada-inmob").classList.add("hidden");
-            document.getElementById("opciones-financiacion-inmob").classList.remove("hidden");
-          });
-          
-          document.getElementById("volver-opciones-sin-entrada-inmob").addEventListener("click", () => {
-            document.getElementById("opciones-sin-entrada-inmob").classList.add("hidden");
-            document.getElementById("opciones-financiacion-inmob").classList.remove("hidden");
-          });
-          
-          // Botones continuar inmobiliario
-          document.getElementById("continuar-con-entrada-inmob").addEventListener("click", () => {
-            const montoSelect = document.getElementById("montoSelectInmob");
-            const mesesSelect = document.getElementById("mesesSelectInmob");
-            const porcentajeSelect = document.getElementById("porcentaje_inmob");
-            
-            if (avaluoActual > 0 && montoSelect.value && mesesSelect.value && porcentajeSelect.value) {
-              // Preparar datos para el popup
+          if (!document.getElementById("sin-entrada-inmob").hasAttribute('data-listener-sin-entrada-inmob')) {
+            document.getElementById("sin-entrada-inmob").addEventListener("click", () => {
+              planSeleccionado = "PLAN PUNTUACIÓN INMOBILIARIO";
+              document.getElementById("opciones-financiacion-inmob").classList.add("hidden");
+              document.getElementById("opciones-sin-entrada-inmob").classList.remove("hidden");
+              
+              // Actualizar información de la propiedad
+              document.getElementById("precio-vehiculo-sin-entrada-inmob").value = "AVALUO $" + avaluoActual;
               const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
-              const resultadoPrecio = document.getElementById("resultadoPrecioInmob").textContent;
-              const resultadoInscripcion = document.getElementById("resultadoInscripcionInmob").textContent;
+              document.getElementById("marca_modelo_sin_entrada_inmob").textContent = propiedadNombre;
               
-              // Configurar popup
-              document.getElementById("imagen-carro").src = imagenSeleccionada;
-              document.getElementById("usuario").textContent = "";
-              
-              // Ocultar select de primer vehículo porque es inmobiliario
-              document.getElementById("primero-renovacion").style.display = "none";
-              
-              // Mostrar popup
-              document.getElementById("popup").classList.remove("hidden");
-              
-              console.log("Abriendo popup CON ENTRADA INMOBILIARIO con datos:", {
-                propiedad: propiedadNombre,
-                precio: avaluoActual,
-                cuotaMensual: resultadoPrecio,
-                inscripcion: resultadoInscripcion,
-                imagen: imagenSeleccionada,
-                plan: planSeleccionado
-              });
-            } else {
-              alert("Por favor completa todos los campos antes de continuar.");
-            }
-          });
+              // Inicializar cálculos para SIN ENTRADA inmobiliario
+              cargarDatosYActualizarResultadosInmobiliario(
+                "montoSelectSinEntradaInmob",
+                "mesesSelectSinEntradaInmob", 
+                "resultadoPrecioSinEntradaInmob",
+                "resultadoInscripcionSinEntradaInmob",
+                null,
+                "SIN_ENTRADA"
+              );
+            });
+            document.getElementById("sin-entrada-inmob").setAttribute('data-listener-sin-entrada-inmob', 'true');
+          }
           
-          document.getElementById("continuar-sin-entrada-inmob").addEventListener("click", () => {
-            const montoSelect = document.getElementById("montoSelectSinEntradaInmob");
-            const mesesSelect = document.getElementById("mesesSelectSinEntradaInmob");
-            
-            if (avaluoActual > 0 && montoSelect.value && mesesSelect.value) {
-              // Preparar datos para el popup
-              const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
-              const resultadoPrecio = document.getElementById("resultadoPrecioSinEntradaInmob").textContent;
-              const resultadoInscripcion = document.getElementById("resultadoInscripcionSinEntradaInmob").textContent;
+          // Botones volver a opciones inmobiliario - protegidos contra duplicados con limpieza de datos
+          if (!document.getElementById("volver-opciones-inmob").hasAttribute('data-listener-volver-inmob')) {
+            document.getElementById("volver-opciones-inmob").addEventListener("click", () => {
+              // Limpiar selectores y resultados
+              document.getElementById("montoSelectInmob").value = "";
+              document.getElementById("mesesSelectInmob").value = "";
+              document.getElementById("porcentaje_inmob").value = "";
+              document.getElementById("resultadoPrecioInmob").textContent = "0";
+              document.getElementById("resultadoInscripcionInmob").textContent = "0";
               
-              // Configurar popup
-              document.getElementById("imagen-carro").src = imagenSeleccionada;
-              document.getElementById("usuario").textContent = "";
+              document.getElementById("opciones-con-entrada-inmob").classList.add("hidden");
+              document.getElementById("opciones-financiacion-inmob").classList.remove("hidden");
+            });
+            document.getElementById("volver-opciones-inmob").setAttribute('data-listener-volver-inmob', 'true');
+          }
+          
+          if (!document.getElementById("volver-opciones-sin-entrada-inmob").hasAttribute('data-listener-volver-sin-entrada-inmob')) {
+            document.getElementById("volver-opciones-sin-entrada-inmob").addEventListener("click", () => {
+              // Limpiar selectores y resultados
+              document.getElementById("montoSelectSinEntradaInmob").value = "";
+              document.getElementById("mesesSelectSinEntradaInmob").value = "";
+              document.getElementById("resultadoPrecioSinEntradaInmob").textContent = "0";
+              document.getElementById("resultadoInscripcionSinEntradaInmob").textContent = "0";
               
-              // Ocultar select de primer vehículo porque es inmobiliario
-              document.getElementById("primero-renovacion").style.display = "none";
+              document.getElementById("opciones-sin-entrada-inmob").classList.add("hidden");
+              document.getElementById("opciones-financiacion-inmob").classList.remove("hidden");
+            });
+            document.getElementById("volver-opciones-sin-entrada-inmob").setAttribute('data-listener-volver-sin-entrada-inmob', 'true');
+          }
+          
+          // Botones continuar inmobiliario - protegidos contra duplicados
+          if (!document.getElementById("continuar-con-entrada-inmob").hasAttribute('data-listener-continuar-con-entrada-inmob')) {
+            document.getElementById("continuar-con-entrada-inmob").addEventListener("click", () => {
+              const montoSelect = document.getElementById("montoSelectInmob");
+              const mesesSelect = document.getElementById("mesesSelectInmob");
+              const porcentajeSelect = document.getElementById("porcentaje_inmob");
+              const btnContinuar = document.getElementById("continuar-con-entrada-inmob");
               
-              // Mostrar popup
-              document.getElementById("popup").classList.remove("hidden");
+              // Deshabilitar botón durante procesamiento
+              btnContinuar.disabled = true;
+              btnContinuar.style.opacity = "0.5";
+              btnContinuar.style.cursor = "not-allowed";
               
-              console.log("Abriendo popup SIN ENTRADA INMOBILIARIO con datos:", {
-                propiedad: propiedadNombre,
-                precio: avaluoActual,
-                cuotaMensual: resultadoPrecio,
-                inscripcion: resultadoInscripcion,
-                imagen: imagenSeleccionada,
-                plan: planSeleccionado
-              });
-            } else {
-              alert("Por favor completa todos los campos antes de continuar.");
-            }
-          });
+              if (avaluoActual > 0 && montoSelect.value && mesesSelect.value && porcentajeSelect.value) {
+                // Preparar datos para el popup
+                const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
+                const resultadoPrecio = document.getElementById("resultadoPrecioInmob").textContent;
+                const resultadoInscripcion = document.getElementById("resultadoInscripcionInmob").textContent;
+                
+                // Configurar popup
+                document.getElementById("imagen-carro").src = imagenSeleccionada;
+                document.getElementById("usuario").textContent = "";
+                
+                // Ocultar select de primer vehículo porque es inmobiliario
+                document.getElementById("primero-renovacion").style.display = "none";
+                
+                // Mostrar popup
+                document.getElementById("popup").classList.remove("hidden");
+                
+                console.log("Abriendo popup CON ENTRADA INMOBILIARIO con datos:", {
+                  propiedad: propiedadNombre,
+                  precio: avaluoActual,
+                  cuotaMensual: resultadoPrecio,
+                  inscripcion: resultadoInscripcion,
+                  imagen: imagenSeleccionada,
+                  plan: planSeleccionado
+                });
+                
+                // Habilitar botón al finalizar
+                btnContinuar.disabled = false;
+                btnContinuar.style.opacity = "1";
+                btnContinuar.style.cursor = "pointer";
+              } else {
+                // Habilitar botón si hay error
+                btnContinuar.disabled = false;
+                btnContinuar.style.opacity = "1";
+                btnContinuar.style.cursor = "pointer";
+                alert("Por favor completa todos los campos antes de continuar.");
+              }
+            });
+            document.getElementById("continuar-con-entrada-inmob").setAttribute('data-listener-continuar-con-entrada-inmob', 'true');
+          }
+          
+          if (!document.getElementById("continuar-sin-entrada-inmob").hasAttribute('data-listener-continuar-sin-entrada-inmob')) {
+            document.getElementById("continuar-sin-entrada-inmob").addEventListener("click", () => {
+              const montoSelect = document.getElementById("montoSelectSinEntradaInmob");
+              const mesesSelect = document.getElementById("mesesSelectSinEntradaInmob");
+              const btnContinuar = document.getElementById("continuar-sin-entrada-inmob");
+              
+              // Deshabilitar botón durante procesamiento
+              btnContinuar.disabled = true;
+              btnContinuar.style.opacity = "0.5";
+              btnContinuar.style.cursor = "not-allowed";
+              
+              if (avaluoActual > 0 && montoSelect.value && mesesSelect.value) {
+                // Preparar datos para el popup
+                const propiedadNombre = document.getElementById("propiedad-nombre").textContent;
+                const resultadoPrecio = document.getElementById("resultadoPrecioSinEntradaInmob").textContent;
+                const resultadoInscripcion = document.getElementById("resultadoInscripcionSinEntradaInmob").textContent;
+                
+                // Configurar popup
+                document.getElementById("imagen-carro").src = imagenSeleccionada;
+                document.getElementById("usuario").textContent = "";
+                
+                // Ocultar select de primer vehículo porque es inmobiliario
+                document.getElementById("primero-renovacion").style.display = "none";
+                
+                // Mostrar popup
+                document.getElementById("popup").classList.remove("hidden");
+                
+                console.log("Abriendo popup SIN ENTRADA INMOBILIARIO con datos:", {
+                  propiedad: propiedadNombre,
+                  precio: avaluoActual,
+                  cuotaMensual: resultadoPrecio,
+                  inscripcion: resultadoInscripcion,
+                  imagen: imagenSeleccionada,
+                  plan: planSeleccionado
+                });
+                
+                // Habilitar botón al finalizar
+                btnContinuar.disabled = false;
+                btnContinuar.style.opacity = "1";
+                btnContinuar.style.cursor = "pointer";
+              } else {
+                // Habilitar botón si hay error
+                btnContinuar.disabled = false;
+                btnContinuar.style.opacity = "1";
+                btnContinuar.style.cursor = "pointer";
+                alert("Por favor completa todos los campos antes de continuar.");
+              }
+            });
+            document.getElementById("continuar-sin-entrada-inmob").setAttribute('data-listener-continuar-sin-entrada-inmob', 'true');
+          }
 
           // Cargar datos inmobiliarios
           cargarDatosInmobiliarios();
