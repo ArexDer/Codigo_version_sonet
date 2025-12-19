@@ -40,7 +40,7 @@ body {
 }
 
 .hidden {
-    display: none !important;
+    display: none;
 }
 
 /* ========== ELEMENTOS GENERALES ========== */
@@ -251,12 +251,13 @@ button:hover {
 
 /* 2.1 Tipos de vehículos (.vehicle-types) */
 .vehicle-types {
-    display: flex;
-    justify-content: center;
-    gap: 35px; /* mayor separación entre elementos */
-    flex-wrap: wrap;
-    margin: 40px 0;
-    padding: 0 20px; /* separación lateral del contenedor */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 40px auto;
+    padding: 0 20px;
+    max-width: 1600px;
+    width: 100%;
 }
 
 .vehicle {
@@ -272,7 +273,7 @@ button:hover {
         box-shadow var(--dur-med) var(--ease-smooth),
         transform var(--dur-slow) var(--ease-smooth);
     background: white;
-    min-width: 190px;
+    width: 100%;
     box-shadow: 0 8px 20px rgba(0,32,92,0.25), inset 0 2px 5px rgba(255,255,255,0.8);
     position: relative;
     overflow: hidden;
@@ -593,7 +594,7 @@ button:hover {
 
 /* Estilos específicos para formulario justo a tiempo */
 #opciones-justo-tiempo {
-    min-height: 550px !important;
+    min-height: 550px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -612,7 +613,7 @@ button:hover {
 
 /* Estilos específicos para formulario justo a tiempo */
 #opciones-justo-tiempo {
-    min-height: 550px !important;
+    min-height: 550px;
     justify-content: space-between;
 }
 
@@ -1053,12 +1054,12 @@ button:hover {
 }
 
 .thankYouMessage {
-    color: #072386 !important;
+    color: #072386;
     font-size: 2.2rem;
     font-weight: bold;
     margin-bottom: 20px;
-    background: none !important;
-    background-color: transparent !important;
+    background: none;
+    background-color: transparent;
 }
 
 #thankYouMessage {
@@ -1188,7 +1189,7 @@ button:hover {
 }
 
 .tabla-opciones-completa .opcion-seleccionada {
-    background-color: #FEDE6E !important;
+    background-color: #FEDE6E;
     border-left: 4px solid #00205C;
     font-weight: bold;
     color: #00205C;
@@ -1197,7 +1198,7 @@ button:hover {
 
 .tabla-opciones-completa .opcion-seleccionada td {
     color: #00205C;
-    background-color: #FEDE6E !important;
+    background-color: #FEDE6E;
     font-weight: bold;
 }
 
@@ -1208,8 +1209,8 @@ button:hover {
 }
 
 #tabla-completa-opciones {
-    display: block !important;
-    visibility: visible !important;
+    display: block;
+    visibility: visible;
     margin: 30px 0;
     padding: 20px;
     background: #f8f9fa;
@@ -1371,22 +1372,22 @@ button:hover {
 }
 
 .resultado-justo-tiempo-overlay p {
-  color: white !important;
+  color: white;
 }
 
 .resultado-justo-tiempo-overlay h4 {
-  color: #FEDE6E !important;
+  color: #FEDE6E;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .resultado-justo-tiempo-overlay div {
-  background: rgba(255, 255, 255, 0.95) !important;
+  background: rgba(255, 255, 255, 0.95);
   border: 2px solid #FEDE6E;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .resultado-justo-tiempo-overlay div p {
-  color: #072386 !important;
+  color: #072386;
 }
 
 /* Botón cerrar overlay */
@@ -1530,15 +1531,15 @@ button:hover {
 
 /* Estilo para opción seleccionada */
 .opcion-pago-seleccionada {
-  border-color: #FEDE6E !important;
-  background-color: #f8f9ff !important;
-  transform: translateY(-3px) !important;
-  box-shadow: 0 6px 20px rgba(7, 35, 134, 0.3) !important;
+  border-color: #FEDE6E;
+  background-color: #f8f9ff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(7, 35, 134, 0.3);
 }
 
 /* Ocultar tabla completa cuando se muestra popup justo tiempo */
 .popup:has(#opciones-pago-justo-tiempo-popup[style*="block"]) #tabla-completa-opciones {
-  display: none !important;
+  display: none;
 }
 
 /* Estilos para opciones en el popup */
@@ -1549,7 +1550,7 @@ button:hover {
 /* Responsive para opciones en popup */
 @media (max-width: 768px) {
   #opcion-seleccionada-popup > div > div {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -2314,10 +2315,10 @@ lottie-player {
 /* Accesibilidad: reducir movimiento si el usuario lo prefiere */
 @media (prefers-reduced-motion: reduce) {
     * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
+        animation-duration: 0.01ms;
+        animation-iteration-count: 1;
+        transition-duration: 0.01ms;
+        scroll-behavior: auto;
     }
 }
 

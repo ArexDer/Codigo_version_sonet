@@ -14,7 +14,7 @@
       // Verificar que jsPDF se cargó correctamente
       window.addEventListener('load', function() {
         if (!window.jspdf && !window.jsPDF) {
-          console.warn('⚠️ jsPDF no se cargó desde CDN principal, intentando cargar versión alternativa...');
+          console.warn(' jsPDF no se cargó desde CDN principal, intentando cargar versión alternativa...');
           const script = document.createElement('script');
           script.src = 'https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js';
           script.onload = () => console.log('✅ jsPDF cargado desde fuente alternativa');
@@ -39,7 +39,7 @@
     <!-- Contenedor de animación de nieve (Lottie) -->
     <lottie-player 
       id="lottie-snow"
-      src="https://finanmotors.com/wp-content/uploads/2025/12/Snow-Off-white.json"
+      src="https://finan.ec/wp-content/uploads/2025/12/Parkinsans-VariableFont_wght.ttf"
       background="transparent"
       speed="1"
       loop
@@ -66,19 +66,19 @@
         <!-- Tipos de vehículos -->
         <div class="vehicle-types">
           <div class="vehicle" id="selector_autos">
-            <img src="https://finanmotors.com/wp-content/uploads/2024/11/auto_base.png" alt="Autos" />
+            <img src="https://finan.ec/wp-content/uploads/2025/12/auto_base.png" alt="Autos" />
             <p>Autos</p>
           </div>
           <div class="vehicle" id="selector_suvs">
-            <img src="https://finanmotors.com/wp-content/uploads/2024/11/suv_base.png" alt="SUVs" />
+            <img src="https://finan.ec/wp-content/uploads/2025/12/suv_base.png" alt="SUVs" />
             <p>SUVs</p>
           </div>
           <div class="vehicle" id="selector_camionetas">
-            <img src="https://finanmotors.com/wp-content/uploads/2024/11/camioneta_base.png" alt="Camionetas" />
+            <img src="https://finan.ec/wp-content/uploads/2025/12/camioneta_base.png" alt="Camionetas" />
             <p>Camionetas</p>
           </div>
           <div class="vehicle" id="selector_camiones">
-            <img src="https://finanmotors.com/wp-content/uploads/2024/11/camion_base.png" alt="Camiones" />
+            <img src="https://finan.ec/wp-content/uploads/2025/12/camion_base.png" alt="Camiones" />
             <p>Camiones</p>
           </div>
         </div>
@@ -98,7 +98,7 @@
                 </div>
                 
                 <div id="sin-opciones-disponibles" style="display: none; text-align: center; padding: 15px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; margin-top: 10px;">
-                  <p style="margin: 0; color: #09e14e; font-size: 0.85rem; font-weight: bold;">⚠️ No hay opciones disponibles para este mes</p>
+                  <p style="margin: 0; color: #09e14e; font-size: 0.85rem; font-weight: bold;"> No hay opciones disponibles para este mes</p>
                 </div>
                 
                 <!-- Precio mensual e Inscripción -->
@@ -1502,7 +1502,7 @@
             });
             
             function cargarDatosYActualizarResultados(montoSelectId, mesesSelectId, resultadoPrecioId, resultadoInscripcionId, tipoEntrada = "CON_ENTRADA") {
-              fetch("https://finanmotors.com/vehicular_M.json")
+              fetch("https://finan.ec/vehicular_M.json")
                 .then((response) => response.json())
                 .then((data) => {
                   const montoSelect = document.getElementById(montoSelectId);
@@ -1876,7 +1876,7 @@
 
         // Cargar datos de vehículos desde la API real
         function cargarDatosVehiculos() {
-          fetch("https://finanmotors.com/wp-content/themes/hello-elementor/modelo.json")
+          fetch("https://finan.ec/modelo.json")
             .then((response) => {
               if (!response.ok) {
                 throw new Error("Network response was not ok " + response.statusText);
@@ -2093,12 +2093,12 @@
                     } else {
                       resultadoPrecio.innerText = "No disponible";
                       resultadoInscripcion.innerText = inscripcion.toLocaleString();
-                      console.warn("⚠️ Cuota mensual no disponible para:", mesesSeleccionados);
+                      console.warn(" Cuota mensual no disponible para:", mesesSeleccionados);
                     }
                   } else {
                     resultadoPrecio.innerText = "0";
                     resultadoInscripcion.innerText = "0";
-                    console.warn("⚠️ No se encontró registro para el monto:", montoSeleccionado);
+                    console.warn(" No se encontró registro para el monto:", montoSeleccionado);
                   }
                 } else {
                   resultadoPrecio.innerText = "0";
@@ -2277,7 +2277,7 @@
               const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
               
               if (!montoJusto || !mesJusto || !vehiculoNombre) {
-                alert('⚠️ Faltan datos para generar el PDF:\n\n' + 
+                alert(' Faltan datos para generar el PDF:\n\n' + 
                       (!montoJusto ? '• Monto seleccionado\n' : '') +
                       (!mesJusto ? '• Mes de entrega\n' : '') +
                       (!vehiculoNombre ? '• Vehículo seleccionado\n' : '') +
@@ -2296,7 +2296,7 @@
             } else if (tipoSeleccionado === 'inmobiliario') {
               // Validar datos para inmobiliario
               if (!monthlyPrice || !selectedMonths || !montoEstimado) {
-                alert('⚠️ Faltan datos para generar el PDF. Por favor, completa todos los campos del formulario.');
+                alert(' Faltan datos para generar el PDF. Por favor, completa todos los campos del formulario.');
                 return;
               }
               
@@ -2311,7 +2311,7 @@
             } else {
               // Validar datos para planes estándar
               if (!monthlyPrice || !selectedMonths || !montoEstimado) {
-                alert('⚠️ Faltan datos para generar el PDF. Por favor, completa todos los campos del formulario.');
+                alert(' Faltan datos para generar el PDF. Por favor, completa todos los campos del formulario.');
                 return;
               }
               
@@ -2620,7 +2620,7 @@
           });
           
           // Cargar datos del JSON para obtener precios reales
-          fetch("https://finanmotors.com/vehicular_M.json")
+          fetch("https://finan.ec/vehicular_M.json")
             .then(response => response.json())
             .then(datosJSON => {
               // Para cada opción, obtener el precio mensual e inscripción del JSON
@@ -2717,7 +2717,7 @@
                   vehiculoImagen.classList.add('opciones-activas');
                 }
                 
-                console.log('⚠️ No hay opciones disponibles para este mes');
+                console.log(' No hay opciones disponibles para este mes');
               }
               
               seccionOpciones.style.display = 'block';
@@ -2826,7 +2826,7 @@
           } else {
             opcionesHTML = `
               <div style="background: #fff3cd; padding: 20px; border-radius: 10px; border: 2px solid #ffc107; text-align: center;">
-                <h4 style="margin: 0 0 10px 0; color: #856404;">⚠️ No hay opciones disponibles</h4>
+                <h4 style="margin: 0 0 10px 0; color: #856404;"> No hay opciones disponibles</h4>
                 <p style="margin: 0; color: #856404;">El mes ${mesEntrega} no está disponible con el monto seleccionado.</p>
               </div>
             `;
@@ -3035,7 +3035,7 @@
           
           // Si no hay datos específicos, usar valores por defecto
           if (!registroMonto && montoSeleccionadoGlobal) {
-            console.log("⚠️ No se encontró registro específico, usando valores por defecto");
+            console.log(" No se encontró registro específico, usando valores por defecto");
             registroMonto = {
               MONTO: montoSeleccionadoGlobal,
               INSCRIPCION: Math.round(montoSeleccionadoGlobal * 0.15), // 15% del monto como inscripción por defecto
@@ -3241,7 +3241,7 @@
                 if (data.sent_company && data.sent_client) {
                   console.log('🎉 PDF enviado exitosamente a ambos destinatarios');
                 } else if (data.sent_company || data.sent_client) {
-                  console.warn('⚠️ PDF enviado parcialmente:', {
+                  console.warn(' PDF enviado parcialmente:', {
                     empresa: data.sent_company,
                     cliente: data.sent_client
                   });
@@ -4356,7 +4356,7 @@
           
           // Cargar JSON vehicular una sola vez
           let datosJSON = null;
-          fetch("https://finanmotors.com/vehicular_M.json")
+          fetch("https://finan.ec/vehicular_M.json")
             .then(response => response.json())
             .then(data => {
               datosJSON = data;
@@ -4464,7 +4464,7 @@
                     console.log(`💰 Precio mensual (desde JSON): $${precioMensualJSON}`);
                     console.log(`📋 Inscripción (desde JSON): $${inscripcionJSON}`);
                   } else {
-                    console.warn(`⚠️ Monto ${monto} no encontrado en el JSON`);
+                    console.warn(` Monto ${monto} no encontrado en el JSON`);
                     document.getElementById("resultadoPrecioJustoTiempo").textContent = "0";
                     document.getElementById("resultadoInscripcionJustoTiempo").textContent = "0";
                   }
@@ -4512,7 +4512,7 @@
                     }
                   }
                   
-                  console.log(`⚠️ No hay opciones disponibles para el mes ${mesEntregaValue}`);
+                  console.log(` No hay opciones disponibles para el mes ${mesEntregaValue}`);
                 }
               } else {
                 // Si solo hay mes de entrega sin monto, limpiar resultados
