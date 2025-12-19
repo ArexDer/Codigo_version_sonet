@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test SMTP - FINAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #00205C;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .section h3 {
+            color: #00205C;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        input, button {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        .result.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #bee5eb;
+        }
+        .result h4 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        pre {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+            margin-top: 10px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 5px 5px 5px 0;
+        }
+        .badge.success { background: #28a745; color: white; }
+        .badge.error { background: #dc3545; color: white; }
+        .badge.warning { background: #ffc107; color: #000; }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .info-item strong {
+            display: block;
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .info-item span {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test de Configuración SMTP</h1>
+        <p class="subtitle">Diagnóstico completo del sistema de correos</p>
+
+        <div class="section">
+            <h3>📧 Enviar Correo de Prueba</h3>
+            <input type="email" id="testEmail" placeholder="correo@ejemplo.com" 
+                   value="diegorivas10101@gmail.com">
+            <button onclick="enviarTest()">Enviar Test de Correo</button>
+        </div>
+
+        <div class="section">
+            <h3>📊 Verificar Logs del Servidor</h3>
+            <button onclick="verificarLogs()">Ver Últimos Logs</button>
+        </div>
+
+        <div class="spinner" id="spinner"></div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        async function enviarTest() {
+            const email = document.getElementById('testEmail').value;
+            const resultDiv = document.getElementById('result');
+            const spinner = document.getElementById('spinner');
+            
+            if (!email) {
+                mostrarResultado('error', 'Por favor ingresa un correo válido');
+                return;
+            }
+
+            resultDiv.style.display = 'none';
+            spinner.style.display = 'block';
+
+            try {
+                console.log('🔄 Enviando test de correo a:', email);
+                
+                const response = await fetch('/wp-json/pdf/v1/test-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+
+                const data = await response.json();
+                console.log('📧 Respuesta del servidor:', data);
+
+                spinner.style.display = 'none';
+
+                if (data.success) {
+                    let html = `<h4>✅ Test Exitoso</h4>`;
+                    html += `<p><strong>Correo enviado a:</strong> ${data.email}</p>`;
+                    html += `<p><strong>Método:</strong> ${data.mail_method}</p>`;
+                    html += `<p><strong>Hora:</strong> ${data.timestamp}</p>`;
+                    
+                    if (data.debug) {
+                        html += `<div class="info-grid">`;
+                        html += `<div class="info-item"><strong>Servidor</strong><span>${data.debug.server_software || 'N/A'}</span></div>`;
+                        html += `</div>`;
+                    }
+                    
+                    html += `<p style="margin-top: 15px;">🎉 <strong>Revisa tu bandeja de entrada y spam!</strong></p>`;
+                    mostrarResultado('success', html);
+                } else {
+                    let html = `<h4>❌ Error en el Envío</h4>`;
+                    html += `<p>${data.message}</p>`;
+                    
+                    if (data.debug && data.debug.mail_errors && data.debug.mail_errors.length > 0) {
+                        html += `<h4 style="margin-top: 15px;">Errores detectados:</h4>`;
+                        data.debug.mail_errors.forEach(err => {
+                            html += `<p class="badge error">${err}</p>`;
+                        });
+                    }
+                    
+                    if (data.troubleshooting && data.troubleshooting.suggestions) {
+                        html += `<h4 style="margin-top: 15px;">Posibles soluciones:</h4>`;
+                        html += `<ul style="margin-left: 20px; margin-top: 10px;">`;
+                        data.troubleshooting.suggestions.forEach(s => {
+                            html += `<li style="margin: 5px 0;">${s}</li>`;
+                        });
+                        html += `</ul>`;
+                    }
+                    
+                    if (data.debug) {
+                        html += `<pre>${JSON.stringify(data.debug, null, 2)}</pre>`;
+                    }
+                    
+                    mostrarResultado('error', html);
+                }
+            } catch (error) {
+                spinner.style.display = 'none';
+                console.error('❌ Error:', error);
+                mostrarResultado('error', `
+                    <h4>❌ Error de Conexión</h4>
+                    <p>${error.message}</p>
+                    <p>Verifica que WordPress esté funcionando correctamente.</p>
+                `);
+            }
+        }
+
+        async function verificarLogs() {
+            const resultDiv = document.getElementById('result');
+            const spinner = document.getElementById('spinner');
+            
+            resultDiv.style.display = 'none';
+            spinner.style.display = 'block';
+
+            try {
+                // Intentar leer el archivo de log
+                const response = await fetch('/wp-content/uploads/finan_pdf_log.txt');
+                
+                spinner.style.display = 'none';
+
+                if (response.ok) {
+                    const logContent = await response.text();
+                    const lines = logContent.split('\n').slice(-50).reverse(); // Últimas 50 líneas
+                    
+                    let html = `<h4>📋 Últimos Logs del Sistema</h4>`;
+                    html += `<pre>${lines.join('\n')}</pre>`;
+                    html += `<p style="margin-top: 15px;">💡 <strong>Tip:</strong> Busca mensajes con [FINAN SMTP] para ver la actividad SMTP.</p>`;
+                    
+                    mostrarResultado('info', html);
+                } else {
+                    mostrarResultado('warning', `
+                        <h4>⚠️ No se encontró archivo de logs</h4>
+                        <p>El archivo de logs aún no existe o no es accesible públicamente.</p>
+                        <p>Intenta enviar un correo primero para generar logs.</p>
+                    `);
+                }
+            } catch (error) {
+                spinner.style.display = 'none';
+                mostrarResultado('error', `
+                    <h4>❌ Error al leer logs</h4>
+                    <p>${error.message}</p>
+                    <p>Verifica los permisos del directorio wp-content/uploads/</p>
+                `);
+            }
+        }
+
+        function mostrarResultado(tipo, html) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = `result ${tipo}`;
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+        }
+
+        // Auto-focus en el input al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('testEmail').focus();
+        });
+    </script>
+</body>
+</html>

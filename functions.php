@@ -1,395 +1,113 @@
 <?php
 /**
- * Theme functions and definitions
+ * Blocksy functions and definitions
  *
- * @package HelloElementor
+ * @link https://developer.wordpress.org/themes/basics/theme-functions/
+ *
+ * @package Blocksy
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
-define( 'HELLO_ELEMENTOR_VERSION', '3.4.3' );
-define( 'EHP_THEME_SLUG', 'hello-elementor' );
-
-define( 'HELLO_THEME_PATH', get_template_directory() );
-define( 'HELLO_THEME_URL', get_template_directory_uri() );
-define( 'HELLO_THEME_ASSETS_PATH', HELLO_THEME_PATH . '/assets/' );
-define( 'HELLO_THEME_ASSETS_URL', HELLO_THEME_URL . '/assets/' );
-define( 'HELLO_THEME_SCRIPTS_PATH', HELLO_THEME_ASSETS_PATH . 'js/' );
-define( 'HELLO_THEME_SCRIPTS_URL', HELLO_THEME_ASSETS_URL . 'js/' );
-define( 'HELLO_THEME_STYLE_PATH', HELLO_THEME_ASSETS_PATH . 'css/' );
-define( 'HELLO_THEME_STYLE_URL', HELLO_THEME_ASSETS_URL . 'css/' );
-define( 'HELLO_THEME_IMAGES_PATH', HELLO_THEME_ASSETS_PATH . 'images/' );
-define( 'HELLO_THEME_IMAGES_URL', HELLO_THEME_ASSETS_URL . 'images/' );
-
-if ( ! isset( $content_width ) ) {
-	$content_width = 800; // Pixels.
-}
-
-if ( ! function_exists( 'hello_elementor_setup' ) ) {
-	/**
-	 * Set up theme support.
-	 *
-	 * @return void
-	 */
-	function hello_elementor_setup() {
-		if ( is_admin() ) {
-			hello_maybe_update_theme_version_in_db();
-		}
-
-		if ( apply_filters( 'hello_elementor_register_menus', true ) ) {
-			register_nav_menus( [ 'menu-1' => esc_html__( 'Header', 'hello-elementor' ) ] );
-			register_nav_menus( [ 'menu-2' => esc_html__( 'Footer', 'hello-elementor' ) ] );
-		}
-
-		if ( apply_filters( 'hello_elementor_post_type_support', true ) ) {
-			add_post_type_support( 'page', 'excerpt' );
-		}
-
-		if ( apply_filters( 'hello_elementor_add_theme_support', true ) ) {
-			add_theme_support( 'post-thumbnails' );
-			add_theme_support( 'automatic-feed-links' );
-			add_theme_support( 'title-tag' );
-			add_theme_support(
-				'html5',
-				[
-					'search-form',
-					'comment-form',
-					'comment-list',
-					'gallery',
-					'caption',
-					'script',
-					'style',
-				]
-			);
-			add_theme_support(
-				'custom-logo',
-				[
-					'height'      => 100,
-					'width'       => 350,
-					'flex-height' => true,
-					'flex-width'  => true,
-				]
-			);
-			add_theme_support( 'align-wide' );
-			add_theme_support( 'responsive-embeds' );
-
-			/*
-			 * Editor Styles
-			 */
-			add_theme_support( 'editor-styles' );
-			add_editor_style( 'editor-styles.css' );
-
-			/*
-			 * WooCommerce.
-			 */
-			if ( apply_filters( 'hello_elementor_add_woocommerce_support', true ) ) {
-				// WooCommerce in general.
-				add_theme_support( 'woocommerce' );
-				// Enabling WooCommerce product gallery features (are off by default since WC 3.0.0).
-				// zoom.
-				add_theme_support( 'wc-product-gallery-zoom' );
-				// lightbox.
-				add_theme_support( 'wc-product-gallery-lightbox' );
-				// swipe.
-				add_theme_support( 'wc-product-gallery-slider' );
-			}
-		}
-	}
-}
-add_action( 'after_setup_theme', 'hello_elementor_setup' );
-
-function hello_maybe_update_theme_version_in_db() {
-	$theme_version_option_name = 'hello_theme_version';
-	// The theme version saved in the database.
-	$hello_theme_db_version = get_option( $theme_version_option_name );
-
-	// If the 'hello_theme_version' option does not exist in the DB, or the version needs to be updated, do the update.
-	if ( ! $hello_theme_db_version || version_compare( $hello_theme_db_version, HELLO_ELEMENTOR_VERSION, '<' ) ) {
-		update_option( $theme_version_option_name, HELLO_ELEMENTOR_VERSION );
-	}
-}
-
-if ( ! function_exists( 'hello_elementor_display_header_footer' ) ) {
-	/**
-	 * Check whether to display header footer.
-	 *
-	 * @return bool
-	 */
-	function hello_elementor_display_header_footer() {
-		$hello_elementor_header_footer = true;
-
-		return apply_filters( 'hello_elementor_header_footer', $hello_elementor_header_footer );
-	}
-}
-
-if ( ! function_exists( 'hello_elementor_scripts_styles' ) ) {
-	/**
-	 * Theme Scripts & Styles.
-	 *
-	 * @return void
-	 */
-	function hello_elementor_scripts_styles() {
-		$min_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
-		if ( apply_filters( 'hello_elementor_enqueue_style', true ) ) {
-			wp_enqueue_style(
-				'hello-elementor',
-				get_template_directory_uri() . '/style' . $min_suffix . '.css',
-				[],
-				HELLO_ELEMENTOR_VERSION
-			);
-		}
-
-		if ( apply_filters( 'hello_elementor_enqueue_theme_style', true ) ) {
-			wp_enqueue_style(
-				'hello-elementor-theme-style',
-				get_template_directory_uri() . '/theme' . $min_suffix . '.css',
-				[],
-				HELLO_ELEMENTOR_VERSION
-			);
-		}
-
-		if ( hello_elementor_display_header_footer() ) {
-			wp_enqueue_style(
-				'hello-elementor-header-footer',
-				get_template_directory_uri() . '/header-footer' . $min_suffix . '.css',
-				[],
-				HELLO_ELEMENTOR_VERSION
-			);
-		}
-	}
-}
-add_action( 'wp_enqueue_scripts', 'hello_elementor_scripts_styles' );
-
-if ( ! function_exists( 'hello_elementor_register_elementor_locations' ) ) {
-	/**
-	 * Register Elementor Locations.
-	 *
-	 * @param ElementorPro\Modules\ThemeBuilder\Classes\Locations_Manager $elementor_theme_manager theme manager.
-	 *
-	 * @return void
-	 */
-	function hello_elementor_register_elementor_locations( $elementor_theme_manager ) {
-		if ( apply_filters( 'hello_elementor_register_elementor_locations', true ) ) {
-			$elementor_theme_manager->register_all_core_location();
-		}
-	}
-}
-add_action( 'elementor/theme/register_locations', 'hello_elementor_register_elementor_locations' );
-
-if ( ! function_exists( 'hello_elementor_content_width' ) ) {
-	/**
-	 * Set default content width.
-	 *
-	 * @return void
-	 */
-	function hello_elementor_content_width() {
-		$GLOBALS['content_width'] = apply_filters( 'hello_elementor_content_width', 800 );
-	}
-}
-add_action( 'after_setup_theme', 'hello_elementor_content_width', 0 );
-
-if ( ! function_exists( 'hello_elementor_add_description_meta_tag' ) ) {
-	/**
-	 * Add description meta tag with excerpt text.
-	 *
-	 * @return void
-	 */
-	function hello_elementor_add_description_meta_tag() {
-		if ( ! apply_filters( 'hello_elementor_description_meta_tag', true ) ) {
-			return;
-		}
-
-		if ( ! is_singular() ) {
-			return;
-		}
-
-		$post = get_queried_object();
-		if ( empty( $post->post_excerpt ) ) {
-			return;
-		}
-
-		echo '<meta name="description" content="' . esc_attr( wp_strip_all_tags( $post->post_excerpt ) ) . '">' . "\n";
-	}
-}
-add_action( 'wp_head', 'hello_elementor_add_description_meta_tag' );
-
-// Settings page
-require get_template_directory() . '/includes/settings-functions.php';
-
-// Header & footer styling option, inside Elementor
-require get_template_directory() . '/includes/elementor-functions.php';
-
-if ( ! function_exists( 'hello_elementor_customizer' ) ) {
-	// Customizer controls
-	function hello_elementor_customizer() {
-		if ( ! is_customize_preview() ) {
-			return;
-		}
-
-		if ( ! hello_elementor_display_header_footer() ) {
-			return;
-		}
-
-		require get_template_directory() . '/includes/customizer-functions.php';
-	}
-}
-add_action( 'init', 'hello_elementor_customizer' );
-
-if ( ! function_exists( 'hello_elementor_check_hide_title' ) ) {
-	/**
-	 * Check whether to display the page title.
-	 *
-	 * @param bool $val default value.
-	 *
-	 * @return bool
-	 */
-	function hello_elementor_check_hide_title( $val ) {
-		if ( defined( 'ELEMENTOR_VERSION' ) ) {
-			$current_doc = Elementor\Plugin::instance()->documents->get( get_the_ID() );
-			if ( $current_doc && 'yes' === $current_doc->get_settings( 'hide_title' ) ) {
-				$val = false;
-			}
-		}
-		return $val;
-	}
-}
-add_filter( 'hello_elementor_page_title', 'hello_elementor_check_hide_title' );
-
-/**
- * BC:
- * In v2.7.0 the theme removed the `hello_elementor_body_open()` from `header.php` replacing it with `wp_body_open()`.
- * The following code prevents fatal errors in child themes that still use this function.
- */
-if ( ! function_exists( 'hello_elementor_body_open' ) ) {
-	function hello_elementor_body_open() {
-		wp_body_open();
-	}
-}
-
-require HELLO_THEME_PATH . '/theme.php';
-
-HelloTheme\Theme::instance();
-
-/**
- * FORZAR configuración de correo ANTES que cualquier plugin
- * Evita conflictos con plugins de SMTP
- */
-add_action('plugins_loaded', function() {
-    // Remover cualquier acción previa que pueda estar interfiriendo
-    remove_all_actions('phpmailer_init');
-    
-    // Forzar nuestros filtros
-    add_filter('wp_mail_from', function($from_email) {
-        return 'marketing@finanmotors.com';
-    }, 999); // Prioridad muy alta
-    
-    add_filter('wp_mail_from_name', function($from_name) {
-        return 'FINAN';
-    }, 999);
-    
-    // Forzar configuración simple
-    add_action('phpmailer_init', 'finanmotors_force_simple_mail', 999);
-}, 1); // Prioridad muy temprana
-
-/**
- * Función que FUERZA configuración simple sin SMTP
- */
-function finanmotors_force_simple_mail($phpmailer) {
-    // FORZAR configuración simple, ignorando cualquier configuración SMTP previa
-    $phpmailer->isMail(); // Usar función mail() de PHP
-    $phpmailer->Host = '';
-    $phpmailer->SMTPAuth = false;
-    $phpmailer->Username = '';
-    $phpmailer->Password = '';
-    $phpmailer->SMTPSecure = '';
-    $phpmailer->Port = 25;
-    
-    // Configurar remitente correcto
-    $phpmailer->From = 'marketing@finanmotors.com';
-    $phpmailer->FromName = 'FINAN';
-    $phpmailer->CharSet = 'UTF-8';
-    $phpmailer->Timeout = 30;
-    
-    // Log para verificar que se ejecuta
-    error_log('[FinanMotors] Forced simple mail configuration applied');
-    
-    return $phpmailer;
-}
-
-/**
- * Configurar correos para FINAN (OBSOLETO - mantenido por compatibilidad)
- */
-function finanmotors_configure_mail() {
-    // Esta función ahora es redundante pero se mantiene por compatibilidad
+if (version_compare(PHP_VERSION, '5.7.0', '<')) {
+    require get_template_directory() . '/inc/php-fallback.php';
     return;
 }
-add_action('init', 'finanmotors_configure_mail');
+
+require get_template_directory() . '/inc/init.php';
+
+// =============================================================================
+// PERSONALIZACIÓN FINANMOTORS - CONFIGURACIÓN DE CORREO Y API PDF
+// =============================================================================
 
 /**
- * Configuración simple de correo (sin SMTP)
- * Usar el sistema de correo del hosting
+ * Configuración de correo: respetar WP Mail SMTP si está activo
  */
-function finanmotors_setup_simple_mail($phpmailer) {
-    // Usar el sistema de correo del servidor (más confiable)
-    $phpmailer->isMail(); // Usar función mail() de PHP
-    
-    // Configuraciones básicas
-    $phpmailer->From = 'marketing@finanmotors.com';
-    $phpmailer->FromName = 'FINAN';
-    $phpmailer->CharSet = 'UTF-8';
-    $phpmailer->Timeout = 30;
-    
-    // Solo para correos de cotización, configurar prioridad
-    if (isset($phpmailer->Subject) && strpos($phpmailer->Subject, 'cotización') !== false) {
-        $phpmailer->Priority = 1; // Alta prioridad
-    }
-    
-    return $phpmailer;
-}
+add_action('plugins_loaded', function() {
+	// Detectar si WP Mail SMTP está activo para no sobrescribir su configuración
+	$wpms_active = false;
+	if (function_exists('is_plugin_active')) {
+		$wpms_active = is_plugin_active('wp-mail-smtp/wp_mail_smtp.php');
+	} else {
+		if (defined('ABSPATH')) {
+			$plugin_file = ABSPATH . 'wp-admin/includes/plugin.php';
+			if (file_exists($plugin_file)) {
+				require_once $plugin_file;
+				if (function_exists('is_plugin_active')) {
+					$wpms_active = is_plugin_active('wp-mail-smtp/wp_mail_smtp.php');
+				}
+			}
+		}
+	}
 
-/**
- * Configuración SMTP (solo activar si el hosting lo soporta)
- * Para activar: cambiar finanmotors_setup_simple_mail por finanmotors_setup_smtp_mail
- */
-function finanmotors_setup_smtp_mail($phpmailer) {
+	if ($wpms_active) {
+		// WP Mail SMTP gestiona PHPMailer; evitamos forzar ajustes para no entrar en conflicto
+		error_log('[finanmotors] WP Mail SMTP activo: se omite override de PHPMailer.');
+		return;
+	}
+
+	// Filtros de remitente (solo si no está WP Mail SMTP)
+	add_filter('wp_mail_from', function($from_email) {
+		return 'marketing@finanmotors.com';
+	}, 999);
+
+	add_filter('wp_mail_from_name', function($from_name) {
+		return 'FINAN';
+	}, 999);
+
+	// Inicialización de PHPMailer propia (solo si no está WP Mail SMTP)
+	add_action('phpmailer_init', 'finanmotors_force_simple_mail', 999);
+}, 1);
+
+function finanmotors_force_simple_mail($phpmailer) {
+    // ⚠️ CONFIGURACIÓN SMTP - GMAIL / GOOGLE WORKSPACE
     $phpmailer->isSMTP();
-    $phpmailer->Host = 'mail.finanmotors.com'; // Servidor SMTP del hosting
-    $phpmailer->SMTPAuth = true;
+    
+    // 📧 Gmail SMTP (funciona perfectamente)
+    $phpmailer->Host = 'smtp.gmail.com';
     $phpmailer->Port = 587;
     $phpmailer->SMTPSecure = 'tls';
-    $phpmailer->Username = 'marketing@finanmotors.com';
-    $phpmailer->Password = 'Qjqtr35ZgR'; // Cambiar por el password real
+    
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->Username = 'marketing@finanmotors.com'; // Tu email de Google Workspace
+    $phpmailer->Password = 'Qjqtr35ZgR'; // ⚠️ ← APP PASSWORD (NO la contraseña normal)
+    
     $phpmailer->From = 'marketing@finanmotors.com';
     $phpmailer->FromName = 'FINAN';
     $phpmailer->CharSet = 'UTF-8';
     $phpmailer->Timeout = 30;
     
-    // Debug (descomentar para ver errores SMTP)
-    // $phpmailer->SMTPDebug = 2;
+    // 🔍 DEBUG SMTP ACTIVADO
+    $phpmailer->SMTPDebug = 2;
+    $phpmailer->Debugoutput = 'error_log';
     
     return $phpmailer;
 }
 
 /**
- * Test endpoint para verificar configuración de correo
- * Endpoint: /wp-json/pdf/v1/test-email
+ * Register REST endpoints
  */
 add_action('rest_api_init', function() {
-	register_rest_route('pdf/v1', '/test-email', [
-		'methods' => 'POST',
-		'callback' => 'finanmotors_test_email',
-		'permission_callback' => function() {
-			return current_user_can('manage_options'); // Solo administradores
-		}
-	]);
+    // Endpoint para Test
+    register_rest_route('pdf/v1', '/test-email', [
+        'methods' => 'POST',
+        'callback' => 'finanmotors_test_email',
+        'permission_callback' => function() {
+            return current_user_can('manage_options');
+        }
+    ]);
+
+    // Endpoint para Envío de PDF
+    register_rest_route( 'pdf/v1', '/send', [
+        'methods'  => 'POST',
+        'callback' => 'finanmotors_handle_pdf_send',
+        'permission_callback' => '__return_true',
+    ] );
 });
 
 /**
- * Función para probar el envío de correos
+ * Los controladores de las funciones (finanmotors_handle_pdf_send, finanmotors_test_email, etc.)
+ * deben copiarse íntegramente a continuación para que la API funcione.
  */
+
 function finanmotors_test_email(WP_REST_Request $request) {
 	$params = $request->get_json_params();
 	$test_email = isset($params['email']) ? sanitize_email($params['email']) : get_option('admin_email');
@@ -447,7 +165,7 @@ function finanmotors_test_email(WP_REST_Request $request) {
 		'message' => $sent ? 'Email de prueba enviado correctamente' : 'Error al enviar email de prueba',
 		'email' => $test_email,
 		'timestamp' => date('Y-m-d H:i:s'),
-		'mail_method' => 'PHP mail() function', // Indicar el método usado
+		'mail_method' => 'PHP mail() function',
 		'debug' => [
 			'mail_errors' => $mail_errors,
 			'php_last_error' => error_get_last(),
@@ -459,10 +177,10 @@ function finanmotors_test_email(WP_REST_Request $request) {
 	if (!$sent || !empty($mail_errors)) {
 		$response_data['troubleshooting'] = [
 			'suggestions' => [
-				'Verificar que el servidor soporte la función mail() de PHP',
-				'Comprobar que el correo marketing@finanmotors.com existe',
-				'Revisar logs del servidor web para más detalles',
-				'Probar con un servicio SMTP externo si persiste el error'
+				'Verificar que el servidor permita envío de correos',
+				'Revisar configuración PHP mail()',
+				'Consultar logs del servidor',
+				'Verificar que no haya plugins bloqueando el envío'
 			]
 		];
 	}
@@ -470,22 +188,6 @@ function finanmotors_test_email(WP_REST_Request $request) {
 	return new WP_REST_Response($response_data, $sent ? 200 : 500);
 }
 
-/**
- * Register REST endpoint to receive PDF and send emails.
- * Endpoint: /wp-json/pdf/v1/send
- */
-add_action( 'rest_api_init', function () {
-	register_rest_route( 'pdf/v1', '/send', [
-		'methods'  => 'POST',
-		'callback' => 'finanmotors_handle_pdf_send',
-		'permission_callback' => '__return_true',
-	] );
-} );
-
-/**
- * Handle incoming PDF send requests.
- * Expects JSON body with at least: pdf (base64), correo, nombre
- */
 function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 	try {
 			$params = $request->get_json_params();
@@ -519,8 +221,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 			$file_path = trailingslashit( $dir ) . $filename;
 			// Move uploaded file to our uploads folder
 			if ( ! move_uploaded_file( $_FILES['file']['tmp_name'], $file_path ) ) {
-				$log( 'Failed to move uploaded file to: ' . $file_path );
-				return new WP_REST_Response( [ 'success' => false, 'message' => 'Unable to save uploaded file on server' ], 500 );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'No se pudo guardar el archivo PDF' ], 500 );
 			}
 			$written = filesize( $file_path );
 			// Extract fields from POST
@@ -555,7 +256,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 			} elseif ( is_object( $wp_error ) || is_array( $wp_error ) ) {
 				$msg = print_r( $wp_error, true );
 			} else {
-				$msg = (string) $wp_error;
+				$msg = strval( $wp_error );
 			}
 			$mail_errors[] = $msg;
 			$log( 'wp_mail_failed: ' . $msg );
@@ -567,15 +268,15 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 			// approximate size from $_POST and uploaded file
 			$request_size = 0;
 			if ( ! empty( $_POST ) ) {
-				$request_size = strlen( wp_json_encode( $_POST ) );
+				$request_size += strlen( serialize( $_POST ) );
 			}
 			if ( ! empty( $_FILES['file']['size'] ) ) {
-				$request_size += (int) $_FILES['file']['size'];
+				$request_size += intval( $_FILES['file']['size'] );
 			}
 		} else {
 			$request_size = 0;
 			if ( is_array( $params ) ) {
-				$request_size = strlen( wp_json_encode( $params ) );
+				$request_size = strlen( serialize( $params ) );
 			}
 		}
 		$log( 'Approx request payload size (bytes): ' . $request_size );
@@ -585,33 +286,28 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 			$required = [ 'pdf', 'correo', 'nombre' ];
 			$missing = [];
 			foreach ( $required as $r ) {
-				if ( empty( $params[ $r ] ) ) {
+				if ( ! isset( $params[ $r ] ) || empty( $params[ $r ] ) ) {
 					$missing[] = $r;
 				}
 			}
 			if ( ! empty( $missing ) ) {
-				$msg = 'Missing required fields: ' . implode( ',', $missing );
-				$log( $msg );
-				return new WP_REST_Response( [ 'success' => false, 'message' => $msg ], 400 );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'Faltan campos: ' . implode( ', ', $missing ) ], 400 );
 			}
 
 			$pdf_base64 = $params['pdf'];
 			if ( ! is_string( $pdf_base64 ) ) {
-				$log( 'PDF payload not a string' );
-				return new WP_REST_Response( [ 'success' => false, 'message' => 'Invalid PDF payload' ], 400 );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'Campo pdf debe ser string' ], 400 );
 			}
 
 			// Check size to avoid memory exhaustion (base64 length). Adjust limit if needed.
 			$max_base64_length = defined( 'FINANMOTORS_PDF_PAYLOAD_LIMIT' ) ? FINANMOTORS_PDF_PAYLOAD_LIMIT : ( 12 * 1024 * 1024 ); // 12 MB base64 default
 			if ( strlen( $pdf_base64 ) > $max_base64_length ) {
-				$log( 'PDF payload too large: ' . strlen( $pdf_base64 ) );
-				return new WP_REST_Response( [ 'success' => false, 'message' => 'PDF too large. Use smaller file or switch to multipart upload.' ], 413 );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'Archivo PDF demasiado grande' ], 413 );
 			}
 
 			$client_email = sanitize_email( $params['correo'] );
 			if ( ! is_email( $client_email ) ) {
-				$log( 'Invalid client email: ' . (string) $params['correo'] );
-				return new WP_REST_Response( [ 'success' => false, 'message' => 'Correo inválido' ], 400 );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'Email inválido' ], 400 );
 			}
 			$client_name = sanitize_text_field( $params['nombre'] );
 			$client_phone = isset( $params['telefono'] ) ? sanitize_text_field( $params['telefono'] ) : '';
@@ -626,42 +322,37 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 
 			// Clean data URI prefix if present and remove whitespace
 			if ( strpos( $pdf_base64, 'base64,' ) !== false ) {
-				$pdf_base64 = preg_replace( '/^data:application\/(pdf|octet-stream);base64,/', '', $pdf_base64 );
-				$pdf_base64 = preg_replace( '/^data:.*;base64,/', '', $pdf_base64 );
+				$pdf_base64 = substr( $pdf_base64, strpos( $pdf_base64, 'base64,' ) + 7 );
 			}
 			$pdf_base64 = preg_replace( '/\s+/', '', $pdf_base64 );
 
 			$pdf = base64_decode( $pdf_base64 );
 			if ( $pdf === false ) {
-				$log( 'Failed to base64_decode the PDF.' );
-				return new WP_REST_Response( [ 'success' => false, 'message' => 'Invalid PDF data' ], 400 );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'No se pudo decodificar PDF' ], 400 );
 			}
 
 			// Save temporary PDF file
 			$dir = trailingslashit( $upload['basedir'] ) . 'finanmotors_pdfs';
 			if ( ! file_exists( $dir ) ) {
 				if ( ! wp_mkdir_p( $dir ) ) {
-					$log( 'Failed to create directory: ' . $dir );
-					return new WP_REST_Response( [ 'success' => false, 'message' => 'Unable to create directory on server' ], 500 );
+					return new WP_REST_Response( [ 'success' => false, 'message' => 'No se pudo crear directorio para PDFs' ], 500 );
 				}
 			}
 			$filename = 'cotizacion_' . time() . '_' . wp_generate_password( 6, false, false ) . '.pdf';
 			$file_path = trailingslashit( $dir ) . $filename;
 			$written = @file_put_contents( $file_path, $pdf );
 			if ( $written === false ) {
-				$log( "Failed to write PDF to $file_path" );
-				return new WP_REST_Response( [ 'success' => false, 'message' => 'Unable to save PDF on server' ], 500 );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'No se pudo guardar PDF' ], 500 );
 			}
 			// Validate PDF was written correctly
 			if ( $written < 1024 ) { // PDF should be at least 1KB
-				$log( "Warning: PDF file seems too small: {$written} bytes" );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'PDF guardado incompleto' ], 500 );
 			}
 			$log( "PDF saved to $file_path ({$written} bytes)" );
 		} else {
 			// received_via_file branch: ensure client email/name are present (extracted earlier)
 			if ( empty( $client_email ) || empty( $client_name ) ) {
-				$log( 'Missing correo/nombre in multipart POST' );
-				return new WP_REST_Response( [ 'success' => false, 'message' => 'Missing correo or nombre in multipart form' ], 400 );
+				return new WP_REST_Response( [ 'success' => false, 'message' => 'Faltan campos requeridos' ], 400 );
 			}
 		}
 
@@ -758,7 +449,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 				$uploads_url_base = trailingslashit( $upload['baseurl'] );
 				if ( strpos( $file_path, $uploads_base ) === 0 ) {
 					$relative = substr( $file_path, strlen( $uploads_base ) );
-					$public_url = $uploads_url_base . str_replace( '\\', '/', $relative );
+					$public_url = $uploads_url_base . $relative;
 				}
 			}
 
@@ -769,44 +460,54 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 			} elseif ( strlen( $raw ) === 9 && substr( $raw, 0, 1 ) === '9' ) {
 				$raw = '593' . $raw;
 			} elseif ( substr( $raw, 0, 3 ) === '593' ) {
-				// ok
+				// already good
 			}
 
 			if ( substr( $raw, 0, 3 ) === '593' ) {
-				$to_number = $raw; // e.g. 5939xxxxxxx
-
-				// Prepare payload to send document message via WhatsApp Cloud API
-				$payload = [
+				$log( "Sending WhatsApp Cloud API message to: $raw" );
+				$wh_endpoint = "https://graph.facebook.com/v17.0/$wh_phone_id/messages";
+				$wh_body = [
 					'messaging_product' => 'whatsapp',
-					'to' => $to_number,
-					'type' => 'document',
-					'document' => [
-						'link' => $public_url,
-						'filename' => isset( $filename ) ? $filename : 'cotizacion.pdf',
+					'to' => $raw,
+					'type' => 'template',
+					'template' => [
+						'name' => 'cotizacion_enviada',
+						'language' => [ 'code' => 'es' ],
+						'components' => [
+							[
+								'type' => 'body',
+								'parameters' => [
+									[ 'type' => 'text', 'text' => $client_name ],
+								],
+							],
+							[
+								'type' => 'button',
+								'sub_type' => 'url',
+								'index' => '0',
+								'parameters' => [
+									[ 'type' => 'text', 'text' => $public_url ],
+								],
+							],
+						],
 					],
 				];
-
-				$wh_url = 'https://graph.facebook.com/v16.0/' . $wh_phone_id . '/messages';
-				$ch = curl_init( $wh_url );
-				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-				curl_setopt( $ch, CURLOPT_POST, true );
-				curl_setopt( $ch, CURLOPT_HTTPHEADER, [
+				$wh_ch = curl_init( $wh_endpoint );
+				curl_setopt( $wh_ch, CURLOPT_RETURNTRANSFER, true );
+				curl_setopt( $wh_ch, CURLOPT_POST, true );
+				curl_setopt( $wh_ch, CURLOPT_HTTPHEADER, [
 					'Authorization: Bearer ' . $wh_token,
 					'Content-Type: application/json',
 				] );
-				curl_setopt( $ch, CURLOPT_POSTFIELDS, wp_json_encode( $payload ) );
-				curl_setopt( $ch, CURLOPT_TIMEOUT, 15 );
-				$wh_result = curl_exec( $ch );
-				$wh_http = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-				$wh_err = curl_error( $ch );
-				curl_close( $ch );
-
-				$log( 'WhatsApp Cloud API attempted. HTTP code: ' . $wh_http . ', curl_err: ' . $wh_err . ', response: ' . substr( $wh_result, 0, 1000 ) );
-				// Expose Cloud API response in debug for easier troubleshooting
+				curl_setopt( $wh_ch, CURLOPT_POSTFIELDS, wp_json_encode( $wh_body ) );
+				$wh_result = curl_exec( $wh_ch );
+				$wh_http = curl_getinfo( $wh_ch, CURLINFO_HTTP_CODE );
+				$wh_err = curl_error( $wh_ch );
+				curl_close( $wh_ch );
+				$log( "WhatsApp Cloud API response: HTTP $wh_http, Body: $wh_result, Error: $wh_err" );
 				$response['debug']['whatsapp_cloud'] = [ 'http_code' => $wh_http, 'curl_error' => $wh_err, 'response' => $wh_result ];
 			} else {
-				$log( 'Unable to normalize client phone for WhatsApp Cloud API: ' . $client_phone );
-				$response['debug']['whatsapp_cloud'] = [ 'error' => 'phone_normalization_failed', 'input' => $client_phone ];
+				$log( 'Invalid phone number format after normalization: ' . $raw );
+				$response['debug']['whatsapp_cloud'] = [ 'error' => 'invalid_phone_format', 'normalized' => $raw ];
 			}
 
 		} elseif ( ! empty( $client_phone ) ) {
@@ -825,7 +526,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 			$uploads_url_base = trailingslashit( $upload['baseurl'] );
 			if ( strpos( $file_path, $uploads_base ) === 0 ) {
 				$relative = substr( $file_path, strlen( $uploads_base ) );
-				$public_url = $uploads_url_base . str_replace( '\\', '/', $relative );
+				$public_url = $uploads_url_base . $relative;
 			}
 			// NOTE: keep the file for later inspection; if you prefer to remove it, uncomment the unlink below.
 			// @unlink( $file_path );
@@ -841,12 +542,12 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 			// public_url is a publicly accessible link to the saved PDF in uploads (if available)
 			'public_url' => $public_url,
 			'debug' => [
-				'pdf_saved_path' => isset( $file_path ) ? $file_path : null,
-				'pdf_bytes' => isset( $written ) ? (int) $written : null,
-				'attachments' => isset( $attachments ) ? $attachments : [],
-				'headers' => isset( $headers ) ? $headers : [],
-				'request_size_bytes' => $request_size,
 				'mail_errors' => $mail_errors,
+				'file_path' => $file_path,
+				'file_size' => $written,
+				'request_size' => $request_size,
+				'method' => $received_via_file ? 'multipart/form-data' : 'json/base64',
+				'timestamp' => date( 'Y-m-d H:i:s' ),
 				'php_last_error' => error_get_last(),
 			],
 		];
