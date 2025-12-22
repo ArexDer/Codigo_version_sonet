@@ -3547,7 +3547,7 @@
           
           // Logo/Título principal
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(18);
+          pdf.setFontSize(16);
           pdf.setTextColor(7, 35, 134);
           pdf.text("FINAN", pageWidth / 2, 30, { align: 'center' });
           
@@ -3711,12 +3711,12 @@
             pdf.rect(15, yPos, pageWidth - 30, 25);
             
             pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(11);
+            pdf.setFontSize(10);
             pdf.setTextColor(46, 125, 50); // Verde oscuro
             pdf.text("RESUMEN DE TUS OPCIONES", 20, yPos + 8);
             
             pdf.setFont("helvetica", "normal");
-            pdf.setFontSize(9);
+            pdf.setFontSize(7);
             pdf.text(`• Tienes ${opcionesPago.length} opción${opcionesPago.length > 1 ? 'es' : ''} disponible${opcionesPago.length > 1 ? 's' : ''} para el mes ${mesSeleccionado}`, 20, yPos + 16);
             pdf.text(`• Elige la opción que mejor se adapte a tu capacidad de pago`, 20, yPos + 22);
             
@@ -3743,7 +3743,7 @@
           pdf.rect(0, pageHeight - 30, pageWidth, 30, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(12);
+          pdf.setFontSize(10);
           pdf.setTextColor(255, 255, 255);
           pdf.text("FINAN", pageWidth / 2, pageHeight - 18, { align: 'center' });
           
@@ -3776,7 +3776,7 @@
               porcentaje_entrada: 'Opciones variables'
             }, 'Cotización Plan Justo a Tiempo');
             
-            alert('🎉 ¡PDF generado exitosamente!\n\n📋 Contenido incluido:\n• Información del cliente\n• Detalles del vehículo\n• Opciones de pago para el mes ' + mesSeleccionado + '\n\n📧 El PDF ha sido enviado a tu correo electrónico');
+            alert('🎉 ¡PDF generado exitosamente!\n\n📋 \n\n📧 El PDF ha sido enviado a tu correo electrónico');
           } catch (error) {
             console.error('❌ Error al generar/enviar PDF:', error);
             alert('❌ Error al generar el PDF. Por favor, intenta nuevamente.');
@@ -4058,7 +4058,7 @@
           
           // Título principal
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(16);
+          pdf.setFontSize(14);
           pdf.setTextColor(7, 35, 134); // Color azul corporativo
           pdf.text("PROFORMA VEHICULAR", pageWidth / 2, 25, { align: 'center' });
           
@@ -4247,7 +4247,7 @@
           pdf.text("La opción seleccionada está resaltada en azul", 20, yPos);
           
           // Pie de página con gradiente azul
-          pdf.setFillColor(102, 126, 234);
+           pdf.setFillColor(7, 35, 134);
           pdf.rect(0, pageHeight - 25, pageWidth, 25, 'F');
           
           pdf.setFont("helvetica", "bold");
