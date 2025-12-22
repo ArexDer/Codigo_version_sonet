@@ -24,6 +24,19 @@ p {
     font-weight: bold;
 }
 
+/* ========== VARIABLES DE TEMA (para consistencia de botones) ========== */
+:root {
+    --color-primary: #00205C;
+    --color-primary-dark: #072386;
+    --color-accent: #FEDE6E;
+    --color-on-primary: #FFFFFF;
+    --radius-lg: 20px;
+    --radius-xl: 24px;
+    --shadow-sm: 0 4px 12px rgba(0, 32, 92, 0.2);
+    --shadow-md: 0 8px 20px rgba(0, 32, 92, 0.25);
+    --shadow-lg: 0 12px 28px rgba(0, 32, 92, 0.3);
+}
+
 /* ========== ESTILOS GENERALES PARA SELECT Y BUTTONS ========== */
 select {
     padding: 10px;
@@ -110,6 +123,48 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-on-primary);
+    background: linear-gradient(180deg, var(--color-primary-dark), var(--color-primary));
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.boton-principal:hover,
+#btn-vehicular:hover,
+#btn-inmobiliario:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-md);
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.boton-principal:active,
+#btn-vehicular:active,
+#btn-inmobiliario:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--shadow-sm);
+}
+
+.boton-principal:focus-visible,
+#btn-vehicular:focus-visible,
+#btn-inmobiliario:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(254, 222, 110, 0.9), var(--shadow-md);
+}
+
+.boton-principal:disabled,
+#btn-vehicular:disabled,
+#btn-inmobiliario:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
 }
 
 /* ===========================================
