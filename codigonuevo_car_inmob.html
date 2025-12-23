@@ -2027,7 +2027,7 @@
         // Función específica para cálculos inmobiliarios usando JSON inmobiliario_M2.json
         function cargarDatosYActualizarResultadosInmobiliario(montoSelectId, mesesSelectId, resultadoPrecioId, resultadoInscripcionId, porcentajeSelectId = null, tipoEntrada = "CON_ENTRADA") {
           
-          fetch("https://finanmotors.com/inmobiliario_M2.json")
+          fetch("https://finan.ec/inmobiliario_M2.json")
             .then(response => response.json())
             .then(data => {
               datosCompletosJSON = data; // Guardar datos globalmente
