@@ -2658,7 +2658,7 @@
                 // Cambiar a layout de COLUMNA (1 columna, múltiples filas)
                 contenedorOpciones.style.display = 'grid';
                 contenedorOpciones.style.gridTemplateColumns = '1fr';
-                contenedorOpciones.style.gap = '15px';
+                contenedorOpciones.style.gap = '10px';
                 
                 // Generar HTML de opciones con precio mensual e inscripción
                 let opcionesHTML = '';
@@ -2667,34 +2667,32 @@
                   const montoAPagar = montoNumerico * (parseInt(opcion.porcentaje) / 100);
                   
                   opcionesHTML += `
-                    <div style="background: #fff; padding: 16px; border-radius: 8px; border: 2px solid #072386; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease;" 
+                    <div style="background: #fff; padding: 10px; border-radius: 8px; border: 2px solid #072386; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease;" 
                          class="opcion-pago-card"
-                         onmouseover="this.style.transform='translateY(-3px)'; this.style.borderColor='#1976d2'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
+                         onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='#1976d2'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
                          onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#072386'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)';">
-                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                        <div style="background: #072386; color: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 1rem;">Opción ${index + 1}</div>
-                        <div style="background: #4CAF50; color: white; padding: 6px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">${opcion.plazo} meses</div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
+                        <div style="background: #072386; color: white; padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 0.9rem;">Opción ${index + 1}</div>
+                        <div style="background: #4CAF50; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">${opcion.plazo} meses</div>
                       </div>
                       
-                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
-                        <div style="text-align: center; padding: 10px; background: #f0f7ff; border-radius: 6px; border-left: 4px solid #1976d2;">
-                          <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #666; font-weight: 500;">Cuota Mensual</p>
-                          <p style="margin: 0; font-size: 1.2rem; color: #072386; font-weight: bold;">$${opcion.precioMensual.toLocaleString()}</p>
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                        <div style="text-align: center; padding: 8px; background: #f0f7ff; border-radius: 6px; border-left: 4px solid #1976d2;">
+                          <p style="margin: 0 0 3px 0; font-size: 0.75rem; color: #666; font-weight: 500;">Cuota Mensual</p>
+                          <p style="margin: 0; font-size: 1rem; color: #072386; font-weight: bold;">$${opcion.precioMensual.toLocaleString()}</p>
                         </div>
-                        <div style="text-align: center; padding: 10px; background: #fff3e0; border-radius: 6px; border-left: 4px solid #ff9800;">
-                          <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #666; font-weight: 500;">Inscripción</p>
-                          <p style="margin: 0; font-size: 1.2rem; color: #f57c00; font-weight: bold;">$${opcion.inscripcion.toLocaleString()}</p>
+                        <div style="text-align: center; padding: 8px; background: #fff3e0; border-radius: 6px; border-left: 4px solid #ff9800;">
+                          <p style="margin: 0 0 3px 0; font-size: 0.75rem; color: #666; font-weight: 500;">Inscripción</p>
+                          <p style="margin: 0; font-size: 1rem; color: #f57c00; font-weight: bold;">$${opcion.inscripcion.toLocaleString()}</p>
                         </div>
                       </div>
                       
-                      <div style="text-align: center; padding: 12px; background: #f3e5f5; border-radius: 4px; margin-bottom: 10px; border: 1px solid #e1bee7;">
-                        <p style="margin: 0 0 6px 0; font-size: 0.85rem; color: #333; font-weight: 500;">Monto de Entrada (${opcion.porcentaje}%)</p>
-                        <p style="margin: 0; font-size: 1.1rem; color: #7b1fa2; font-weight: bold;">$${montoNumerico.toLocaleString()} × ${opcion.porcentaje}% = $${Math.round(montoAPagar).toLocaleString()}</p>
+                      <div style="text-align: center; padding: 8px; background: #f3e5f5; border-radius: 4px; margin-bottom: 8px; border: 1px solid #e1bee7;">
+                        <p style="margin: 0 0 4px 0; font-size: 0.75rem; color: #333; font-weight: 500;">En el mes ${mesEntrega} debe pagar:</p>
+                        <p style="margin: 0; font-size: 0.95rem; color: #7b1fa2; font-weight: bold;">$${Math.round(montoAPagar).toLocaleString()}</p>
                       </div>
                       
-                      <div style="text-align: center; padding: 8px; background: #e8eaf6; border-radius: 4px;">
-                        <p style="margin: 0; font-size: 0.8rem; color: #333;">Porcentaje de entrada: <strong>${opcion.porcentaje}%</strong></p>
-                      </div>
+                      
                     </div>
                   `;
                 });
@@ -2737,14 +2735,14 @@
               if (seccionOpciones && contenedorOpciones) {
                 contenedorOpciones.style.display = 'grid';
                 contenedorOpciones.style.gridTemplateColumns = '1fr';
-                contenedorOpciones.style.gap = '15px';
+                contenedorOpciones.style.gap = '10px';
                 
                 let opcionesHTML = '';
                 opcionesPago.forEach((opcion, index) => {
                   opcionesHTML += `
-                    <div style="background: #fff; padding: 16px; border-radius: 8px; border: 2px solid #072386;">
-                      <p style="margin: 0; font-size: 1rem; color: #072386; font-weight: bold;">Opción ${index + 1} - ${opcion.plazo} meses</p>
-                      <p style="margin: 8px 0 0 0; font-size: 0.9rem; color: #666;">Porcentaje: ${opcion.porcentaje}%</p>
+                    <div style="background: #fff; padding: 10px; border-radius: 8px; border: 2px solid #072386;">
+                      <p style="margin: 0; font-size: 0.9rem; color: #072386; font-weight: bold;">Opción ${index + 1} - ${opcion.plazo} meses</p>
+                      <p style="margin: 6px 0 0 0; font-size: 0.8rem; color: #666;">Entrada: ${opcion.porcentaje}%</p>
                     </div>
                   `;
                 });
