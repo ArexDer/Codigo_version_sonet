@@ -1887,9 +1887,30 @@
               const marcaSelect = document.getElementById("marca-vehiculo");
               const modeloSelect = document.getElementById("modelo-vehiculo");
               const continuarBtn = document.getElementById("continuar-vehiculo");
-              
-              // Llenar marcas desde el JSON
-              Object.keys(modelos).forEach(marca => {
+
+              // Tipos permitidos por categoría para filtrar marcas y modelos
+              const tiposPermitidosPorCategoria = {
+                autos: ["autos", "sedan", "hatchback"],
+                suvs: ["crossover", "suv"],
+                camionetas: ["camioneta"],
+                camiones: ["camion", "van"]
+              };
+
+              const obtenerTiposPermitidos = () => (tiposPermitidosPorCategoria[categoriaSeleccionada] || []).map(t => t.toLowerCase());
+
+              // Resetear selects para evitar duplicados entre categorías
+              marcaSelect.innerHTML = '<option value="">Selecciona una marca</option>';
+              modeloSelect.innerHTML = '<option value="">Primero selecciona una marca</option>';
+              modeloSelect.disabled = true;
+              continuarBtn.disabled = true;
+
+              // Filtrar marcas que tengan al menos un modelo del tipo seleccionado
+              const tiposPermitidos = obtenerTiposPermitidos();
+              const marcasFiltradas = Object.keys(modelos).filter(marca =>
+                modelos[marca].some(modelo => tiposPermitidos.includes((modelo.tipo || "").toLowerCase()))
+              );
+
+              marcasFiltradas.forEach(marca => {
                 const option = document.createElement("option");
                 option.value = marca;
                 option.textContent = marca.charAt(0).toUpperCase() + marca.slice(1);
@@ -1897,34 +1918,18 @@
               });
 
               // Manejar cambio de marca
-              marcaSelect.addEventListener("change", () => {
+              marcaSelect.onchange = () => {
                 const marcaSeleccionada = marcaSelect.value;
                 modeloSelect.innerHTML = '<option value="">Selecciona un modelo</option>';
                 modeloSelect.disabled = !marcaSeleccionada;
                 continuarBtn.disabled = true;
 
                 if (marcaSeleccionada) {
-                  let modelosFiltrados = [];
-                  
-                  // Filtrar modelos según el tipo de vehículo seleccionado
-                  if (categoriaSeleccionada === "autos") {
-                    modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
-                      ["autos", "SEDAN", "HATCHBACK"].includes(modelo.tipo)
-                    );
-                  } else if (categoriaSeleccionada === "suvs") {
-                    modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
-                      ["suv", "CROSSOVER"].includes(modelo.tipo)
-                    );
-                  } else if (categoriaSeleccionada === "camionetas") {
-                    modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
-                      modelo.tipo === "camioneta"
-                    );
-                  } else if (categoriaSeleccionada === "camiones") {
-                    modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
-                      ["camion", "furgoneta", "van"].includes(modelo.tipo)
-                    );
-                  }
-                  
+                  const tiposPermitidosMarca = obtenerTiposPermitidos();
+                  const modelosFiltrados = modelos[marcaSeleccionada].filter((modelo) =>
+                    tiposPermitidosMarca.includes((modelo.tipo || "").toLowerCase())
+                  );
+
                   modelosFiltrados.forEach((modelo) => {
                     const option = document.createElement("option");
                     option.value = modelo.nombre;
@@ -1937,30 +1942,30 @@
                     continuarBtn.disabled = true;
                   }
                 }
-              });
+              };
 
               // Manejar cambio de modelo
-              modeloSelect.addEventListener("change", () => {
+              modeloSelect.onchange = () => {
                 const marcaSeleccionada = marcaSelect.value;
                 const modeloSeleccionado = modeloSelect.value;
                 continuarBtn.disabled = !modeloSeleccionado;
-                
+
                 if (modeloSeleccionado) {
                   // Buscar el modelo seleccionado en los datos
                   const modelo = modelos[marcaSeleccionada].find(
                     (m) => m.nombre === modeloSeleccionado
                   );
-                  
+
                   if (modelo) {
                     // Actualizar imagen del vehículo
                     document.getElementById("vehiculo-imagen").src = modelo.imagen;
                     // Actualizar nombre con marca y modelo
                     document.getElementById("vehiculo-nombre").textContent = `${marcaSeleccionada} ${modeloSeleccionado}`;
-                    
+
                     // Actualizar variables globales
                     avaluoActual = parseInt(modelo.precio);
                     imagenSeleccionada = modelo.imagen;
-                    
+
                     console.log("Vehículo seleccionado:", {
                       marca: marcaSeleccionada,
                       modelo: modeloSeleccionado,
@@ -1969,7 +1974,7 @@
                     });
                   }
                 }
-              });
+              };
             })
             .catch((error) => {
               console.error("Error fetching modelos:", error);
