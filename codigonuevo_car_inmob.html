@@ -2671,28 +2671,30 @@
                          class="opcion-pago-card"
                          onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='#1976d2'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
                          onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#072386'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)';">
-                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
-                        <div style="background: #072386; color: white; padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 0.9rem;">Opción ${index + 1}</div>
-                        <div style="background: #4CAF50; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">${opcion.plazo} meses</div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; flex-wrap: wrap;">
+                        <div style="background: #072386; color: white; padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; flex: 1; min-width: 80px; text-align: center;">Opción ${index + 1}</div>
+                        <div style="background: #4CAF50; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; white-space: nowrap;">${opcion.plazo} meses</div>
                       </div>
                       
                       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
-                        <div style="text-align: center; padding: 8px; background: #f0f7ff; border-radius: 6px; border-left: 4px solid #1976d2;">
-                          <p style="margin: 0 0 3px 0; font-size: 0.75rem; color: #666; font-weight: 500;">Cuota Mensual</p>
-                          <p style="margin: 0; font-size: 1rem; color: #072386; font-weight: bold;">$${opcion.precioMensual.toLocaleString()}</p>
+                        <div style="text-align: center; padding: 8px 4px; background: #f0f7ff; border-radius: 6px; border-left: 4px solid #1976d2;">
+                          <p style="margin: 0 0 3px 0; font-size: 0.7rem; color: #666; font-weight: 500;">Cuota Mensual</p>
+                          <p style="margin: 0; font-size: 0.9rem; color: #072386; font-weight: bold;">$${opcion.precioMensual.toLocaleString()}</p>
                         </div>
-                        <div style="text-align: center; padding: 8px; background: #fff3e0; border-radius: 6px; border-left: 4px solid #ff9800;">
-                          <p style="margin: 0 0 3px 0; font-size: 0.75rem; color: #666; font-weight: 500;">Inscripción</p>
-                          <p style="margin: 0; font-size: 1rem; color: #f57c00; font-weight: bold;">$${opcion.inscripcion.toLocaleString()}</p>
+                        <div style="text-align: center; padding: 8px 4px; background: #fff3e0; border-radius: 6px; border-left: 4px solid #ff9800;">
+                          <p style="margin: 0 0 3px 0; font-size: 0.7rem; color: #666; font-weight: 500;">Inscripción</p>
+                          <p style="margin: 0; font-size: 0.9rem; color: #f57c00; font-weight: bold;">$${opcion.inscripcion.toLocaleString()}</p>
                         </div>
                       </div>
                       
                       <div style="text-align: center; padding: 8px; background: #f3e5f5; border-radius: 4px; margin-bottom: 8px; border: 1px solid #e1bee7;">
-                        <p style="margin: 0 0 4px 0; font-size: 0.75rem; color: #333; font-weight: 500;">En el mes ${mesEntrega} debe pagar:</p>
-                        <p style="margin: 0; font-size: 0.95rem; color: #7b1fa2; font-weight: bold;">$${Math.round(montoAPagar).toLocaleString()}</p>
+                        <p style="margin: 0 0 4px 0; font-size: 0.7rem; color: #333; font-weight: 500;">En el mes ${mesEntrega} debe pagar:</p>
+                        <p style="margin: 0; font-size: 0.9rem; color: #7b1fa2; font-weight: bold;">$${Math.round(montoAPagar).toLocaleString()}</p>
                       </div>
                       
-                      
+                      <div style="text-align: center; padding: 6px; background: #e8eaf6; border-radius: 4px;">
+                        <p style="margin: 0; font-size: 0.7rem; color: #333;">Entrada: <strong>${opcion.porcentaje}%</strong></p>
+                      </div>
                     </div>
                   `;
                 });
