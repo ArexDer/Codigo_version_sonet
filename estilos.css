@@ -89,7 +89,7 @@ option {
 button {
     margin-top: 8px;
     padding: 12px 20px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: white;
     font-weight: 600;
     background-color: #00205C;
@@ -186,7 +186,7 @@ button:hover {
     #btn-vehicular,
     #btn-inmobiliario {
         height: 180px;
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 }
 
@@ -204,7 +204,7 @@ button:hover {
     #btn-vehicular,
     #btn-inmobiliario {
         height: 120px;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         width: 100%;
     }
 }
@@ -298,7 +298,7 @@ button:hover {
 /* 2.2 Detalle de vehículo (.detalle-vehiculo) */
 .detalle-vehiculo {
     margin: 15px auto;
-    padding: 15px;
+    padding: 5px;
     background: white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -306,17 +306,17 @@ button:hover {
     justify-content: center;
     align-items: flex-start;
     min-height: 500px;
-    width: 95%;
-    max-width: 1400px;
+    width: 98%;
+    max-width: 1600px;
 }
 
 .vehiculo-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    grid-template-columns: 40% 60%;
+    gap: 10px;
     align-items: flex-start;
     width: 100%;
-    padding: 20px;
+    padding: 22px;
 }
 
 /* Responsive para tablet y móviles */
@@ -462,7 +462,7 @@ button:hover {
 
 .vehiculo-selectores {
     background: #f8f9fa;
-    padding: 20px;
+    padding: 30px;
     border-radius: 15px;
     margin-bottom: 15px;
     display: flex;
@@ -499,7 +499,7 @@ button:hover {
     padding: 12px 20px;
     border: 2px solid #FEDE6E;
     border-radius: 10px;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -683,7 +683,7 @@ button:hover {
 
 .opciones-con-entrada select {
     width: 100%;
-    padding: 12px;
+    padding: 2px;
     font-size: 15px;
     border-radius: 8px;
     margin: 8px 0;
@@ -699,7 +699,7 @@ button:hover {
     padding: 12px;
     border: 3px solid #FEDE6E;
     border-radius: 10px;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: bold;
     cursor: pointer;
     margin: 10px auto 0 auto;
