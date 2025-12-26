@@ -3309,24 +3309,29 @@
             const colorPrimario = [7, 35, 134]; // #072386
             const colorSecundario = [255, 152, 0]; // #ff9800
             
-            // Header con logo y título (barra azul a todo el ancho y 10cm + ~15px)
+            // ====== ENCABEZADO ======
+            // Barra superior azul a todo el ancho (altura aumentada)
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(0, 0, pageWidth, 104, 'F');
-            // Imagen en la esquina superior izquierda dentro de la barra
-            await dibujarImagenHeader(pdf, 5, 5, 40);
+            pdf.rect(0, 0, pageWidth, 20, 'F');
+            // Logo en la esquina superior izquierda dentro de la barra
+            await dibujarImagenHeader(pdf, 5, 3, 35);
             
-            pdf.setTextColor(255, 255, 255);
-            pdf.setFontSize(18);
+            // Título principal
             pdf.setFont('helvetica', 'bold');
-            pdf.text('COTIZACIÓN INMOBILIARIA', pageWidth / 2, 12, { align: 'center' });
-            pdf.setFontSize(10);
-            pdf.text('FINAN - Financiamiento de Propiedades', pageWidth / 2, 20, { align: 'center' });
+            pdf.setFontSize(14);
+            pdf.setTextColor(colorPrimario[0], colorPrimario[1], colorPrimario[2]);
+            pdf.text('COTIZACIÓN INMOBILIARIA', pageWidth / 2, 25, { align: 'center' });
             
-            // Información del cliente
-            pdf.setTextColor(0, 0, 0);
+            // Subtítulo
+            pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(12);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text('INFORMACIÓN DEL CLIENTE', 15, 115);
+            pdf.setTextColor(102, 126, 234);
+            pdf.text('FINAN - Financiamiento de Propiedades', pageWidth / 2, 35, { align: 'center' });
+            
+            // Sección de datos del cliente con fondo azul claro
+            let yPos = 50;
+            pdf.setFillColor(240, 244, 255); // Fondo azul muy claro
+            pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
             
             const nombre = document.getElementById('nombre').value || 'No especificado';
             const correo = document.getElementById('correo').value || 'No especificado';
@@ -3335,19 +3340,30 @@
             const ciudad = document.getElementById('ciudad').value || 'No especificado';
             const provincia = document.getElementById('provincia').value || 'No especificado';
             
-            pdf.setFont('helvetica', 'normal');
             pdf.setFontSize(10);
-            pdf.text(`Nombre: ${nombre}`, 15, 125);
-            pdf.text(`Email: ${correo}`, 15, 131);
-            pdf.text(`Teléfono: ${telefono}`, 15, 137);
-            pdf.text(`Cédula: ${cedula}`, 110, 125);
-            pdf.text(`Ciudad: ${ciudad}`, 110, 131);
-            pdf.text(`Provincia: ${provincia}`, 110, 137);
-            
-            // Información de la propiedad
             pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(12);
-            pdf.text('DETALLE DE LA PROPIEDAD', 15, 155);
+            pdf.setTextColor(...colorPrimario);
+            pdf.text('INFORMACIÓN DEL CLIENTE', 20, yPos + 3);
+            
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(8);
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(`Nombre: ${nombre}`, 20, yPos + 12);
+            pdf.text(`Cédula: ${cedula}`, 20, yPos + 18);
+            pdf.text(`Teléfono: ${telefono}`, 20, yPos + 24);
+            pdf.text(`Email: ${correo}`, 110, yPos + 18);
+            pdf.text(`Ciudad: ${ciudad}`, 110, yPos + 24);
+            pdf.text(`Provincia: ${provincia}`, 110, yPos + 30);
+            
+            // Sección de datos de la propiedad en dos columnas con fondo azul corporativo
+            yPos += 40;
+            pdf.setFillColor(...colorPrimario); // Fondo azul corporativo
+            pdf.rect(15, yPos - 3, pageWidth - 30, 40, 'F');
+            
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(10);
+            pdf.setTextColor(255, 255, 255); // Texto blanco
+            pdf.text('DETALLES DE LA PROPIEDAD', 20, yPos + 3);
             
             const propiedadNombre = document.getElementById('propiedad-nombre')?.textContent || 'Propiedad Seleccionada';
             const montoFormateado = `$${montoSeleccionadoGlobal?.toLocaleString() || '0'}`;
@@ -3365,40 +3381,53 @@
             }
             
             pdf.setFont('helvetica', 'normal');
-            pdf.setFontSize(10);
-            pdf.text(`Tipo de Propiedad: ${propiedadNombre}`, 15, 165);
-            pdf.text(`Monto Financiado: ${montoFormateado}`, 15, 171);
-            pdf.text(`Plan Seleccionado: ${planSeleccionado}`, 15, 177);
-            pdf.text(`Plazo de Financiamiento: ${mesesTexto}`, 110, 165);
-            pdf.text(`Cuota Mensual: ${cuotaMensual}`, 110, 171);
-            pdf.text(`Inscripción: ${inscripcionTexto}`, 110, 177);
+            pdf.setFontSize(8);
             
-            if (porcentaje > 0) {
-              pdf.text(`Porcentaje de Entrada: ${porcentaje}% (informativo)`, 15, 183);
-            }
+            // Columna izquierda
+            pdf.text(`Tipo de Propiedad: ${propiedadNombre}`, 20, yPos + 12);
+            pdf.text(`Monto Financiado: ${montoFormateado}`, 20, yPos + 18);
+            pdf.text(`Cuota Mensual: ${cuotaMensual}`, 20, yPos + 24);
+            
+            // Columna derecha
+            pdf.text(`Plazo: ${mesesTexto}`, pageWidth / 2 + 10, yPos + 12);
+            pdf.text(`Plan: ${planSeleccionado}`, pageWidth / 2 + 10, yPos + 18);
+            pdf.text(`Inscripción: ${inscripcionTexto}`, pageWidth / 2 + 10, yPos + 24);
             
             // Tabla de opciones de financiamiento
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(12);
-            pdf.text('OPCIONES DE FINANCIAMIENTO DISPONIBLES', 15, 200);
+            yPos += 45;
             
-            // Headers de tabla
-            const startY = 210;
-            const rowHeight = 8;
-            const colWidths = [35, 25, 35, 30, 35];
-            const colStarts = [15, 50, 75, 110, 140];
-            
+            // Título de la tabla con mejor estilo
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(15, startY - 5, pageWidth - 30, rowHeight, 'F');
-            
-            pdf.setTextColor(255, 255, 255);
+            pdf.rect(15, yPos - 3, pageWidth - 30, 15, 'F');
             pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(9);
-            pdf.text('Plazo', colStarts[0] + 2, startY);
-            pdf.text('Tasa', colStarts[1] + 2, startY);
-            pdf.text('Cuota Mensual', colStarts[2] + 2, startY);
-            pdf.text('Inscripción', colStarts[3] + 2, startY);
-            pdf.text('Primer Mes', colStarts[4] + 2, startY);
+            pdf.setFontSize(11);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text('TABLA DE OPCIONES DE FINANCIAMIENTO', pageWidth / 2, yPos + 5, { align: 'center' });
+            
+            yPos += 18;
+            
+            // Encabezados de la tabla con mejor estilo
+            pdf.setFillColor(...colorPrimario);
+            pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(8);
+            pdf.setTextColor(255, 255, 255);
+            
+            // Distribución mejorada de columnas (más compacta)
+            const col1 = 22;  // PLAZO
+            const col2 = 55;  // TASA
+            const col3 = 88;  // CUOTA MENSUAL
+            const col4 = 125; // INSCRIPCIÓN
+            const col5 = 165; // PAGO PRIMER MES
+            
+            pdf.text('PLAZO', col1, yPos + 6);
+            pdf.text('TASA', col2, yPos + 6);
+            pdf.text('CUOTA MENSUAL', col3, yPos + 6);
+            pdf.text('INSCRIPCIÓN', col4, yPos + 6);
+            pdf.text('PAGO PRIMER MES', col5, yPos + 6);
+            
+            yPos += 15;
+            const rowHeight = 8;
             
             // Datos de la tabla
             if (datosCompletosJSON && montoSeleccionadoGlobal) {
@@ -3413,75 +3442,68 @@
                   { key: '120_MESES', label: '120 Meses', tasa: '2.0%' }
                 ];
                 
-                pdf.setTextColor(0, 0, 0);
                 pdf.setFont('helvetica', 'normal');
+                pdf.setFontSize(7);
                 
                 opcionesInmobiliario.forEach((opcion, index) => {
-                  const yPos = startY + 8 + (index * rowHeight);
+                  const rowY = yPos + (index * rowHeight);
                   const cuota = registro[opcion.key];
                   const inscripcion = registro.INSCRIPCION;
                   const esSeleccionado = selectedMonths === opcion.key;
                   
-                  // Highlighting para la opción seleccionada
+                  // Resaltar la opción seleccionada
                   if (esSeleccionado) {
-                    pdf.setFillColor(227, 242, 253);
-                    pdf.rect(15, yPos - 5, pageWidth - 30, rowHeight, 'F');
+                    pdf.setFillColor(227, 242, 253); // Azul claro
+                    pdf.rect(15, rowY - 2, pageWidth - 30, rowHeight, 'F');
                     pdf.setFont('helvetica', 'bold');
+                    pdf.setTextColor(7, 35, 134);
                   } else {
                     pdf.setFont('helvetica', 'normal');
-                  }
-                  
-                  pdf.text(opcion.label + (esSeleccionado ? ' ' : ''), colStarts[0] + 2, yPos);
-                  pdf.text(opcion.tasa, colStarts[1] + 2, yPos);
-                  
-                  if (cuota && !isNaN(cuota)) {
-                    pdf.text(`$${parseFloat(cuota).toLocaleString()}`, colStarts[2] + 2, yPos);
-                    if (inscripcion && !isNaN(inscripcion)) {
-                      const primerMes = parseFloat(cuota) + parseFloat(inscripcion);
-                      pdf.text(`$${primerMes.toLocaleString()}`, colStarts[4] + 2, yPos);
+                    pdf.setTextColor(0, 0, 0);
+                    // Alternar color de fondo
+                    if (index % 2 === 1) {
+                      pdf.setFillColor(249, 249, 249);
+                      pdf.rect(15, rowY - 2, pageWidth - 30, rowHeight, 'F');
                     }
-                  } else {
-                    pdf.text('N/A', colStarts[2] + 2, yPos);
-                    pdf.text('N/A', colStarts[4] + 2, yPos);
                   }
                   
-                  if (inscripcion && !isNaN(inscripcion)) {
-                    pdf.text(`$${parseFloat(inscripcion).toLocaleString()}`, colStarts[3] + 2, yPos);
-                  } else {
-                    pdf.text('N/A', colStarts[3] + 2, yPos);
+                  // Calcular pago primer mes (cuota mensual + inscripción)
+                  let pagoPrimerMes = 'N/A';
+                  if (cuota && !isNaN(cuota) && inscripcion && !isNaN(inscripcion)) {
+                    const cuotaNum = parseFloat(cuota);
+                    const inscripcionNum = parseFloat(inscripcion);
+                    const primerMes = cuotaNum + inscripcionNum;
+                    pagoPrimerMes = `$${primerMes.toLocaleString()}`;
                   }
+                  
+                  const plazoTexto = esSeleccionado ? `${opcion.label} ` : opcion.label;
+                  const cuotaTexto = cuota && !isNaN(cuota) ? `$${cuota}` : 'N/A';
+                  const inscripcionTexto = inscripcion && !isNaN(inscripcion) ? `$${inscripcion}` : 'N/A';
+                  
+                  pdf.text(plazoTexto, col1, rowY + 5);
+                  pdf.text(opcion.tasa, col2, rowY + 5);
+                  pdf.text(cuotaTexto, col3, rowY + 5);
+                  pdf.text(inscripcionTexto, col4, rowY + 5);
+                  pdf.text(pagoPrimerMes, col5, rowY + 5);
                 });
               }
             }
             
-            // Notas importantes
-            const notasY = 220;
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(11);
-            pdf.text('NOTAS IMPORTANTES:', 15, notasY);
+            // Nota explicativa
+            yPos += (opcionesInmobiliario.length * rowHeight) + 5;
+            pdf.setFont('helvetica', 'italic');
+            pdf.setFontSize(6);
+            pdf.setTextColor(153, 153, 153);
+            pdf.text('La opción seleccionada está resaltada en azul', 20, yPos);
             
-            pdf.setFont('helvetica', 'normal');
-            pdf.setFontSize(9);
-            const notas = [
-              '• Los valores mostrados son aproximados y pueden variar según evaluación crediticia.',
-              '• El porcentaje de entrada es informativo y no afecta las cuotas mostradas.',
-              '• Financiamiento sujeto a aprobación y verificación de documentos.',
-              '• Plazos diseñados específicamente para financiamiento inmobiliario.',
-              '• Para mayor información contacte a nuestros asesores especializados.'
-            ];
-            
-            notas.forEach((nota, index) => {
-              pdf.text(nota, 15, notasY + 8 + (index * 6));
-            });
-            
-            // Footer (a todo el ancho)
+            // Pie de página con gradiente azul
             pdf.setFillColor(...colorSecundario);
-            pdf.rect(0, pageHeight - 20, pageWidth, 20, 'F');
+            pdf.rect(0, pageHeight - 25, pageWidth, 25, 'F');
             
-            pdf.setTextColor(255, 255, 255);
-            pdf.setFontSize(10);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('FINAN  - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 12, { align: 'center' });
+            pdf.setFontSize(10);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text('FINAN - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 12, { align: 'center' });
             pdf.setFontSize(8);
             pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 6, { align: 'center' });
             
@@ -3580,11 +3602,7 @@
           pdf.setFontSize(10);
           pdf.setTextColor(102, 126, 234);
           pdf.text("Opciones de Pago Personalizadas", pageWidth / 2, 48, { align: 'center' });
-          
-          // Línea decorativa
-          pdf.setDrawColor(102, 126, 234);
-          pdf.setLineWidth(1);
-          pdf.line(20, 53, pageWidth - 20, 53);
+        
           
           let yPos = 60;
           
@@ -3827,24 +3845,33 @@
             const colorPrimario = [7, 35, 134]; // #072386
             const colorSecundario = [255, 152, 0]; // #ff9800
             
-            // Header con logo y título (barra azul a todo el ancho y 10cm + ~15px)
+            // Header con logo y título (barra azul a todo el ancho 20mm)
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(0, 0, pageWidth, 104, 'F');
+            pdf.rect(0, 0, pageWidth, 20, 'F');
             // Imagen en la esquina superior izquierda dentro de la barra
-            await dibujarImagenHeader(pdf, 5, 5, 40);
+            await dibujarImagenHeader(pdf, 5, 3, 35);
             
-            pdf.setTextColor(255, 255, 255);
-            pdf.setFontSize(18);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text('COTIZACIÓN INMOBILIARIA', pageWidth / 2, 12, { align: 'center' });
-            pdf.setFontSize(10);
-            pdf.text('FINAN MOTORS - Financiamiento de Propiedades', pageWidth / 2, 20, { align: 'center' });
+            // Título principal
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(14);
+          pdf.setTextColor(7, 35, 134); // Color azul corporativo
+          pdf.text("PROFORMA INMOBILIARIA", pageWidth / 2, 25, { align: 'center' });
+          // Plan seleccionado (debajo del título)
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(12);
+          pdf.setTextColor(102, 126, 234); // Azul más claro
+          pdf.text(planSeleccionado || "PLAN PERSONALIZADO", pageWidth / 2, 35, { align: 'center' });
+            
+            // Sección de datos del cliente con fondo azul claro
+            let yPos = 50;
+            pdf.setFillColor(240, 244, 255); // Fondo azul muy claro
+            pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
             
             // Información del cliente
-            pdf.setTextColor(0, 0, 0);
-            pdf.setFontSize(12);
+            pdf.setFontSize(10);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('INFORMACIÓN DEL CLIENTE', 15, 115);
+            pdf.setTextColor(...colorPrimario);
+            pdf.text('INFORMACIÓN DEL CLIENTE', 20, yPos + 3);
             
             const nombre = document.getElementById('nombre').value || 'No especificado';
             const correo = document.getElementById('correo').value || 'No especificado';
@@ -3854,18 +3881,24 @@
             const provincia = document.getElementById('provincia').value || 'No especificado';
             
             pdf.setFont('helvetica', 'normal');
-            pdf.setFontSize(10);
-            pdf.text(`Nombre: ${nombre}`, 15, 125);
-            pdf.text(`Email: ${correo}`, 15, 131);
-            pdf.text(`Teléfono: ${telefono}`, 15, 137);
-            pdf.text(`Cédula: ${cedula}`, 110, 125);
-            pdf.text(`Ciudad: ${ciudad}`, 110, 131);
-            pdf.text(`Provincia: ${provincia}`, 110, 137);
+            pdf.setFontSize(8);
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(`Nombre: ${nombre}`, 20, yPos + 12);
+            pdf.text(`Cédula: ${cedula}`, 20, yPos + 18);
+            pdf.text(`Teléfono: ${telefono}`, 20, yPos + 24);
+            pdf.text(`Email: ${correo}`, 110, yPos + 18);
+            pdf.text(`Ciudad: ${ciudad}`, 110, yPos + 24);
+            pdf.text(`Provincia: ${provincia}`, 110, yPos + 30);
             
-            // Información de la propiedad
+            // Sección de datos de la propiedad en dos columnas con fondo azul corporativo
+            yPos += 40;
+            pdf.setFillColor(...colorPrimario); // Fondo azul corporativo
+            pdf.rect(15, yPos - 3, pageWidth - 30, 40, 'F');
+            
             pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(12);
-            pdf.text('DETALLE DE LA PROPIEDAD', 15, 155);
+            pdf.setFontSize(10);
+            pdf.setTextColor(255, 255, 255); // Texto blanco
+            pdf.text('DETALLES DE LA PROPIEDAD', 20, yPos + 3);
             
             const propiedadNombre = document.getElementById('propiedad-nombre')?.textContent || 'Propiedad Seleccionada';
             const montoFormateado = `$${montoSeleccionadoGlobal?.toLocaleString() || '0'}`;
@@ -3883,42 +3916,55 @@
             }
             
             pdf.setFont('helvetica', 'normal');
-            pdf.setFontSize(10);
-            pdf.text(`Tipo de Propiedad: ${propiedadNombre}`, 15, 165);
-            pdf.text(`Monto Financiado: ${montoFormateado}`, 15, 171);
-            pdf.text(`Plan Seleccionado: ${planSeleccionado}`, 15, 177);
-            pdf.text(`Plazo de Financiamiento: ${mesesTexto}`, 110, 165);
-            pdf.text(`Cuota Mensual: ${cuotaMensual}`, 110, 171);
-            pdf.text(`Inscripción: ${inscripcionTexto}`, 110, 177);
+            pdf.setFontSize(8);
             
-            if (porcentaje > 0) {
-              pdf.text(`Porcentaje de Entrada: ${porcentaje}% (informativo)`, 15, 183);
-            }
+            // Columna izquierda
+            pdf.text(`Tipo de Propiedad: ${propiedadNombre}`, 20, yPos + 12);
+            pdf.text(`Monto Financiado: ${montoFormateado}`, 20, yPos + 18);
+            pdf.text(`Cuota Mensual: ${cuotaMensual}`, 20, yPos + 24);
+            
+            // Columna derecha
+            pdf.text(`Plazo: ${mesesTexto}`, pageWidth / 2 + 10, yPos + 12);
+            pdf.text(`Plan: ${planSeleccionado}`, pageWidth / 2 + 10, yPos + 18);
+            pdf.text(`Inscripción: ${inscripcionTexto}`, pageWidth / 2 + 10, yPos + 24);
             
             // Tabla de opciones de financiamiento
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(12);
-            pdf.text('OPCIONES DE FINANCIAMIENTO DISPONIBLES', 15, 200);
+            yPos += 45;
             
-            // Headers de tabla
-            const startY = 210;
-            const rowHeight = 8;
-            const colWidths = [35, 25, 35, 30, 35];
-            const colStarts = [15, 50, 75, 110, 140];
-            
+            // Título de la tabla con mejor estilo
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(15, startY - 5, pageWidth - 30, rowHeight, 'F');
-            
-            pdf.setTextColor(255, 255, 255);
+            pdf.rect(15, yPos - 3, pageWidth - 30, 15, 'F');
             pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(9);
-            pdf.text('Plazo', colStarts[0] + 2, startY);
-            pdf.text('Tasa', colStarts[1] + 2, startY);
-            pdf.text('Cuota Mensual', colStarts[2] + 2, startY);
-            pdf.text('Inscripción', colStarts[3] + 2, startY);
-            pdf.text('Primer Mes', colStarts[4] + 2, startY);
+            pdf.setFontSize(11);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text('TABLA DE OPCIONES DE FINANCIAMIENTO', pageWidth / 2, yPos + 5, { align: 'center' });
             
-            // Datos de la tabla
+            yPos += 18;
+            
+            // Encabezados de la tabla con mejor estilo
+            pdf.setFillColor(...colorPrimario);
+            pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(8);
+            pdf.setTextColor(255, 255, 255);
+            
+            // Distribución mejorada de columnas (más compacta)
+            const col1 = 22;  // PLAZO
+            const col2 = 55;  // TASA
+            const col3 = 88;  // CUOTA MENSUAL
+            const col4 = 125; // INSCRIPCIÓN
+            const col5 = 165; // PAGO PRIMER MES
+            
+            pdf.text('PLAZO', col1, yPos + 6);
+            pdf.text('TASA', col2, yPos + 6);
+            pdf.text('CUOTA MENSUAL', col3, yPos + 6);
+            pdf.text('INSCRIPCIÓN', col4, yPos + 6);
+            pdf.text('PAGO PRIMER MES', col5, yPos + 6);
+            
+            yPos += 15;
+            const rowHeight = 8;
+            
+            // Datos de la tabla con resaltado y bandas alternas
             if (datosCompletosJSON && montoSeleccionadoGlobal) {
               const registro = datosCompletosJSON.find(item => item.MONTO === montoSeleccionadoGlobal);
               if (registro) {
@@ -3931,49 +3977,55 @@
                   { key: '120_MESES', label: '120 Meses', tasa: '2.0%' }
                 ];
                 
-                pdf.setTextColor(0, 0, 0);
                 pdf.setFont('helvetica', 'normal');
+                pdf.setFontSize(7);
                 
                 opcionesInmobiliario.forEach((opcion, index) => {
-                  const yPos = startY + 8 + (index * rowHeight);
+                  const rowY = yPos + (index * rowHeight);
                   const cuota = registro[opcion.key];
                   const inscripcion = registro.INSCRIPCION;
                   const esSeleccionado = selectedMonths === opcion.key;
                   
-                  // Highlighting para la opción seleccionada
+                  // Resaltar la opción seleccionada
                   if (esSeleccionado) {
-                    pdf.setFillColor(227, 242, 253);
-                    pdf.rect(15, yPos - 5, pageWidth - 30, rowHeight, 'F');
+                    pdf.setFillColor(227, 242, 253); // Azul claro
+                    pdf.rect(15, rowY - 2, pageWidth - 30, rowHeight, 'F');
                     pdf.setFont('helvetica', 'bold');
+                    pdf.setTextColor(7, 35, 134);
                   } else {
                     pdf.setFont('helvetica', 'normal');
-                  }
-                  
-                  pdf.text(opcion.label + (esSeleccionado ? ' ' : ''), colStarts[0] + 2, yPos);
-                  pdf.text(opcion.tasa, colStarts[1] + 2, yPos);
-                  
-                  if (cuota && !isNaN(cuota)) {
-                    pdf.text(`$${parseFloat(cuota).toLocaleString()}`, colStarts[2] + 2, yPos);
-                    if (inscripcion && !isNaN(inscripcion)) {
-                      const primerMes = parseFloat(cuota) + parseFloat(inscripcion);
-                      pdf.text(`$${primerMes.toLocaleString()}`, colStarts[4] + 2, yPos);
+                    pdf.setTextColor(0, 0, 0);
+                    // Alternar color de fondo
+                    if (index % 2 === 1) {
+                      pdf.setFillColor(249, 249, 249);
+                      pdf.rect(15, rowY - 2, pageWidth - 30, rowHeight, 'F');
                     }
-                  } else {
-                    pdf.text('N/A', colStarts[2] + 2, yPos);
-                    pdf.text('N/A', colStarts[4] + 2, yPos);
                   }
                   
-                  if (inscripcion && !isNaN(inscripcion)) {
-                    pdf.text(`$${parseFloat(inscripcion).toLocaleString()}`, colStarts[3] + 2, yPos);
-                  } else {
-                    pdf.text('N/A', colStarts[3] + 2, yPos);
+                  // Calcular pago primer mes (cuota mensual + inscripción)
+                  let pagoPrimerMes = 'N/A';
+                  if (cuota && !isNaN(cuota) && inscripcion && !isNaN(inscripcion)) {
+                    const cuotaNum = parseFloat(cuota);
+                    const inscripcionNum = parseFloat(inscripcion);
+                    const primerMes = cuotaNum + inscripcionNum;
+                    pagoPrimerMes = `$${primerMes.toLocaleString()}`;
                   }
+                  
+                  const plazoTexto = esSeleccionado ? `${opcion.label} ` : opcion.label;
+                  const cuotaTexto = cuota && !isNaN(cuota) ? `$${cuota}` : 'N/A';
+                  const inscripcionTexto = inscripcion && !isNaN(inscripcion) ? `$${inscripcion}` : 'N/A';
+                  
+                  pdf.text(plazoTexto, col1, rowY + 5);
+                  pdf.text(opcion.tasa, col2, rowY + 5);
+                  pdf.text(cuotaTexto, col3, rowY + 5);
+                  pdf.text(inscripcionTexto, col4, rowY + 5);
+                  pdf.text(pagoPrimerMes, col5, rowY + 5);
                 });
               }
             }
             
             // Notas importantes
-            const notasY = 295;
+            const notasY = 227;
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(11);
             pdf.text('NOTAS IMPORTANTES:', 15, notasY);
@@ -3992,14 +4044,14 @@
               pdf.text(nota, 15, notasY + 8 + (index * 6));
             });
             
-            // Footer
+            // Footer (a todo el ancho)
             pdf.setFillColor(...colorSecundario);
-            pdf.rect(10, pageHeight - 20, pageWidth - 20, 20, 'F');
+            pdf.rect(0, pageHeight - 20, pageWidth, 20, 'F');
             
             pdf.setTextColor(255, 255, 255);
             pdf.setFontSize(10);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('FINAN MOTORS - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 12, { align: 'center' });
+            pdf.text('FINAN  - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 12, { align: 'center' });
             pdf.setFontSize(8);
             pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 6, { align: 'center' });
             
@@ -4275,7 +4327,7 @@
           pdf.setTextColor(255, 255, 255);
           pdf.text("FINAN - Lo hacemos posible", pageWidth / 2, pageHeight - 12, { align: 'center' });
           pdf.setFontSize(8);
-          pdf.text("www.finan.ec | contacto@finan.ec", pageWidth / 2, pageHeight - 4, { align: 'center' });
+          pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 4, { align: 'center' });
           
           // Descargar y enviar por correo
           const nombreArchivo = `Cotizacion_${planSeleccionado.replace(/\s+/g, '_')}_${nombre.replace(/\s+/g, '_')}.pdf`;
