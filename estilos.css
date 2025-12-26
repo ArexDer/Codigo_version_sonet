@@ -935,7 +935,7 @@ button:hover {
 
 .popup {
     position: fixed;
-    z-index: 1000;
+    z-index: 100000; /* Asegura que quede sobre el header y cualquier overlay */
     left: 0;
     top: 0;
     width: 100%;
@@ -961,6 +961,7 @@ button:hover {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     position: relative;
+    z-index: 100001; /* Sobre el overlay de la ventana */
     text-align: center;
     box-shadow: 0 0 30px rgba(0, 32, 92, 0.8), 0 0 60px rgba(0, 32, 92, 0.4), 0 0 90px rgba(0, 32, 92, 0.2);
     animation: neonGlow 2s ease-in-out infinite alternate;
@@ -1015,7 +1016,7 @@ button:hover {
 /* 4.1 Contenido del popup */
 .gracias_cotizar {
     text-align: center;
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     font-weight: bold;
     color: #00205C;
     /*margin-bottom: 25px;*/
@@ -1050,7 +1051,7 @@ button:hover {
     width: 300px;
     max-width: 100%;
     padding: 10px;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: bold;
     text-align: center;
     border: 2px solid #667eea;
@@ -1063,7 +1064,7 @@ button:hover {
 
 #precio-vehiculo-pop, #precio-vehiculo-popSN {
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     color: #F9B651;
 }
@@ -1085,7 +1086,7 @@ button:hover {
 .columna label {
     display: block;
     text-align: left;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
 }
 
@@ -1098,7 +1099,7 @@ button:hover {
     color: #333;
     border-radius: 8px;
     border: 1px solid #ddd;
-    font-size: 14px;
+    font-size: 13px;
     -webkit-appearance: none;
     appearance: none;
 }
@@ -1116,7 +1117,7 @@ button:hover {
     border: 2px solid #ddd;
     border-radius: 8px;
     margin-bottom: 12px;
-    font-size: 14px;
+    font-size: 13px;
     -webkit-appearance: none;
     appearance: none;
 }
@@ -1185,7 +1186,7 @@ button:hover {
 }
 
 .terminos {
-    font-size: 10px;
+    font-size: 9px;
 }
 
 /* 4.3 Botones del popup */
@@ -1195,7 +1196,7 @@ button:hover {
     padding: 15px 30px;
     border: 2px solid #FEDE6E;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     margin: 0 10px;
@@ -1217,7 +1218,7 @@ button:hover {
     padding: 15px 25px;
     border: 2px solid transparent;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     margin: 10px;
@@ -1245,7 +1246,7 @@ button:hover {
 
 #mensaje-error-global {
     color: #f44336;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     text-align: center;
     margin: 10px 0;

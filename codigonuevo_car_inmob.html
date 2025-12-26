@@ -4073,11 +4073,6 @@
           pdf.setTextColor(102, 126, 234); // Azul más claro
           pdf.text(planSeleccionado || "PLAN PERSONALIZADO", pageWidth / 2, 35, { align: 'center' });
           
-          // Línea decorativa
-          pdf.setDrawColor(102, 126, 234);
-          pdf.setLineWidth(1);
-          pdf.line(20, 42, pageWidth - 20, 42);
-          
           // Sección de datos del cliente con fondo azul claro
           let yPos = 50;
           pdf.setFillColor(240, 244, 255); // Fondo azul muy claro
