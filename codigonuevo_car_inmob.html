@@ -3268,7 +3268,26 @@
           }
         }
         
-        function generarPDFInmobiliario() {
+        // Utilidad: dibuja el logo/imagen del encabezado en una posición específica
+        async function dibujarImagenHeader(pdf, xPos, yPos, imgWidth) {
+          const imgUrl = 'https://finan.ec/wp-content/uploads/2025/12/txt-finan-amarillo.png';
+          try {
+            const resp = await fetch(imgUrl, { mode: 'cors' });
+            const blob = await resp.blob();
+            const reader = new FileReader();
+            const dataUrl = await new Promise((resolve, reject) => {
+              reader.onload = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            });
+            const imgHeight = 15; // Altura (mm) dentro de la barra azul
+            pdf.addImage(dataUrl, 'PNG', xPos, yPos, imgWidth, imgHeight);
+          } catch (e) {
+            console.warn('No se pudo cargar la imagen del encabezado:', e);
+          }
+        }
+
+        async function generarPDFInmobiliario() {
           console.log('🏠 Iniciando generación de PDF para INMOBILIARIO...');
           
           try {
@@ -3290,22 +3309,24 @@
             const colorPrimario = [7, 35, 134]; // #072386
             const colorSecundario = [255, 152, 0]; // #ff9800
             
-            // Header con logo y título
+            // Header con logo y título (barra azul a todo el ancho y 10cm + ~15px)
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(0, 0, pageWidth, 25, 'F');
+            pdf.rect(0, 0, pageWidth, 104, 'F');
+            // Imagen en la esquina superior izquierda dentro de la barra
+            await dibujarImagenHeader(pdf, 5, 5, 40);
             
             pdf.setTextColor(255, 255, 255);
             pdf.setFontSize(18);
             pdf.setFont('helvetica', 'bold');
             pdf.text('COTIZACIÓN INMOBILIARIA', pageWidth / 2, 12, { align: 'center' });
             pdf.setFontSize(10);
-            pdf.text('FINAN MOTORS - Financiamiento de Propiedades', pageWidth / 2, 20, { align: 'center' });
+            pdf.text('FINAN - Financiamiento de Propiedades', pageWidth / 2, 20, { align: 'center' });
             
             // Información del cliente
             pdf.setTextColor(0, 0, 0);
             pdf.setFontSize(12);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('INFORMACIÓN DEL CLIENTE', 15, 40);
+            pdf.text('INFORMACIÓN DEL CLIENTE', 15, 115);
             
             const nombre = document.getElementById('nombre').value || 'No especificado';
             const correo = document.getElementById('correo').value || 'No especificado';
@@ -3316,17 +3337,17 @@
             
             pdf.setFont('helvetica', 'normal');
             pdf.setFontSize(10);
-            pdf.text(`Nombre: ${nombre}`, 15, 50);
-            pdf.text(`Email: ${correo}`, 15, 56);
-            pdf.text(`Teléfono: ${telefono}`, 15, 62);
-            pdf.text(`Cédula: ${cedula}`, 110, 50);
-            pdf.text(`Ciudad: ${ciudad}`, 110, 56);
-            pdf.text(`Provincia: ${provincia}`, 110, 62);
+            pdf.text(`Nombre: ${nombre}`, 15, 125);
+            pdf.text(`Email: ${correo}`, 15, 131);
+            pdf.text(`Teléfono: ${telefono}`, 15, 137);
+            pdf.text(`Cédula: ${cedula}`, 110, 125);
+            pdf.text(`Ciudad: ${ciudad}`, 110, 131);
+            pdf.text(`Provincia: ${provincia}`, 110, 137);
             
             // Información de la propiedad
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(12);
-            pdf.text('DETALLE DE LA PROPIEDAD', 15, 80);
+            pdf.text('DETALLE DE LA PROPIEDAD', 15, 155);
             
             const propiedadNombre = document.getElementById('propiedad-nombre')?.textContent || 'Propiedad Seleccionada';
             const montoFormateado = `$${montoSeleccionadoGlobal?.toLocaleString() || '0'}`;
@@ -3345,24 +3366,24 @@
             
             pdf.setFont('helvetica', 'normal');
             pdf.setFontSize(10);
-            pdf.text(`Tipo de Propiedad: ${propiedadNombre}`, 15, 90);
-            pdf.text(`Monto Financiado: ${montoFormateado}`, 15, 96);
-            pdf.text(`Plan Seleccionado: ${planSeleccionado}`, 15, 102);
-            pdf.text(`Plazo de Financiamiento: ${mesesTexto}`, 110, 90);
-            pdf.text(`Cuota Mensual: ${cuotaMensual}`, 110, 96);
-            pdf.text(`Inscripción: ${inscripcionTexto}`, 110, 102);
+            pdf.text(`Tipo de Propiedad: ${propiedadNombre}`, 15, 165);
+            pdf.text(`Monto Financiado: ${montoFormateado}`, 15, 171);
+            pdf.text(`Plan Seleccionado: ${planSeleccionado}`, 15, 177);
+            pdf.text(`Plazo de Financiamiento: ${mesesTexto}`, 110, 165);
+            pdf.text(`Cuota Mensual: ${cuotaMensual}`, 110, 171);
+            pdf.text(`Inscripción: ${inscripcionTexto}`, 110, 177);
             
             if (porcentaje > 0) {
-              pdf.text(`Porcentaje de Entrada: ${porcentaje}% (informativo)`, 15, 108);
+              pdf.text(`Porcentaje de Entrada: ${porcentaje}% (informativo)`, 15, 183);
             }
             
             // Tabla de opciones de financiamiento
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(12);
-            pdf.text('OPCIONES DE FINANCIAMIENTO DISPONIBLES', 15, 125);
+            pdf.text('OPCIONES DE FINANCIAMIENTO DISPONIBLES', 15, 200);
             
             // Headers de tabla
-            const startY = 135;
+            const startY = 210;
             const rowHeight = 8;
             const colWidths = [35, 25, 35, 30, 35];
             const colStarts = [15, 50, 75, 110, 140];
@@ -3453,7 +3474,7 @@
               pdf.text(nota, 15, notasY + 8 + (index * 6));
             });
             
-            // Footer
+            // Footer (a todo el ancho)
             pdf.setFillColor(...colorSecundario);
             pdf.rect(0, pageHeight - 20, pageWidth, 20, 'F');
             
@@ -3494,16 +3515,16 @@
           }
         }
 
-        function generarPDFJustoTiempo() {
+        async function generarPDFJustoTiempo() {
           console.log('🚀 Iniciando generación de PDF para PLAN JUSTO A TIEMPO...');
           
           // Pequeño delay para asegurar que jsPDF esté completamente cargado
-          setTimeout(() => {
-            ejecutarGeneracionPDFJustoTiempo();
+          setTimeout(async () => {
+            await ejecutarGeneracionPDFJustoTiempo();
           }, 100);
         }
         
-        function ejecutarGeneracionPDFJustoTiempo() {
+        async function ejecutarGeneracionPDFJustoTiempo() {
           // Obtener datos del formulario
           const nombre = document.getElementById("nombre").value || "Cliente";
           const telefono = document.getElementById("telefono").value || "N/A";
@@ -3545,17 +3566,13 @@
           const pageWidth = pdf.internal.pageSize.getWidth();
           
           // ====== ENCABEZADO ======
-          // Línea superior azul
-          pdf.setDrawColor(7, 35, 134);
-          pdf.setLineWidth(5);
-          pdf.line(10, 15, pageWidth - 10, 15);
+          // Barra superior azul a todo el ancho (altura aumentada)
+          pdf.setFillColor(7, 35, 134);
+          pdf.rect(0, 0, pageWidth, 20, 'F');
+          // Logo en la esquina superior izquierda dentro de la barra
+          await dibujarImagenHeader(pdf, 5, 3, 35);
           
-          // Logo/Título principal
-          pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(16);
-          pdf.setTextColor(7, 35, 134);
-          pdf.text("FINAN", pageWidth / 2, 30, { align: 'center' });
-          
+        
           pdf.setFontSize(14);
           pdf.text("PROFORMA VEHICULAR - PLAN JUSTO A TIEMPO", pageWidth / 2, 40, { align: 'center' });
           
@@ -3788,7 +3805,7 @@
           }
         }
         
-        function generarPDFInmobiliario() {
+        async function generarPDFInmobiliario() {
           console.log('🏠 Iniciando generación de PDF para INMOBILIARIO...');
           
           try {
@@ -3810,9 +3827,11 @@
             const colorPrimario = [7, 35, 134]; // #072386
             const colorSecundario = [255, 152, 0]; // #ff9800
             
-            // Header con logo y título
+            // Header con logo y título (barra azul a todo el ancho y 10cm + ~15px)
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(0, 0, pageWidth, 25, 'F');
+            pdf.rect(0, 0, pageWidth, 104, 'F');
+            // Imagen en la esquina superior izquierda dentro de la barra
+            await dibujarImagenHeader(pdf, 5, 5, 40);
             
             pdf.setTextColor(255, 255, 255);
             pdf.setFontSize(18);
@@ -3825,7 +3844,7 @@
             pdf.setTextColor(0, 0, 0);
             pdf.setFontSize(12);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('INFORMACIÓN DEL CLIENTE', 15, 40);
+            pdf.text('INFORMACIÓN DEL CLIENTE', 15, 115);
             
             const nombre = document.getElementById('nombre').value || 'No especificado';
             const correo = document.getElementById('correo').value || 'No especificado';
@@ -3836,17 +3855,17 @@
             
             pdf.setFont('helvetica', 'normal');
             pdf.setFontSize(10);
-            pdf.text(`Nombre: ${nombre}`, 15, 50);
-            pdf.text(`Email: ${correo}`, 15, 56);
-            pdf.text(`Teléfono: ${telefono}`, 15, 62);
-            pdf.text(`Cédula: ${cedula}`, 110, 50);
-            pdf.text(`Ciudad: ${ciudad}`, 110, 56);
-            pdf.text(`Provincia: ${provincia}`, 110, 62);
+            pdf.text(`Nombre: ${nombre}`, 15, 125);
+            pdf.text(`Email: ${correo}`, 15, 131);
+            pdf.text(`Teléfono: ${telefono}`, 15, 137);
+            pdf.text(`Cédula: ${cedula}`, 110, 125);
+            pdf.text(`Ciudad: ${ciudad}`, 110, 131);
+            pdf.text(`Provincia: ${provincia}`, 110, 137);
             
             // Información de la propiedad
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(12);
-            pdf.text('DETALLE DE LA PROPIEDAD', 15, 80);
+            pdf.text('DETALLE DE LA PROPIEDAD', 15, 155);
             
             const propiedadNombre = document.getElementById('propiedad-nombre')?.textContent || 'Propiedad Seleccionada';
             const montoFormateado = `$${montoSeleccionadoGlobal?.toLocaleString() || '0'}`;
@@ -3865,24 +3884,24 @@
             
             pdf.setFont('helvetica', 'normal');
             pdf.setFontSize(10);
-            pdf.text(`Tipo de Propiedad: ${propiedadNombre}`, 15, 90);
-            pdf.text(`Monto Financiado: ${montoFormateado}`, 15, 96);
-            pdf.text(`Plan Seleccionado: ${planSeleccionado}`, 15, 102);
-            pdf.text(`Plazo de Financiamiento: ${mesesTexto}`, 110, 90);
-            pdf.text(`Cuota Mensual: ${cuotaMensual}`, 110, 96);
-            pdf.text(`Inscripción: ${inscripcionTexto}`, 110, 102);
+            pdf.text(`Tipo de Propiedad: ${propiedadNombre}`, 15, 165);
+            pdf.text(`Monto Financiado: ${montoFormateado}`, 15, 171);
+            pdf.text(`Plan Seleccionado: ${planSeleccionado}`, 15, 177);
+            pdf.text(`Plazo de Financiamiento: ${mesesTexto}`, 110, 165);
+            pdf.text(`Cuota Mensual: ${cuotaMensual}`, 110, 171);
+            pdf.text(`Inscripción: ${inscripcionTexto}`, 110, 177);
             
             if (porcentaje > 0) {
-              pdf.text(`Porcentaje de Entrada: ${porcentaje}% (informativo)`, 15, 108);
+              pdf.text(`Porcentaje de Entrada: ${porcentaje}% (informativo)`, 15, 183);
             }
             
             // Tabla de opciones de financiamiento
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(12);
-            pdf.text('OPCIONES DE FINANCIAMIENTO DISPONIBLES', 15, 125);
+            pdf.text('OPCIONES DE FINANCIAMIENTO DISPONIBLES', 15, 200);
             
             // Headers de tabla
-            const startY = 135;
+            const startY = 210;
             const rowHeight = 8;
             const colWidths = [35, 25, 35, 30, 35];
             const colStarts = [15, 50, 75, 110, 140];
@@ -3954,7 +3973,7 @@
             }
             
             // Notas importantes
-            const notasY = 220;
+            const notasY = 295;
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(11);
             pdf.text('NOTAS IMPORTANTES:', 15, notasY);
@@ -3975,7 +3994,7 @@
             
             // Footer
             pdf.setFillColor(...colorSecundario);
-            pdf.rect(0, pageHeight - 20, pageWidth, 20, 'F');
+            pdf.rect(10, pageHeight - 20, pageWidth - 20, 20, 'F');
             
             pdf.setTextColor(255, 255, 255);
             pdf.setFontSize(10);
@@ -4014,7 +4033,7 @@
           }
         }
 
-        function generarPDF() {
+        async function generarPDF() {
           console.log('🚀 Iniciando generación de PDF...');
           console.log('📊 Datos disponibles:', {
             monthlyPrice,
@@ -4056,10 +4075,11 @@
           const pageWidth = pdf.internal.pageSize.getWidth();
           console.log('📏 Dimensiones de página:', { pageWidth, pageHeight });
           
-          // Línea horizontal azul marino al inicio de la hoja
-          pdf.setDrawColor(7, 35, 134); // Azul marino
-          pdf.setLineWidth(4);
-          pdf.line(10, 10, pageWidth - 10, 10);
+          // Barra superior azul marino a todo el ancho (altura aumentada)
+          pdf.setFillColor(7, 35, 134); // Azul marino
+          pdf.rect(0, 0, pageWidth, 20, 'F');
+          // Logo en la esquina superior izquierda dentro de la barra
+          await dibujarImagenHeader(pdf, 5, 3, 35);
           
           // Título principal
           pdf.setFont("helvetica", "bold");
