@@ -424,7 +424,7 @@ function finanmotors_handle_pdf_send( WP_REST_Request $request ) {
 		$body_client .= '<p style="margin: 5px 0;">✅ Preparate para tu nueva adquisición</p>';
 		$body_client .= '</div>';
 		$body_client .= '<div style="text-align: center; margin-top: 30px; padding: 20px; background: #e8f5e8; border-radius: 10px;">';
-		$body_client .= '<p style="margin: 0; color: #2e7d32; font-size: 16px; font-weight: bold;">¡Estamos aquí para hacer realidad tu sueño!</p>';
+		$body_client .= '<p style="margin: 0; color: #2e7d32; font-size: 16px; font-weight: bold;">¡Estamos aquí para hacer realidad tus metas!</p>';
 		$body_client .= '<p style="margin: 10px 0 0 0; color: #2e7d32;">Saludos cordiales,<br/><strong>El equipo de Finan </strong></p>';
 		$body_client .= '</div>';
 		$body_client .= '</div></div>';
