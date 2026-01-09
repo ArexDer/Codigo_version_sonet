@@ -892,7 +892,7 @@
             <label for="terminos">
               <a
                 style="font-size: 14px"
-                href="https://finanmotors.com/terminos-y-condiciones/"
+                href="https://finan.ec/terminos-y-condiciones-2/"
                 target="_blank"
                 >Acepto los términos y condiciones</a
               >
@@ -3332,7 +3332,7 @@
             // Sección de datos del cliente con fondo azul claro
             let yPos = 50;
             pdf.setFillColor(240, 244, 255); // Fondo azul muy claro
-            pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
+            pdf.roundedRect(15, yPos - 3, pageWidth - 30, 35, 7, 7, 'F');
             
             const nombre = document.getElementById('nombre').value || 'No especificado';
             const correo = document.getElementById('correo').value || 'No especificado';
@@ -3359,7 +3359,7 @@
             // Sección de datos de la propiedad en dos columnas con fondo azul corporativo
             yPos += 40;
             pdf.setFillColor(...colorPrimario); // Fondo azul corporativo
-            pdf.rect(15, yPos - 3, pageWidth - 30, 40, 'F');
+            pdf.roundedRect(15, yPos - 3, pageWidth - 30, 40, 7, 7, 'F');
             
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(10);
@@ -3399,7 +3399,7 @@
             
             // Título de la tabla con mejor estilo
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(15, yPos - 3, pageWidth - 30, 15, 'F');
+            pdf.roundedRect(15, yPos - 3, pageWidth - 30, 15, 7, 7, 'F');
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(11);
             pdf.setTextColor(255, 255, 255);
@@ -3409,7 +3409,7 @@
             
             // Encabezados de la tabla con mejor estilo
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+            pdf.roundedRect(15, yPos - 2, pageWidth - 30, 12, 7, 7, 'F');
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(8);
             pdf.setTextColor(255, 255, 255);
@@ -3530,7 +3530,7 @@
             }, 'Cotización Inmobiliaria');
             
             console.log('✅ PDF inmobiliario generado exitosamente:', nombreArchivo);
-            alert('🎉 ¡PDF inmobiliario generado exitosamente!\n\n📧 El PDF ha sido enviado a tu correo electrónico y a la empresa.');
+            alert('🎉 ¡PDF inmobiliario generado exitosamente!\\n\\n📧 El PDF ha sido enviado a tu correo electrónico y a la empresa.');
             
           } catch (error) {
             console.error('❌ Error al generar PDF inmobiliario:', error);
@@ -3609,10 +3609,10 @@
           
           // ====== INFORMACIÓN DEL CLIENTE ======
           pdf.setFillColor(240, 248, 255); // Azul muy claro
-          pdf.rect(15, yPos, pageWidth - 30, 45, 'F');
+          pdf.roundedRect(15, yPos, pageWidth - 30, 45, 7, 7, 'F');
           pdf.setDrawColor(7, 35, 134);
           pdf.setLineWidth(1);
-          pdf.rect(15, yPos, pageWidth - 30, 45);
+          pdf.roundedRect(15, yPos, pageWidth - 30, 45, 7, 7, 'S');
           
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(12);
@@ -3637,7 +3637,7 @@
           
           // ====== INFORMACIÓN DEL VEHÍCULO Y PLAN ======
           pdf.setFillColor(7, 35, 134);
-          pdf.rect(15, yPos, pageWidth - 30, 35, 'F');
+          pdf.roundedRect(15, yPos, pageWidth - 30, 35, 7, 7, 'F');
           
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(12);
@@ -3683,7 +3683,7 @@
           
           // ====== TÍTULO DE OPCIONES DE PAGO ======
           pdf.setFillColor(76, 175, 80); // Verde
-          pdf.rect(15, yPos, pageWidth - 30, 18, 'F');
+          pdf.roundedRect(15, yPos, pageWidth - 30, 18, 7, 7, 'F');
           
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(13);
@@ -3699,7 +3699,7 @@
             // ====== TABLA DE OPCIONES ======
             // Encabezados
             pdf.setFillColor(102, 126, 234);
-            pdf.rect(15, yPos, pageWidth - 30, 12, 'F');
+            pdf.roundedRect(15, yPos, pageWidth - 30, 12, 7, 7, 'F');
             
             pdf.setFont("helvetica", "bold");
             pdf.setFontSize(9);
@@ -3721,7 +3721,7 @@
               // Alternar color de fondo
               if (index % 2 === 0) {
                 pdf.setFillColor(248, 249, 250);
-                pdf.rect(15, yPos - 2, pageWidth - 30, 14, 'F');
+                pdf.roundedRect(15, yPos - 2, pageWidth - 30, 14, 7, 7, 'F');
               }
               
               pdf.setTextColor(0, 0, 0);
@@ -3743,31 +3743,13 @@
               yPos += 14;
             });
             
-            // ====== RESUMEN FINAL ======
-            yPos += 10;
-            pdf.setFillColor(232, 245, 233); // Verde claro
-            pdf.rect(15, yPos, pageWidth - 30, 25, 'F');
-            pdf.setDrawColor(76, 175, 80);
-            pdf.setLineWidth(2);
-            pdf.rect(15, yPos, pageWidth - 30, 25);
-            
-            pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(10);
-            pdf.setTextColor(46, 125, 50); // Verde oscuro
-            pdf.text("RESUMEN DE TUS OPCIONES", 20, yPos + 8);
-            
-            pdf.setFont("helvetica", "normal");
-            pdf.setFontSize(7);
-            pdf.text(`• Tienes ${opcionesPago.length} opción${opcionesPago.length > 1 ? 'es' : ''} disponible${opcionesPago.length > 1 ? 's' : ''} para el mes ${mesSeleccionado}`, 20, yPos + 16);
-            pdf.text(`• Elige la opción que mejor se adapte a tu capacidad de pago`, 20, yPos + 22);
-            
           } else {
             // ====== SIN OPCIONES DISPONIBLES ======
             pdf.setFillColor(255, 243, 205); // Amarillo claro
-            pdf.rect(15, yPos, pageWidth - 30, 25, 'F');
+            pdf.roundedRect(15, yPos, pageWidth - 30, 25, 7, 7, 'F');
             pdf.setDrawColor(255, 193, 7);
             pdf.setLineWidth(2);
-            pdf.rect(15, yPos, pageWidth - 30, 25);
+            pdf.roundedRect(15, yPos, pageWidth - 30, 25, 7, 7, 'S');
             
             pdf.setFont("helvetica", "bold");
             pdf.setFontSize(11);
@@ -3866,7 +3848,7 @@
             // Sección de datos del cliente con fondo azul claro
             let yPos = 50;
             pdf.setFillColor(240, 244, 255); // Fondo azul muy claro
-            pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
+            pdf.roundedRect(15, yPos - 3, pageWidth - 30, 35, 7, 7, 'F');
             
             // Información del cliente
             pdf.setFontSize(10);
@@ -3894,7 +3876,7 @@
             // Sección de datos de la propiedad en dos columnas con fondo azul corporativo
             yPos += 40;
             pdf.setFillColor(...colorPrimario); // Fondo azul corporativo
-            pdf.rect(15, yPos - 3, pageWidth - 30, 40, 'F');
+            pdf.roundedRect(15, yPos - 3, pageWidth - 30, 40, 7, 7, 'F');
             
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(10);
@@ -3934,7 +3916,7 @@
             
             // Título de la tabla con mejor estilo
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(15, yPos - 3, pageWidth - 30, 15, 'F');
+            pdf.roundedRect(15, yPos - 3, pageWidth - 30, 15, 7, 7, 'F');
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(11);
             pdf.setTextColor(255, 255, 255);
@@ -3944,7 +3926,7 @@
             
             // Encabezados de la tabla con mejor estilo
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+            pdf.roundedRect(15, yPos - 2, pageWidth - 30, 12, 7, 7, 'F');
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(8);
             pdf.setTextColor(255, 255, 255);
@@ -4149,7 +4131,7 @@
           // Sección de datos del cliente con fondo azul claro
           let yPos = 50;
           pdf.setFillColor(240, 244, 255); // Fondo azul muy claro
-          pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
+          pdf.roundedRect(15, yPos - 3, pageWidth - 30, 35, 7, 7, 'F');
           
           // Datos del cliente
           const nombre = document.getElementById("nombre").value;
@@ -4179,7 +4161,7 @@
           // Sección de datos del vehículo en dos columnas
           yPos += 40;
           pdf.setFillColor(7, 35, 134); // Fondo azul corporativo
-          pdf.rect(15, yPos - 3, pageWidth - 30, 35, 'F');
+          pdf.roundedRect(15, yPos - 3, pageWidth - 30, 35, 7, 7, 'F');
           
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(10);
@@ -4223,7 +4205,7 @@
           
           // Título de la tabla con mejor estilo
           pdf.setFillColor(7, 35, 134);
-          pdf.rect(15, yPos - 3, pageWidth - 30, 15, 'F');
+          pdf.roundedRect(15, yPos - 3, pageWidth - 30, 15, 7, 7, 'F');
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(11);
           pdf.setTextColor(255, 255, 255);
@@ -4233,7 +4215,7 @@
           
           // Encabezados de la tabla con mejor estilo
           pdf.setFillColor(7, 35, 134);
-          pdf.rect(15, yPos - 2, pageWidth - 30, 12, 'F');
+          pdf.roundedRect(15, yPos - 2, pageWidth - 30, 12, 7, 7, 'F');
           pdf.setFont("helvetica", "bold");
           pdf.setFontSize(8);
           pdf.setTextColor(255, 255, 255);
@@ -4277,7 +4259,7 @@
             // Resaltar la opción seleccionada
             if (esMesesSeleccionado) {
               pdf.setFillColor(227, 242, 253); // Azul claro
-              pdf.rect(15, yPos - 2, pageWidth - 30, 10, 'F');
+              pdf.roundedRect(15, yPos - 2, pageWidth - 30, 10, 7, 7, 'F');
               pdf.setFont("helvetica", "bold");
               pdf.setTextColor(7, 35, 134);
             } else {
@@ -4286,7 +4268,7 @@
               // Alternar color de fondo
               if (index % 2 === 1) {
                 pdf.setFillColor(249, 249, 249);
-                pdf.rect(15, yPos - 2, pageWidth - 30, 10, 'F');
+                pdf.roundedRect(15, yPos - 2, pageWidth - 30, 10, 7, 7, 'F');
               }
             }
             
