@@ -1574,33 +1574,6 @@
                   document.getElementById("tabla-completa-opciones").style.display = "none";
                   document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
                   
-                  // Crear sección especial para AUTO SEGURO en el popup
-                  const autoSeguroPopup = document.createElement("div");
-                  autoSeguroPopup.id = "auto-seguro-popup-info";
-                  autoSeguroPopup.style.cssText = "margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px; border: 2px solid #4CAF50;";
-                  autoSeguroPopup.innerHTML = `
-                    <h3 style="text-align: center; color: #072386; margin-bottom: 15px;">PLAN AUTO SEGURO</h3>
-                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
-                      <p style="margin: 8px 0; font-size: 1rem;"><strong>Monto Seleccionado:</strong> $${parseInt(montoSelect.value).toLocaleString()}</p>
-                      <p style="margin: 8px 0; font-size: 1rem; color: #4CAF50;"><strong>Cuota Mensual:</strong> $${cuotaMensual}</p>
-                      <p style="margin: 8px 0; font-size: 1rem; color: #FF5722;"><strong>Oferta 6to Mes:</strong> $${oferta6toMes}</p>
-                    </div>
-                    <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 10px;">
-                      *Al 6to mes recibes una oferta especial para facilitar tu compra
-                    </p> 
-                  `;
-                  
-                  // Limpiar y agregar la información de AUTO SEGURO
-                  const popupFormContainer = document.getElementById("popup-form");
-                  const existingAutoSeguro = document.getElementById("auto-seguro-popup-info");
-                  if (existingAutoSeguro) {
-                    existingAutoSeguro.remove();
-                  }
-                  
-                  // Insertar antes del formulario de datos del cliente
-                  const nombreInput = document.getElementById("nombre");
-                  nombreInput.parentElement.insertBefore(autoSeguroPopup, nombreInput.parentElement.firstChild);
-                  
                   // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
                   document.getElementById("primero-renovacion").style.display = "block";
                   
