@@ -1587,7 +1587,7 @@
                     </div>
                     <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 10px;">
                       *Al 6to mes recibes una oferta especial para facilitar tu compra
-                    </p>
+                    </p> 
                   `;
                   
                   // Limpiar y agregar la información de AUTO SEGURO
@@ -2632,67 +2632,61 @@
             console.log("🛡️ Configurando contenido para PLAN AUTO SEGURO");
             
             document.getElementById("formfinal").style.display = "none";
-            document.getElementById("tabla-completa-opciones").style.display = "none";
-            
-            // Crear o actualizar sección especial para AUTO SEGURO
-            let autoSeguroSection = document.getElementById("auto-seguro-pdf-info");
-            if (!autoSeguroSection) {
-              autoSeguroSection = document.createElement("div");
-              autoSeguroSection.id = "auto-seguro-pdf-info";
-              
-              // Insertar después de la imagen del auto
-              const autoPdfElement = document.getElementById("auto-pdf");
-              if (autoPdfElement && autoPdfElement.parentElement) {
-                autoPdfElement.parentElement.insertAdjacentElement('afterend', autoSeguroSection);
-              }
-            }
             
             // Obtener datos de AUTO SEGURO
             const cuotaMensual = window.autoSeguroData ? window.autoSeguroData.cuota : monthlyPrice;
             const oferta6toMes = window.autoSeguroData ? window.autoSeguroData.oferta : "N/A";
             const montoVehiculo = window.autoSeguroData ? window.autoSeguroData.monto : montoEstimado;
             
-            autoSeguroSection.style.cssText = "margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px; border: 2px solid #4CAF50;";
-            autoSeguroSection.innerHTML = `
-              <h3 style="text-align: center; color: #072386; margin-bottom: 15px;">PLAN AUTO SEGURO</h3>
-              <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
-                <p style="margin: 8px 0; font-size: 1rem;"><strong>Monto Seleccionado:</strong> $${parseInt(montoVehiculo).toLocaleString()}</p>
-                <p style="margin: 8px 0; font-size: 1rem; color: #4CAF50;"><strong>Cuota Mensual:</strong> $${cuotaMensual}</p>
-                <p style="margin: 8px 0; font-size: 1rem; color: #FF5722;"><strong>Oferta 6to Mes:</strong> $${oferta6toMes}</p>
-              </div>
-              <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                <h4 style="color: #072386; margin-bottom: 10px; text-align: center;">Plan de Pagos (6 Meses)</h4>
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
-                  <thead>
-                    <tr style="background: #072386; color: white;">
-                      <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Mes</th>
-                      <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Cuota</th>
-                      <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Estado</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${Array.from({length: 6}, (_, i) => {
-                      const mes = i + 1;
-                      const esUltimoMes = mes === 6;
-                      return `
-                        <tr style="background: ${i % 2 === 0 ? '#f9f9f9' : 'white'};">
-                          <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">Mes ${mes}</td>
-                          <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">$${cuotaMensual}</td>
-                          <td style="padding: 8px; border: 1px solid #ddd; text-align: center; color: ${esUltimoMes ? '#FF5722' : '#4CAF50'}; font-weight: ${esUltimoMes ? 'bold' : 'normal'};">
-                            ${esUltimoMes ? `+ Oferta $${oferta6toMes}` : 'Pago regular'}
-                          </td>
+            // Limpiar y configurar el contenedor de la tabla para mostrar AUTO SEGURO
+            const tablaOpcionesContainer = document.getElementById("tabla-completa-opciones");
+            if (tablaOpcionesContainer) {
+              tablaOpcionesContainer.style.display = "block";
+              
+              // Generar HTML de AUTO SEGURO directamente en el contenedor de la tabla
+              tablaOpcionesContainer.innerHTML = `
+                <div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px; border: 2px solid #4CAF50;">
+                  <h3 style="text-align: center; color: #072386; margin-bottom: 15px;">PLAN AUTO SEGURO</h3>
+                  <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                    <p style="margin: 8px 0; font-size: 1rem;"><strong>Monto Seleccionado:</strong> $${parseInt(montoVehiculo).toLocaleString()}</p>
+                    <p style="margin: 8px 0; font-size: 1rem; color: #4CAF50;"><strong>Cuota Mensual:</strong> $${cuotaMensual}</p>
+                    <p style="margin: 8px 0; font-size: 1rem; color: #FF5722;"><strong>Oferta 6to Mes:</strong> $${oferta6toMes}</p>
+                  </div>
+                  <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #072386; margin-bottom: 10px; text-align: center;">Plan de Pagos (6 Meses)</h4>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                      <thead>
+                        <tr style="background: #072386; color: white;">
+                          <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Mes</th>
+                          <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Cuota</th>
+                          <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Estado</th>
                         </tr>
-                      `;
-                    }).join('')}
-                  </tbody>
-                </table>
-              </div>
-              <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 15px; font-style: italic;">
-                *Al 6to mes recibes una oferta especial para facilitar tu compra
-              </p>
-            `;
+                      </thead>
+                      <tbody>
+                        ${Array.from({length: 6}, (_, i) => {
+                          const mes = i + 1;
+                          const esUltimoMes = mes === 6;
+                          return `
+                            <tr style="background: ${i % 2 === 0 ? '#f9f9f9' : 'white'};">
+                              <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">Mes ${mes}</td>
+                              <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">$${cuotaMensual}</td>
+                              <td style="padding: 8px; border: 1px solid #ddd; text-align: center; color: ${esUltimoMes ? '#FF5722' : '#4CAF50'}; font-weight: ${esUltimoMes ? 'bold' : 'normal'};">
+                                ${esUltimoMes ? `+ Oferta $${oferta6toMes}` : 'Pago regular'}
+                              </td>
+                            </tr>
+                          `;
+                        }).join('')}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 15px; font-style: italic;">
+                    *Al 6to mes recibes una oferta especial para facilitar tu compra
+                  </p>
+                </div>
+              `;
+            }
             
-            console.log("✅ Sección AUTO SEGURO configurada correctamente");
+            console.log("✅ Sección AUTO SEGURO configurada en contenedor de tabla");
             
             // Cambiar texto del botón PDF
             document.getElementById("btn-quote").textContent = "DESCARGAR PDF";
