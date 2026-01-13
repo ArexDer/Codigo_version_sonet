@@ -150,6 +150,10 @@
                     PLAN JUSTO A TIEMPO
                     <div class="tooltip">Planifica tu compra para el momento exacto que necesitas</div>
                   </button>
+                  <button class="opcion-financiacion" id="auto-seguro">
+                    PLAN AUTO SEGURO
+                    <div class="tooltip">Tu vehiculo en el sexto mes</div>
+                  </button>
                 </div>
               </div>
               
@@ -541,6 +545,52 @@
                 
                 <button id="continuar-justo-tiempo">CONTINUAR</button>
                 <button id="volver-opciones-justo-tiempo">VOLVER A OPCIONES</button>
+              </div>
+              
+              <!-- Formulario AUTO SEGURO (inicialmente oculto) -->
+              <div class="opciones-con-entrada hidden" id="opciones-auto-seguro">
+                <p class="titulo_marca_modelo">
+                  Estás a un paso de planificar tu auto
+                  <span id="marca_modelo_auto_seguro"></span>
+                </p>
+                <input type="text" id="precio-vehiculo-auto-seguro" style="display: none" />
+                
+                <select id="montoSelectAutoSeguro">
+                  <option value="">Selecciona el monto que deseas:</option>
+                  <option value="10000">$ 10.000</option>
+                  <option value="10500">$ 10.500</option>
+                  <option value="11000">$ 11.000</option>
+                  <option value="11500">$ 11.500</option>
+                  <option value="12000">$ 12.000</option>
+                  <option value="12500">$ 12.500</option>
+                  <option value="13000">$ 13.000</option>
+                  <option value="13500">$ 13.500</option>
+                  <option value="14000">$ 14.000</option>
+                  <option value="14500">$ 14.500</option>
+                  <option value="15000">$ 15.000</option>
+                  <option value="15500">$ 15.500</option>
+                  <option value="16000">$ 16.000</option>
+                  <option value="16500">$ 16.500</option>
+                  <option value="17000">$ 17.000</option>
+                  <option value="17500">$ 17.500</option>
+                  <option value="18000">$ 18.000</option>
+                  <option value="18500">$ 18.500</option>
+                  <option value="19000">$ 19.000</option>
+                  <option value="19500">$ 19.500</option>
+                  <option value="20000">$ 20.000</option>
+                </select>
+                
+                <div>
+                  <p class="precio_mensual">
+                    Cuota mensual: $ <span id="resultadoCuotaAutoSeguro">0</span>
+                  </p>
+                  <p class="inscripcion">
+                    Oferta 6to mes: $ <span id="resultadoOfertaAutoSeguro">0</span>
+                  </p>
+                </div>
+                
+                <button id="continuar-auto-seguro">CONTINUAR</button>
+                <button id="volver-opciones-auto-seguro">VOLVER A OPCIONES</button>
               </div>
               
             </div>
@@ -1467,6 +1517,120 @@
               document.getElementById("continuar-justo-tiempo").setAttribute('data-listener-continuar-justo-tiempo', 'true');
             }
             
+            // Botón AUTO SEGURO - protegido contra duplicados
+            if (!document.getElementById("auto-seguro").hasAttribute('data-listener-auto-seguro')) {
+              document.getElementById("auto-seguro").addEventListener("click", () => {
+                planSeleccionado = "PLAN AUTO SEGURO"; // Capturar plan seleccionado
+                document.getElementById("opciones-financiacion-container").classList.add("hidden");
+                document.getElementById("opciones-auto-seguro").classList.remove("hidden");
+                
+                // Actualizar información del vehículo
+                document.getElementById("precio-vehiculo-auto-seguro").value = "AVALUO $" + avaluoActual;
+                const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                document.getElementById("marca_modelo_auto_seguro").textContent = marcaModelo;
+                
+                // Inicializar cálculos para AUTO SEGURO
+                cargarDatosAutoSeguro();
+              });
+              document.getElementById("auto-seguro").setAttribute('data-listener-auto-seguro', 'true');
+            }
+            
+            // Botón volver a opciones AUTO SEGURO - protegido contra duplicados con limpieza de datos
+            if (!document.getElementById("volver-opciones-auto-seguro").hasAttribute('data-listener-volver-auto-seguro')) {
+              document.getElementById("volver-opciones-auto-seguro").addEventListener("click", () => {
+                // Limpiar selectores y resultados
+                document.getElementById("montoSelectAutoSeguro").value = "";
+                document.getElementById("resultadoCuotaAutoSeguro").textContent = "0";
+                document.getElementById("resultadoOfertaAutoSeguro").textContent = "0";
+                
+                document.getElementById("opciones-auto-seguro").classList.add("hidden");
+                document.getElementById("opciones-financiacion-container").classList.remove("hidden");
+              });
+              document.getElementById("volver-opciones-auto-seguro").setAttribute('data-listener-volver-auto-seguro', 'true');
+            }
+            
+            // Botón continuar AUTO SEGURO - abrir popup (protegido contra duplicados)
+            if (!document.getElementById("continuar-auto-seguro").hasAttribute('data-listener-continuar-auto-seguro')) {
+              document.getElementById("continuar-auto-seguro").addEventListener("click", () => {
+                const montoSelect = document.getElementById("montoSelectAutoSeguro");
+                const btnContinuar = document.getElementById("continuar-auto-seguro");
+                
+                // Deshabilitar botón durante procesamiento
+                btnContinuar.disabled = true;
+                btnContinuar.style.opacity = "0.5";
+                btnContinuar.style.cursor = "not-allowed";
+                
+                if (avaluoActual > 0 && montoSelect.value) {
+                  // Preparar datos para el popup
+                  const marcaModelo = document.getElementById("vehiculo-nombre").textContent;
+                  const cuotaMensual = document.getElementById("resultadoCuotaAutoSeguro").textContent;
+                  const oferta6toMes = document.getElementById("resultadoOfertaAutoSeguro").textContent;
+                  
+                  // Configurar popup
+                  document.getElementById("imagen-carro").src = imagenSeleccionada;
+                  document.getElementById("usuario").textContent = "";
+                  
+                  // Ocultar tabla completa y opciones justo tiempo para AUTO SEGURO
+                  document.getElementById("tabla-completa-opciones").style.display = "none";
+                  document.getElementById("opciones-pago-justo-tiempo-popup").style.display = "none";
+                  
+                  // Crear sección especial para AUTO SEGURO en el popup
+                  const autoSeguroPopup = document.createElement("div");
+                  autoSeguroPopup.id = "auto-seguro-popup-info";
+                  autoSeguroPopup.style.cssText = "margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px; border: 2px solid #4CAF50;";
+                  autoSeguroPopup.innerHTML = `
+                    <h3 style="text-align: center; color: #072386; margin-bottom: 15px;">PLAN AUTO SEGURO</h3>
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                      <p style="margin: 8px 0; font-size: 1rem;"><strong>Monto Seleccionado:</strong> $${parseInt(montoSelect.value).toLocaleString()}</p>
+                      <p style="margin: 8px 0; font-size: 1rem; color: #4CAF50;"><strong>Cuota Mensual:</strong> $${cuotaMensual}</p>
+                      <p style="margin: 8px 0; font-size: 1rem; color: #FF5722;"><strong>Oferta 6to Mes:</strong> $${oferta6toMes}</p>
+                    </div>
+                    <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 10px;">
+                      *Al 6to mes recibes una oferta especial para facilitar tu compra
+                    </p>
+                  `;
+                  
+                  // Limpiar y agregar la información de AUTO SEGURO
+                  const popupFormContainer = document.getElementById("popup-form");
+                  const existingAutoSeguro = document.getElementById("auto-seguro-popup-info");
+                  if (existingAutoSeguro) {
+                    existingAutoSeguro.remove();
+                  }
+                  
+                  // Insertar antes del formulario de datos del cliente
+                  const nombreInput = document.getElementById("nombre");
+                  nombreInput.parentElement.insertBefore(autoSeguroPopup, nombreInput.parentElement.firstChild);
+                  
+                  // Ocultar select de primer vehículo si es inmobiliario (es vehicular)
+                  document.getElementById("primero-renovacion").style.display = "block";
+                  
+                  // Mostrar popup
+                  document.getElementById("popup").classList.remove("hidden");
+                  
+                  console.log("Abriendo popup AUTO SEGURO con datos:", {
+                    vehiculo: marcaModelo,
+                    precio: avaluoActual,
+                    cuotaMensual: cuotaMensual,
+                    oferta6toMes: oferta6toMes,
+                    imagen: imagenSeleccionada,
+                    plan: "PLAN AUTO SEGURO"
+                  });
+                  
+                  // Habilitar botón al finalizar
+                  btnContinuar.disabled = false;
+                  btnContinuar.style.opacity = "1";
+                  btnContinuar.style.cursor = "pointer";
+                } else {
+                  // Habilitar botón si hay error
+                  btnContinuar.disabled = false;
+                  btnContinuar.style.opacity = "1";
+                  btnContinuar.style.cursor = "pointer";
+                  alert("Por favor selecciona un monto antes de continuar.");
+                }
+              });
+              document.getElementById("continuar-auto-seguro").setAttribute('data-listener-continuar-auto-seguro', 'true');
+            }
+            
             // Botón continuar CON ENTRADA - abrir popup
             document.getElementById("continuar-con-entrada").addEventListener("click", () => {
               if (avaluoActual > 0 && monthlyPrice > 0) {
@@ -1606,6 +1770,83 @@
                       }
                     }
                   };
+                });
+            }
+            
+            // Función para cargar datos del JSON de 6meses (AUTO SEGURO)
+            function cargarDatosAutoSeguro() {
+              fetch("https://finan.ec/6meses.json")
+                .then((response) => response.json())
+                .then((data) => {
+                  const montoSelect = document.getElementById("montoSelectAutoSeguro");
+                  const resultadoCuota = document.getElementById("resultadoCuotaAutoSeguro");
+                  const resultadoOferta = document.getElementById("resultadoOfertaAutoSeguro");
+                  
+                  console.log("JSON AUTO SEGURO CARGADO EXITOSAMENTE", data);
+                  
+                  // Almacenar datos globalmente para uso en PDF
+                  window.datosAutoSeguro = data;
+                  
+                  montoSelect.onchange = actualizarResultadoAutoSeguro;
+                  
+                  function actualizarResultadoAutoSeguro() {
+                    const montoSeleccionado = parseFloat(montoSelect.value.replace(/,/g, ""));
+                    
+                    console.log("Monto AUTO SEGURO seleccionado:", montoSeleccionado);
+                    console.log("Datos disponibles en JSON:", data.map(item => ({monto: item.MONTO, cuota: item.CUOTA, oferta: item.OFERTA})));
+                    
+                    // Almacenar monto seleccionado globalmente
+                    montoSeleccionadoGlobal = montoSeleccionado;
+                    montoEstimado = montoSeleccionado;
+                    
+                    // Buscar en JSON el objeto que coincida con el monto (comparación flexible)
+                    const resultado = data.find((item) => {
+                      // Convertir ambos valores a número para comparación
+                      const montoJSON = parseFloat(String(item.MONTO).replace(/\./g, '').replace(',', '.'));
+                      return Math.abs(montoJSON - montoSeleccionado) < 1;
+                    });
+                    
+                    console.log("Resultado encontrado:", resultado);
+                    
+                    if (resultado) {
+                      const cuota = resultado.CUOTA || "No disponible";
+                      const oferta = resultado.OFERTA || "No disponible";
+                      
+                      resultadoCuota.innerText = cuota;
+                      resultadoOferta.innerText = oferta;
+                      
+                      // Actualizar variables globales
+                      monthlyPrice = cuota;
+                      selectedMonths = "6_MESES"; // Plan AUTO SEGURO es de 6 meses
+                      
+                      // Almacenar datos específicos de AUTO SEGURO
+                      window.autoSeguroData = {
+                        cuota: cuota,
+                        oferta: oferta,
+                        monto: montoSeleccionado
+                      };
+                      
+                      console.log("AUTO SEGURO - Cuota:", cuota, "Oferta 6to mes:", oferta);
+                    } else {
+                      console.log("No se encontró resultado para monto:", montoSeleccionado);
+                      resultadoCuota.innerText = "0";
+                      resultadoOferta.innerText = "0";
+                    }
+                  }
+                  
+                  // Agregar event listener para monto
+                  montoSelect.addEventListener("change", () => {
+                    montoEstimado = montoSelect.value;
+                    console.log("Monto AUTO SEGURO seleccionado: " + montoEstimado);
+                  });
+                  
+                  // Para AUTO SEGURO, no hay porcentaje de entrada
+                  porcentajeGlobal = 0;
+                  console.log("AUTO SEGURO - Porcentaje establecido en: 0%");
+                })
+                .catch((error) => {
+                  console.error("Error al cargar el archivo JSON de 6meses:", error);
+                  alert("Error al cargar los datos de AUTO SEGURO. Por favor intenta nuevamente.");
                 });
             }
           }
@@ -2386,12 +2627,87 @@
             
             // Mostrar contenido específico de JUSTO A TIEMPO
             mostrarContenidoJustoTiempoPDF();
+          } else if (planSeleccionado === "PLAN AUTO SEGURO") {
+            // Ocultar contenido estándar y mostrar contenido específico de AUTO SEGURO
+            console.log("🛡️ Configurando contenido para PLAN AUTO SEGURO");
+            
+            document.getElementById("formfinal").style.display = "none";
+            document.getElementById("tabla-completa-opciones").style.display = "none";
+            
+            // Crear o actualizar sección especial para AUTO SEGURO
+            let autoSeguroSection = document.getElementById("auto-seguro-pdf-info");
+            if (!autoSeguroSection) {
+              autoSeguroSection = document.createElement("div");
+              autoSeguroSection.id = "auto-seguro-pdf-info";
+              
+              // Insertar después de la imagen del auto
+              const autoPdfElement = document.getElementById("auto-pdf");
+              if (autoPdfElement && autoPdfElement.parentElement) {
+                autoPdfElement.parentElement.insertAdjacentElement('afterend', autoSeguroSection);
+              }
+            }
+            
+            // Obtener datos de AUTO SEGURO
+            const cuotaMensual = window.autoSeguroData ? window.autoSeguroData.cuota : monthlyPrice;
+            const oferta6toMes = window.autoSeguroData ? window.autoSeguroData.oferta : "N/A";
+            const montoVehiculo = window.autoSeguroData ? window.autoSeguroData.monto : montoEstimado;
+            
+            autoSeguroSection.style.cssText = "margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%); border-radius: 10px; border: 2px solid #4CAF50;";
+            autoSeguroSection.innerHTML = `
+              <h3 style="text-align: center; color: #072386; margin-bottom: 15px;">PLAN AUTO SEGURO</h3>
+              <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                <p style="margin: 8px 0; font-size: 1rem;"><strong>Monto Seleccionado:</strong> $${parseInt(montoVehiculo).toLocaleString()}</p>
+                <p style="margin: 8px 0; font-size: 1rem; color: #4CAF50;"><strong>Cuota Mensual:</strong> $${cuotaMensual}</p>
+                <p style="margin: 8px 0; font-size: 1rem; color: #FF5722;"><strong>Oferta 6to Mes:</strong> $${oferta6toMes}</p>
+              </div>
+              <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <h4 style="color: #072386; margin-bottom: 10px; text-align: center;">Plan de Pagos (6 Meses)</h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                  <thead>
+                    <tr style="background: #072386; color: white;">
+                      <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Mes</th>
+                      <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Cuota</th>
+                      <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${Array.from({length: 6}, (_, i) => {
+                      const mes = i + 1;
+                      const esUltimoMes = mes === 6;
+                      return `
+                        <tr style="background: ${i % 2 === 0 ? '#f9f9f9' : 'white'};">
+                          <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">Mes ${mes}</td>
+                          <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">$${cuotaMensual}</td>
+                          <td style="padding: 8px; border: 1px solid #ddd; text-align: center; color: ${esUltimoMes ? '#FF5722' : '#4CAF50'}; font-weight: ${esUltimoMes ? 'bold' : 'normal'};">
+                            ${esUltimoMes ? `+ Oferta $${oferta6toMes}` : 'Pago regular'}
+                          </td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              </div>
+              <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 15px; font-style: italic;">
+                *Al 6to mes recibes una oferta especial para facilitar tu compra
+              </p>
+            `;
+            
+            console.log("✅ Sección AUTO SEGURO configurada correctamente");
+            
+            // Cambiar texto del botón PDF
+            document.getElementById("btn-quote").textContent = "DESCARGAR PDF";
           } else {
             // Contenido estándar para otros planes
             console.log("📊 Configurando contenido estándar para plan:", planSeleccionado);
             
             document.getElementById("formfinal").style.display = "grid";
             document.getElementById("tabla-completa-opciones").style.display = "block";
+            
+            // Ocultar sección AUTO SEGURO si existe
+            const autoSeguroSection = document.getElementById("auto-seguro-pdf-info");
+            if (autoSeguroSection) {
+              autoSeguroSection.style.display = "none";
+            }
             
             // Llenar datos del formulario estándar
             document.getElementById("meses-F").value = selectedMonths.replace("_MESES", " Meses");
@@ -4189,10 +4505,17 @@
           pdf.text(`Cuota mensual: $${monthlyPrice}`, 20, yPos + 18);
           pdf.text(`Entrada: ${porcentajeGlobal}%`, 20, yPos + 24);
           
-          // Columna derecha
-          pdf.text(`Tasa administrativa: ${tasaAdministrativa}`, pageWidth / 2 + 10, yPos + 12);
-          pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, pageWidth / 2 + 10, yPos + 18);
-          pdf.text(`Monto estimado: $${montoEstimado.toLocaleString()}`, pageWidth / 2 + 10, yPos + 24);
+          // Columna derecha - Agregar lógica especial para AUTO SEGURO
+          if (planSeleccionado === "PLAN AUTO SEGURO") {
+            pdf.text(`Plan especial: 6 meses`, pageWidth / 2 + 10, yPos + 12);
+            pdf.text(`Plazo: 6 meses`, pageWidth / 2 + 10, yPos + 18);
+            const oferta6toMes = window.autoSeguroData ? window.autoSeguroData.oferta : "N/A";
+            pdf.text(`Oferta 6to mes: $${oferta6toMes}`, pageWidth / 2 + 10, yPos + 24);
+          } else {
+            pdf.text(`Tasa administrativa: ${tasaAdministrativa}`, pageWidth / 2 + 10, yPos + 12);
+            pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, pageWidth / 2 + 10, yPos + 18);
+            pdf.text(`Monto estimado: $${montoEstimado.toLocaleString()}`, pageWidth / 2 + 10, yPos + 24);
+          }
           
           // Sección de tabla completa de opciones
           yPos += 40;
@@ -4202,6 +4525,102 @@
             pdf.addPage();
             yPos = 20;
           }
+          
+          // Para PLAN AUTO SEGURO, generar tabla especial
+          if (planSeleccionado === "PLAN AUTO SEGURO") {
+            // Título de la tabla AUTO SEGURO
+            pdf.setFillColor(7, 35, 134);
+            pdf.roundedRect(15, yPos - 3, pageWidth - 30, 15, 7, 7, 'F');
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(11);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text("PLAN AUTO SEGURO - DETALLES", pageWidth / 2, yPos + 5, { align: 'center' });
+            
+            yPos += 18;
+            
+            // Cuadro descriptivo con información del plan
+            pdf.setFillColor(240, 244, 255); // Fondo azul claro
+            pdf.roundedRect(15, yPos, pageWidth - 30, 60, 7, 7, 'F');
+            
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(10);
+            pdf.setTextColor(7, 35, 134);
+            pdf.text("Características del Plan:", 20, yPos + 10);
+            
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(9);
+            pdf.setTextColor(0, 0, 0);
+            
+            const montoAutoSeguro = montoEstimado;
+            const cuotaAutoSeguro = window.autoSeguroData ? window.autoSeguroData.cuota : monthlyPrice;
+            const ofertaAutoSeguro = window.autoSeguroData ? window.autoSeguroData.oferta : "N/A";
+            
+            pdf.text(`• Monto del vehículo: $${montoAutoSeguro.toLocaleString()}`, 20, yPos + 20);
+            pdf.text(`• Cuota mensual: $${cuotaAutoSeguro}`, 20, yPos + 28);
+            pdf.text(`• Plazo: 6 meses`, 20, yPos + 36);
+            pdf.text(`• Oferta especial al 6to mes: $${ofertaAutoSeguro}`, 20, yPos + 44);
+            
+            pdf.setFont("helvetica", "italic");
+            pdf.setFontSize(8);
+            pdf.setTextColor(102, 102, 102);
+            pdf.text("Al completar 6 meses de pago puntual, recibes una oferta especial para", 20, yPos + 54);
+            pdf.text("facilitar tu compra y proteger tu inversión.", 20, yPos + 60);
+            
+            yPos += 70;
+            
+            // Tabla de pagos mensuales
+            pdf.setFillColor(7, 35, 134);
+            pdf.roundedRect(15, yPos - 2, pageWidth - 30, 12, 7, 7, 'F');
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(8);
+            pdf.setTextColor(255, 255, 255);
+            
+            const colMes = 40;
+            const colCuota = 100;
+            const colEstado = 160;
+            
+            pdf.text("MES", colMes, yPos + 6);
+            pdf.text("CUOTA MENSUAL", colCuota, yPos + 6);
+            pdf.text("ESTADO", colEstado, yPos + 6);
+            
+            yPos += 15;
+            
+            // Generar filas de la tabla (6 meses)
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(7);
+            
+            for (let mes = 1; mes <= 6; mes++) {
+              // Alternar color de fondo
+              if (mes % 2 === 0) {
+                pdf.setFillColor(249, 249, 249);
+                pdf.roundedRect(15, yPos - 2, pageWidth - 30, 10, 7, 7, 'F');
+              }
+              
+              pdf.setTextColor(0, 0, 0);
+              pdf.text(`Mes ${mes}`, colMes, yPos + 5);
+              pdf.text(`$${cuotaAutoSeguro}`, colCuota, yPos + 5);
+              
+              if (mes === 6) {
+                pdf.setTextColor(255, 87, 34); // Naranja para el mes 6
+                pdf.setFont("helvetica", "bold");
+                pdf.text(`+ Oferta $${ofertaAutoSeguro}`, colEstado, yPos + 5);
+                pdf.setFont("helvetica", "normal");
+              } else {
+                pdf.text("Pago regular", colEstado, yPos + 5);
+              }
+              
+              yPos += 11;
+            }
+            
+            // Nota explicativa
+            yPos += 3;
+            pdf.setFont("helvetica", "italic");
+            pdf.setFontSize(6);
+            pdf.setTextColor(153, 153, 153);
+            pdf.text("*La oferta del 6to mes está sujeta a cumplimiento de pagos puntuales", 20, yPos);
+            
+          } else {
+            // Generar tabla normal para otros planes
           
           // Título de la tabla con mejor estilo
           pdf.setFillColor(7, 35, 134);
@@ -4300,6 +4719,8 @@
           pdf.setFontSize(6);
           pdf.setTextColor(153, 153, 153);
           pdf.text("La opción seleccionada está resaltada en azul", 20, yPos);
+          
+          } // Fin del else (planes normales)
           
           // Pie de página con gradiente azul
            pdf.setFillColor(7, 35, 134);
