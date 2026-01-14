@@ -3564,7 +3564,7 @@
               reader.onerror = reject;
               reader.readAsDataURL(blob);
             });
-            const imgHeight = 15; // Altura (mm) dentro de la barra azul
+            const imgHeight = 13; // Altura (mm) dentro de la barra azul
             pdf.addImage(dataUrl, 'PNG', xPos, yPos, imgWidth, imgHeight);
           } catch (e) {
             console.warn('No se pudo cargar la imagen del encabezado:', e);
