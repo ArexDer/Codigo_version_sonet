@@ -3594,11 +3594,11 @@
             const colorSecundario = [255, 152, 0]; // #ff9800
             
             // ====== ENCABEZADO ======
-            // Barra superior azul a todo el ancho (altura aumentada)
+            // Barra superior azul a todo el ancho (altura reducida)
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(0, 0, pageWidth, 20, 'F');
+            pdf.rect(0, 0, pageWidth, 15, 'F');
             // Logo en la esquina superior izquierda dentro de la barra
-            await dibujarImagenHeader(pdf, 5, 3, 35);
+            await dibujarImagenHeader(pdf, 5, 2, 28);
             
             // Título principal
             pdf.setFont('helvetica', 'bold');
@@ -3624,7 +3624,7 @@
             const ciudad = document.getElementById('ciudad').value || 'No especificado';
             const provincia = document.getElementById('provincia').value || 'No especificado';
             
-            pdf.setFontSize(10);
+            pdf.setFontSize(9);
             pdf.setFont('helvetica', 'bold');
             pdf.setTextColor(...colorPrimario);
             pdf.text('INFORMACIÓN DEL CLIENTE', 20, yPos + 3);
@@ -3782,14 +3782,14 @@
             
             // Pie de página con gradiente azul
             pdf.setFillColor(...colorSecundario);
-            pdf.rect(0, pageHeight - 25, pageWidth, 25, 'F');
+            pdf.rect(0, pageHeight - 18, pageWidth, 18, 'F');
             
             pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(10);
+            pdf.setFontSize(9);
             pdf.setTextColor(255, 255, 255);
-            pdf.text('FINAN - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 12, { align: 'center' });
-            pdf.setFontSize(8);
-            pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 6, { align: 'center' });
+            pdf.text('FINAN - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 10, { align: 'center' });
+            pdf.setFontSize(7);
+            pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 5, { align: 'center' });
             
             // Descargar PDF
             const fechaActual = new Date().toISOString().split('T')[0];
@@ -3872,18 +3872,18 @@
           const pageWidth = pdf.internal.pageSize.getWidth();
           
           // ====== ENCABEZADO ======
-          // Barra superior azul a todo el ancho (altura aumentada)
+          // Barra superior azul a todo el ancho (altura reducida)
           pdf.setFillColor(7, 35, 134);
-          pdf.rect(0, 0, pageWidth, 20, 'F');
+          pdf.rect(0, 0, pageWidth, 15, 'F');
           // Logo en la esquina superior izquierda dentro de la barra
-          await dibujarImagenHeader(pdf, 5, 3, 35);
+          await dibujarImagenHeader(pdf, 5, 2, 28);
           
         
           pdf.setFontSize(14);
           pdf.text("PROFORMA VEHICULAR - PLAN JUSTO A TIEMPO", pageWidth / 2, 40, { align: 'center' });
           
           pdf.setFont("helvetica", "normal");
-          pdf.setFontSize(10);
+          pdf.setFontSize(9);
           pdf.setTextColor(102, 126, 234);
           pdf.text("Opciones de Pago Personalizadas", pageWidth / 2, 48, { align: 'center' });
         
@@ -3898,7 +3898,7 @@
           pdf.roundedRect(15, yPos, pageWidth - 30, 45, 7, 7, 'S');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(12);
+          pdf.setFontSize(9);
           pdf.setTextColor(7, 35, 134);
           pdf.text("INFORMACIÓN DEL CLIENTE", 20, yPos + 8);
           
@@ -3923,7 +3923,7 @@
           pdf.roundedRect(15, yPos, pageWidth - 30, 35, 7, 7, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(12);
+          pdf.setFontSize(9);
           pdf.setTextColor(255, 255, 255);
           pdf.text("DETALLES DEL PLAN", 20, yPos + 8);
           
@@ -3969,11 +3969,11 @@
           pdf.roundedRect(15, yPos, pageWidth - 30, 18, 7, 7, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(13);
+          pdf.setFontSize(10);
           pdf.setTextColor(255, 255, 255);
           pdf.text(`OPCIONES DE PAGO PARA EL MES ${mesSeleccionado}`, pageWidth / 2, yPos + 8, { align: 'center' });
           
-          pdf.setFontSize(10);
+          pdf.setFontSize(9);
           pdf.text(`Monto base: $${montoNumerico.toLocaleString()}`, pageWidth / 2, yPos + 15, { align: 'center' });
           
           yPos += 25;
@@ -4035,7 +4035,7 @@
             pdf.roundedRect(15, yPos, pageWidth - 30, 25, 7, 7, 'S');
             
             pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(11);
+            pdf.setFontSize(10);
             pdf.setTextColor(245, 124, 0); // Naranja
             pdf.text("NO HAY OPCIONES DISPONIBLES", pageWidth / 2, yPos + 10, { align: 'center' });
             
@@ -4046,17 +4046,17 @@
           
           // ====== PIE DE PÁGINA ======
           pdf.setFillColor(7, 35, 134);
-          pdf.rect(0, pageHeight - 30, pageWidth, 30, 'F');
+          pdf.rect(0, pageHeight - 18, pageWidth, 18, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(10);
+          pdf.setFontSize(9);
           pdf.setTextColor(255, 255, 255);
-          pdf.text("FINAN", pageWidth / 2, pageHeight - 18, { align: 'center' });
+          pdf.text("FINAN", pageWidth / 2, pageHeight - 12, { align: 'center' });
           
           pdf.setFont("helvetica", "normal");
-          pdf.setFontSize(8);
-          pdf.text("Plan Justo a Tiempo - Tu vehículo en el momento exacto que lo necesitas", pageWidth / 2, pageHeight - 12, { align: 'center' });
-          pdf.text("www.finan.ec | contacto@finan.ec", pageWidth / 2, pageHeight - 6, { align: 'center' });
+          pdf.setFontSize(7);
+          pdf.text("Plan Justo a Tiempo - Tu vehículo en el momento exacto que lo necesitas", pageWidth / 2, pageHeight - 8, { align: 'center' });
+          pdf.text("www.finan.ec | contacto@finan.ec", pageWidth / 2, pageHeight - 4, { align: 'center' });
           
           // ====== DESCARGAR PDF ======
           const nombreArchivo = `Opciones_Pago_${nombre.replace(/\s+/g, '_')}_${vehiculoNombre.replace(/\s+/g, '_')}_Mes${mesSeleccionado}.pdf`;
@@ -4111,11 +4111,11 @@
             const colorPrimario = [7, 35, 134]; // #072386
             const colorSecundario = [255, 152, 0]; // #ff9800
             
-            // Header con logo y título (barra azul a todo el ancho 20mm)
+            // Header con logo y título (barra azul a todo el ancho 15mm)
             pdf.setFillColor(...colorPrimario);
-            pdf.rect(0, 0, pageWidth, 20, 'F');
+            pdf.rect(0, 0, pageWidth, 15, 'F');
             // Imagen en la esquina superior izquierda dentro de la barra
-            await dibujarImagenHeader(pdf, 5, 3, 35);
+            await dibujarImagenHeader(pdf, 5, 2, 28);
             
             // Título principal
           pdf.setFont("helvetica", "bold");
@@ -4134,7 +4134,7 @@
             pdf.roundedRect(15, yPos - 3, pageWidth - 30, 35, 7, 7, 'F');
             
             // Información del cliente
-            pdf.setFontSize(10);
+            pdf.setFontSize(9);
             pdf.setFont('helvetica', 'bold');
             pdf.setTextColor(...colorPrimario);
             pdf.text('INFORMACIÓN DEL CLIENTE', 20, yPos + 3);
@@ -4293,7 +4293,7 @@
             // Notas importantes
             const notasY = 227;
             pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(11);
+            pdf.setFontSize(9);
             pdf.text('NOTAS IMPORTANTES:', 15, notasY);
             
             pdf.setFont('helvetica', 'normal');
@@ -4312,14 +4312,14 @@
             
             // Footer (a todo el ancho)
             pdf.setFillColor(...colorSecundario);
-            pdf.rect(0, pageHeight - 20, pageWidth, 20, 'F');
+            pdf.rect(0, pageHeight - 18, pageWidth, 18, 'F');
             
             pdf.setTextColor(255, 255, 255);
-            pdf.setFontSize(10);
+            pdf.setFontSize(9);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('FINAN  - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 12, { align: 'center' });
-            pdf.setFontSize(8);
-            pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 6, { align: 'center' });
+            pdf.text('FINAN - Financiamiento Inmobiliario', pageWidth / 2, pageHeight - 10, { align: 'center' });
+            pdf.setFontSize(7);
+            pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 5, { align: 'center' });
             
             // Descargar PDF
             const fechaActual = new Date().toISOString().split('T')[0];
@@ -4393,11 +4393,11 @@
           const pageWidth = pdf.internal.pageSize.getWidth();
           console.log('📏 Dimensiones de página:', { pageWidth, pageHeight });
           
-          // Barra superior azul marino a todo el ancho (altura aumentada)
+          // Barra superior azul marino a todo el ancho (altura reducida)
           pdf.setFillColor(7, 35, 134); // Azul marino
-          pdf.rect(0, 0, pageWidth, 20, 'F');
+          pdf.rect(0, 0, pageWidth, 15, 'F');
           // Logo en la esquina superior izquierda dentro de la barra
-          await dibujarImagenHeader(pdf, 5, 3, 35);
+          await dibujarImagenHeader(pdf, 5, 2, 28);
           
           // Título principal
           pdf.setFont("helvetica", "bold");
@@ -4427,7 +4427,7 @@
             nombre, telefono, correo, cedula, ciudad
           });
           
-          pdf.setFontSize(10);
+          pdf.setFontSize(9);
           pdf.setFont("helvetica", "bold");
           pdf.setTextColor(7, 35, 134);
           pdf.text("INFORMACIÓN DEL CLIENTE", 20, yPos + 3);
@@ -4447,7 +4447,7 @@
           pdf.roundedRect(15, yPos - 3, pageWidth - 30, 35, 7, 7, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(10);
+          pdf.setFontSize(9);
           pdf.setTextColor(255, 255, 255); // Texto blanco
           pdf.text("DETALLES DEL VEHÍCULO", 20, yPos + 3);
           
@@ -4475,9 +4475,9 @@
           // Columna derecha - Agregar lógica especial para AUTO SEGURO
           if (planSeleccionado === "PLAN AUTO SEGURO") {
             pdf.text(`Plan especial: 6 meses`, pageWidth / 2 + 10, yPos + 12);
-            pdf.text(`Plazo: 6 meses`, pageWidth / 2 + 10, yPos + 18);
+            pdf.text(`Pago 6to mes: $${oferta6toMes}`, pageWidth / 2 + 10, yPos + 18);
             const oferta6toMes = window.autoSeguroData ? window.autoSeguroData.oferta : "N/A";
-            pdf.text(`Oferta 6to mes: $${oferta6toMes}`, pageWidth / 2 + 10, yPos + 24);
+  
           } else {
             pdf.text(`Tasa administrativa: ${tasaAdministrativa}`, pageWidth / 2 + 10, yPos + 12);
             pdf.text(`Plazo: ${selectedMonths.replace('_MESES', ' meses')}`, pageWidth / 2 + 10, yPos + 18);
@@ -4499,41 +4499,11 @@
             pdf.setFillColor(7, 35, 134);
             pdf.roundedRect(15, yPos - 3, pageWidth - 30, 15, 7, 7, 'F');
             pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(11);
+            pdf.setFontSize(9);
             pdf.setTextColor(255, 255, 255);
             pdf.text("PLAN AUTO SEGURO - DETALLES", pageWidth / 2, yPos + 5, { align: 'center' });
             
             yPos += 18;
-            
-            // Cuadro descriptivo con información del plan
-            pdf.setFillColor(240, 244, 255); // Fondo azul claro
-            pdf.roundedRect(15, yPos, pageWidth - 30, 60, 7, 7, 'F');
-            
-            pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(10);
-            pdf.setTextColor(7, 35, 134);
-            pdf.text("Características del Plan:", 20, yPos + 10);
-            
-            pdf.setFont("helvetica", "normal");
-            pdf.setFontSize(9);
-            pdf.setTextColor(0, 0, 0);
-            
-            const montoAutoSeguro = montoEstimado;
-            const cuotaAutoSeguro = window.autoSeguroData ? window.autoSeguroData.cuota : monthlyPrice;
-            const ofertaAutoSeguro = window.autoSeguroData ? window.autoSeguroData.oferta : "N/A";
-            
-            pdf.text(`• Monto del vehículo: $${montoAutoSeguro.toLocaleString()}`, 20, yPos + 20);
-            pdf.text(`• Cuota mensual: $${cuotaAutoSeguro}`, 20, yPos + 28);
-            pdf.text(`• Plazo: 6 meses`, 20, yPos + 36);
-            pdf.text(`• Oferta especial al 6to mes: $${ofertaAutoSeguro}`, 20, yPos + 44);
-            
-            pdf.setFont("helvetica", "italic");
-            pdf.setFontSize(8);
-            pdf.setTextColor(102, 102, 102);
-            pdf.text("Al completar 6 meses de pago puntual, recibes una oferta especial para", 20, yPos + 54);
-            pdf.text("facilitar tu compra y proteger tu inversión.", 20, yPos + 60);
-            
-            yPos += 70;
             
             // Tabla de pagos mensuales
             pdf.setFillColor(7, 35, 134);
@@ -4552,39 +4522,42 @@
             
             yPos += 15;
             
-            // Generar filas de la tabla (6 meses)
-            pdf.setFont("helvetica", "normal");
-            pdf.setFontSize(7);
+            const cuotaAutoSeguro = window.autoSeguroData ? window.autoSeguroData.cuota : monthlyPrice;
+            const ofertaAutoSeguro = window.autoSeguroData ? window.autoSeguroData.oferta : "N/A";
             
-            for (let mes = 1; mes <= 6; mes++) {
-              // Alternar color de fondo
-              if (mes % 2 === 0) {
-                pdf.setFillColor(249, 249, 249);
-                pdf.roundedRect(15, yPos - 2, pageWidth - 30, 10, 7, 7, 'F');
+            for (let i = 1; i <= 6; i++) {
+              // Alternancia de colores
+              if (i % 2 === 0) {
+                pdf.setFillColor(245, 245, 245);
+                pdf.rect(15, yPos - 3, pageWidth - 30, 10, 'F');
               }
               
-              pdf.setTextColor(0, 0, 0);
-              pdf.text(`Mes ${mes}`, colMes, yPos + 5);
-              pdf.text(`$${cuotaAutoSeguro}`, colCuota, yPos + 5);
+              pdf.setFont("helvetica", "normal");
+              pdf.setFontSize(8);
               
-              if (mes === 6) {
-                pdf.setTextColor(255, 87, 34); // Naranja para el mes 6
+              if (i === 6) {
+                pdf.setTextColor(255, 152, 0); // Naranja para el 6to mes
                 pdf.setFont("helvetica", "bold");
-                pdf.text(`+ Oferta $${ofertaAutoSeguro}`, colEstado, yPos + 5);
-                pdf.setFont("helvetica", "normal");
+                pdf.text(`Mes ${i}`, colMes, yPos + 4);
+                pdf.text(`$${ofertaAutoSeguro}`, colCuota, yPos + 4);
+                pdf.text("Oferta", colEstado, yPos + 4);
               } else {
-                pdf.text("Pago regular", colEstado, yPos + 5);
+                pdf.setTextColor(0, 0, 0);
+                pdf.text(`Mes ${i}`, colMes, yPos + 4);
+                pdf.text(`$${cuotaAutoSeguro}`, colCuota, yPos + 4);
+                pdf.text("Pendiente", colEstado, yPos + 4);
               }
               
-              yPos += 11;
+              yPos += 10;
             }
             
-            // Nota explicativa
-            yPos += 3;
+            yPos += 5;
+            
+            // Nota sobre la oferta
             pdf.setFont("helvetica", "italic");
-            pdf.setFontSize(6);
-            pdf.setTextColor(153, 153, 153);
-            pdf.text("*La oferta del 6to mes está sujeta a cumplimiento de pagos puntuales", 20, yPos);
+            pdf.setFontSize(7);
+            pdf.setTextColor(102, 102, 102);
+            pdf.text("*En el 6to mes se aplica el pago especial con oferta de 35% del monto total.", 15, yPos);
             
           } else {
             // Generar tabla normal para otros planes
@@ -4593,7 +4566,7 @@
           pdf.setFillColor(7, 35, 134);
           pdf.roundedRect(15, yPos - 3, pageWidth - 30, 15, 7, 7, 'F');
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(11);
+          pdf.setFontSize(9);
           pdf.setTextColor(255, 255, 255);
           pdf.text("TABLA DE OPCIONES DE FINANCIAMIENTO", pageWidth / 2, yPos + 5, { align: 'center' });
           
@@ -4691,14 +4664,14 @@
           
           // Pie de página con gradiente azul
            pdf.setFillColor(7, 35, 134);
-          pdf.rect(0, pageHeight - 25, pageWidth, 25, 'F');
+          pdf.rect(0, pageHeight - 18, pageWidth, 18, 'F');
           
           pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(10);
+          pdf.setFontSize(9);
           pdf.setTextColor(255, 255, 255);
-          pdf.text("FINAN - Lo hacemos posible", pageWidth / 2, pageHeight - 12, { align: 'center' });
-          pdf.setFontSize(8);
-          pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 4, { align: 'center' });
+          pdf.text("FINAN - Lo hacemos posible", pageWidth / 2, pageHeight - 10, { align: 'center' });
+          pdf.setFontSize(7);
+          pdf.text('www.finan.ec | Cotización generada el: ' + new Date().toLocaleDateString(), pageWidth / 2, pageHeight - 5, { align: 'center' });
           
           // Descargar y enviar por correo
           const nombreArchivo = `Cotizacion_${planSeleccionado.replace(/\s+/g, '_')}_${nombre.replace(/\s+/g, '_')}.pdf`;
