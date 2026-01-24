@@ -2513,6 +2513,32 @@
               });
               
               generarPDFJustoTiempo();
+            } else if (planSeleccionado === "PLAN AUTO SEGURO") {
+              // Validar datos para AUTO SEGURO
+              const montoAutoSeguro = document.getElementById("montoSelectAutoSeguro").value;
+              const vehiculoNombre = document.getElementById("vehiculo-nombre").textContent;
+              const cuotaAutoSeguro = document.getElementById("resultadoCuotaAutoSeguro").textContent;
+              const ofertaAutoSeguro = document.getElementById("resultadoOfertaAutoSeguro").textContent;
+              
+              if (!montoAutoSeguro || !vehiculoNombre || cuotaAutoSeguro === '0' || ofertaAutoSeguro === '0') {
+                alert(' Faltan datos para generar el PDF:\n\n' + 
+                      (!montoAutoSeguro ? '• Monto seleccionado\n' : '') +
+                      (!vehiculoNombre ? '• Vehículo seleccionado\n' : '') +
+                      (cuotaAutoSeguro === '0' ? '• Cuota mensual\n' : '') +
+                      (ofertaAutoSeguro === '0' ? '• Oferta 6to mes\n' : '') +
+                      '\nPor favor, completa todos los campos del formulario.');
+                return;
+              }
+              
+              console.log('✅ Datos AUTO SEGURO validados:', {
+                monto: montoAutoSeguro,
+                vehiculo: vehiculoNombre,
+                cuota: cuotaAutoSeguro,
+                oferta: ofertaAutoSeguro,
+                plan: planSeleccionado
+              });
+              
+              generarPDF();
             } else if (tipoSeleccionado === 'inmobiliario') {
               // Validar datos para inmobiliario
               if (!monthlyPrice || !selectedMonths || !montoEstimado) {
@@ -4474,9 +4500,10 @@
           
           // Columna derecha - Agregar lógica especial para AUTO SEGURO
           if (planSeleccionado === "PLAN AUTO SEGURO") {
+            const oferta6toMes = window.autoSeguroData ? window.autoSeguroData.oferta : document.getElementById("resultadoOfertaAutoSeguro").textContent;
             pdf.text(`Plan especial: 6 meses`, pageWidth / 2 + 10, yPos + 12);
             pdf.text(`Pago 6to mes: $${oferta6toMes}`, pageWidth / 2 + 10, yPos + 18);
-            const oferta6toMes = window.autoSeguroData ? window.autoSeguroData.oferta : "N/A";
+            pdf.text(`Monto vehículo: $${montoEstimado.toLocaleString()}`, pageWidth / 2 + 10, yPos + 24);
   
           } else {
             pdf.text(`Tasa administrativa: ${tasaAdministrativa}`, pageWidth / 2 + 10, yPos + 12);
@@ -4558,6 +4585,22 @@
             pdf.setFontSize(7);
             pdf.setTextColor(102, 102, 102);
             pdf.text("*En el 6to mes se aplica el pago especial con oferta de 35% del monto total.", 15, yPos);
+            
+            // Resumen final
+            yPos += 10;
+            pdf.setFillColor(240, 244, 255);
+            pdf.roundedRect(15, yPos - 3, pageWidth - 30, 20, 7, 7, 'F');
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(8);
+            pdf.setTextColor(7, 35, 134);
+            pdf.text("RESUMEN DEL PLAN", 20, yPos + 3);
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(8);
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(`Total cuotas (6 meses): $${(parseFloat(cuotaAutoSeguro) * 6).toLocaleString()}`, 20, yPos + 10);
+            pdf.text(`Pago final (6to mes): $${ofertaAutoSeguro}`, 20, yPos + 16);
+            pdf.text(`Total a pagar: $${(parseFloat(cuotaAutoSeguro) * 5 + parseFloat(ofertaAutoSeguro)).toLocaleString()}`, pageWidth / 2 + 10, yPos + 10);
+            pdf.text(`Beneficio AUTO SEGURO: Tu vehículo en 6 meses`, pageWidth / 2 + 10, yPos + 16);
             
           } else {
             // Generar tabla normal para otros planes
@@ -4682,7 +4725,8 @@
             console.log('✅ PDF descargado exitosamente');
             
             // Enviar PDF por correo electrónico
-            enviarPDFPorCorreo(pdf, {
+            // Preparar datos especiales para AUTO SEGURO
+            let datosEnvio = {
               nombre: nombre,
               correo: correo,
               telefono: telefono,
@@ -4695,7 +4739,19 @@
               tipo_financiacion: planSeleccionado,
               monto_entrada: `$${montoEstimado.toLocaleString()}`,
               porcentaje_entrada: `${porcentajeGlobal}%`
-            }, 'Cotización Vehicular');
+            };
+            
+            // Si es PLAN AUTO SEGURO, agregar datos específicos
+            if (planSeleccionado === "PLAN AUTO SEGURO") {
+              const cuotaAutoSeguro = window.autoSeguroData ? window.autoSeguroData.cuota : document.getElementById("resultadoCuotaAutoSeguro").textContent;
+              const ofertaAutoSeguro = window.autoSeguroData ? window.autoSeguroData.oferta : document.getElementById("resultadoOfertaAutoSeguro").textContent;
+              datosEnvio.cuota_mensual = `$${cuotaAutoSeguro}`;
+              datosEnvio.oferta_sexto_mes = `$${ofertaAutoSeguro}`;
+              datosEnvio.plazo = '6 meses';
+              datosEnvio.porcentaje_entrada = 'N/A';
+            }
+            
+            enviarPDFPorCorreo(pdf, datosEnvio, 'Cotización Vehicular');
             
             alert('🎉 ¡PDF generado exitosamente!\n\n📧 El PDF ha sido enviado a tu correo electrónico y a la empresa.');
             
